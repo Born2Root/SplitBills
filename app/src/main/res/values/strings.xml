@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">SplitBills</string>
+
+    <string name="no_groups_added">Add a group</string>
+    <string name="no_groups_all">No groups added</string>
+    <string name="successfully_saved_group_message">Group saved</string>
+    <string name="successfully_added_group_message">Group added</string>
+    <string name="successfully_deleted_group_message">Group was deleted</string>
+
+    <string name="group_name">Group name</string>
+    <string name="enter_group_name_hint">Enter a group name</string>
+    <string name="group_members">Group members</string>
+    <string name="add_group_member">Add person to group</string>
+    <string name="save">Save</string>
+
+    <string name="add_group">Add a new group</string>
+    <string name="total_balance">Total balance</string>
+    <string name="you_get_or_owe">You get or owe</string>
+
+    <string name="frag_add_edit_group_edit_group">Edit Group</string>
+    <string name="frag_add_edit_group_add_group">New Group</string>
+
+    <string name="name">Name</string>
+    <string name="enter_name">Enter name</string>
+    <string name="email">E-mail</string>
+    <string name="enter_email">Enter e-mail</string>
+
+    <string name="frag_add_member_create_profile">Create profile</string>
+    <string name="frag_add_member_add_member">Add member</string>
+
+    <string name="bill_description">Bill description</string>
+    <string name="date">Date</string>
+    <string name="bill_who_paid">Who paid how much</string>
+</resources>
