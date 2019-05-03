@@ -1,2 +1,0 @@
-Implementriere Layout von GroupFragment
-Impletente Fragemnt

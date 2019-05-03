@@ -17,9 +17,9 @@ class AddMemberFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        /*viewDataBinding.viewmodel?.let {
+        viewDataBinding.viewmodel?.let {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
-        }*/
+        }
         setupActionBar()
     }
 

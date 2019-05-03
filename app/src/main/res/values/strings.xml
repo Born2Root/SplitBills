@@ -31,4 +31,11 @@
     <string name="bill_description">Bill description</string>
     <string name="date">Date</string>
     <string name="bill_who_paid">Who paid how much</string>
+
+    <string name="no_group_name_message">No group name given.</string>
+    <string name="no_name_given">No name given</string>
+    <string name="no_email_given">No email given.</string>
+    <string name="member_successful_added">Member added</string>
+    <string name="member_already_added">Member already added</string>
+    <string name="add_at_least_one_member">Add at least one member.</string>
 </resources>

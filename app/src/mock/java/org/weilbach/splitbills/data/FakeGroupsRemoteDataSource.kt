@@ -39,7 +39,7 @@ object FakeGroupsRemoteDataSource : GroupsDataSource {
     }
 
     override fun saveGroup(group: Group, callback: GroupsDataSource.SaveGroupCallback) {
-        GROUPS_SERVICE_DATA.put(group.name, group)
+        GROUPS_SERVICE_DATA[group.name] = group
         callback.onGroupSaved()
     }
 

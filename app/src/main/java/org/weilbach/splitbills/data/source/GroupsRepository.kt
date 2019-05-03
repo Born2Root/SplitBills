@@ -152,21 +152,17 @@ class GroupsRepository(
     private fun refreshLocalDataSource(groups: List<Group>) {
         groupsLocalDataSource.deleteAllGroups(object : GroupsDataSource.DeleteGroupsCallback {
             override fun onGroupsDeleted() {
-                TODO("not implemented")
             }
 
             override fun onDataNotAvailable() {
-                TODO("not implemented")
             }
         })
         for (group in groups) {
             groupsLocalDataSource.saveGroup(group, object : GroupsDataSource.SaveGroupCallback {
                 override fun onGroupSaved() {
-                    TODO("not implemented")
                 }
 
                 override fun onDataNotAvailable() {
-                    TODO("not implemented")
                 }
             })
         }

@@ -28,6 +28,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:text="@={viewmodel.name}"
             android:focusableInTouchMode="true"
             android:focusedByDefault="true"
             android:hint="@string/enter_name"
@@ -49,6 +50,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:text="@={viewmodel.email}"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress" />
 
@@ -61,6 +63,7 @@
             android:layout_marginRight="0dp"
             android:layout_marginStart="0dp"
             android:layout_marginTop="8dp"
+            android:onClick="@{() -> viewmodel.saveMember()}"
             android:text="@string/save" />
     </LinearLayout>
 </layout>

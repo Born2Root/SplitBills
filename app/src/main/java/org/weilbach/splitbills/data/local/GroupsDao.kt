@@ -6,14 +6,16 @@ import org.weilbach.splitbills.data.Group
 /**
  * Data Access Object for the groups table.
  */
-@Dao interface GroupsDao {
+@Dao
+interface GroupsDao {
 
     /**
      * Select all groups from the groups table.
      *
      * @return all groups.
      */
-    @Query("SELECT * FROM groups") fun getGroups(): List<Group>
+    @Query("SELECT * FROM groups")
+    fun getGroups(): List<Group>
 
     /**
      * Select a group by name.
@@ -29,7 +31,8 @@ import org.weilbach.splitbills.data.Group
      *
      * @param group the group to be inserted.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE) fun insertGroup(group: Group)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertGroup(group: Group)
 
     /**
      * Update a group.
@@ -51,5 +54,6 @@ import org.weilbach.splitbills.data.Group
     /**
      * Delete all groups.
      */
-    @Query("DELETE FROM groups") fun deleteGroups()
+    @Query("DELETE FROM groups")
+    fun deleteGroups()
 }

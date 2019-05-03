@@ -37,6 +37,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:text="@={viewmodel.name}"
             android:hint="@string/enter_group_name_hint"
             android:inputType="textCapWords" />
 
@@ -73,7 +74,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TableLayout
+            <ListView
+                android:id="@+id/members_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:items="@{viewmodel.memberItems}">
+
+            </ListView>
+<!--            <TableLayout
                 android:id="@+id/frag_add_edit_group_table_layout_members"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +91,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:isScrollContainer="true">
-            </TableLayout>
+            </TableLayout>-->
         </ScrollView>
 
         <Button

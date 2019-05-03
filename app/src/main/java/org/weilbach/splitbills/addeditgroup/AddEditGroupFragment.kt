@@ -1,7 +1,10 @@
 package org.weilbach.splitbills.addeditgroup
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -13,9 +16,13 @@ class AddEditGroupFragment : Fragment() {
 
     private lateinit var viewDataBinding: FragmentAddeditgroupBinding
 
+    private lateinit var memberListAdapter: MemberAdapter
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setupFab()
+        setUpMemberListAdapter()
+        setupSaveButton()
+        setupAddMemberButton()
         viewDataBinding.viewmodel?.let {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
@@ -34,7 +41,7 @@ class AddEditGroupFragment : Fragment() {
         viewDataBinding = FragmentAddeditgroupBinding.bind(root).apply {
             viewmodel = (activity as AddEditGroupActivity).obtainViewModel()
         }
-        viewDataBinding.setLifecycleOwner(this.viewLifecycleOwner)
+        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setHasOptionsMenu(true)
         retainInstance = false
         return viewDataBinding.root
@@ -44,11 +51,26 @@ class AddEditGroupFragment : Fragment() {
         inflater.inflate(R.menu.menu_addeditgroup, menu)
     }*/
 
-    private fun setupFab() {
-        /*activity?.findViewById<FloatingActionButton>(R.id.fab_edit_task_done)?.let {
-            it.setImageResource(R.drawable.ic_done)
-            it.setOnClickListener { viewDataBinding.viewmodel?.saveTask() }
-        }*/
+    private fun setUpMemberListAdapter() {
+        val viewModel = viewDataBinding.viewmodel
+        if (viewModel != null) {
+            memberListAdapter = MemberAdapter(ArrayList(0), viewModel)
+            viewDataBinding.membersList.adapter = memberListAdapter
+        } else {
+        Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
+    }
+    }
+
+    private fun setupSaveButton() {
+        activity?.findViewById<Button>(R.id.frag_add_edit_group_button_save)?.let {
+            it.setOnClickListener { viewDataBinding.viewmodel?.saveGroup() }
+        }
+    }
+
+    private fun setupAddMemberButton() {
+        activity?.findViewById<Button>(R.id.frag_add_edit_group_button_add_member)?.let {
+            it.setOnClickListener { viewDataBinding.viewmodel?.addMember() }
+        }
     }
 
     private fun setupActionBar() {

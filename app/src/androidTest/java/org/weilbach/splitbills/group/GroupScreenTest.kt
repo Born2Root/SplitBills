@@ -42,7 +42,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.matches
 import org.weilbach.splitbills.Injection
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.ViewModelFactory

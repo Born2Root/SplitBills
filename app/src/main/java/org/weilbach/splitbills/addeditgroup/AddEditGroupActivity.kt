@@ -1,5 +1,6 @@
 package org.weilbach.splitbills.addeditgroup
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -66,6 +67,10 @@ class AddEditGroupActivity : AppCompatActivity(), AddEditGroupNavigator {
     fun addMember() {
         val intent = Intent(this, AddMemberActivity::class.java)
         startActivityForResult(intent, AddMemberActivity.REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        viewModel.handleActivityOnResult(requestCode, resultCode, data)
     }
 
     fun obtainViewModel(): AddEditGroupViewModel = obtainViewModel(AddEditGroupViewModel::class.java)

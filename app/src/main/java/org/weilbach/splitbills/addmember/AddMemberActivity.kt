@@ -1,13 +1,20 @@
 package org.weilbach.splitbills.addmember
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
 import org.weilbach.splitbills.util.setupActionBar
 
 class AddMemberActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: AddMemberViewModel
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -24,6 +31,22 @@ class AddMemberActivity : AppCompatActivity() {
         }
 
         replaceFragmentInActivity(obtainViewFragment(), R.id.act_add_member_content_frame)
+
+        viewModel = obtainViewModel().apply {
+            saveMemberEvent.observe(this@AddMemberActivity, Observer<Event<Member>> {event ->
+                event.getContentIfNotHandled()?.let {member ->
+                    this@AddMemberActivity.saveMember(member)
+                }
+            })
+        }
+    }
+
+    private fun saveMember(member: Member) {
+        intent = Intent()
+        intent.putExtra(RESULT_MEMBER_NAME, member.name)
+        intent.putExtra(RESULT_MEMBER_EMAIL, member.email)
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     private fun obtainViewFragment() =
@@ -34,5 +57,7 @@ class AddMemberActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_CODE = 1
+        const val RESULT_MEMBER_NAME = "RESULT_MEMBER_NAME"
+        const val RESULT_MEMBER_EMAIL = "RESULT_MEMBER_EMAIL"
     }
 }

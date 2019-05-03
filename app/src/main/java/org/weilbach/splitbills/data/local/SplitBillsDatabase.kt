@@ -25,6 +25,8 @@ abstract class SplitBillsDatabase : RoomDatabase() {
 
     abstract fun memberDao(): MemberDao
 
+    abstract fun groupsMembersDao(): GroupsMembersDao
+
     abstract fun billDao(): BillDao
 
     abstract fun debtorsDao(): DebtorsDao
