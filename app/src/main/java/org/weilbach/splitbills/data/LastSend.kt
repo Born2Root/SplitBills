@@ -6,12 +6,12 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "last_send",
-        primaryKeys = ["member_id", "group_name"],
+        primaryKeys = ["member_email", "group_name"],
         foreignKeys = [
             ForeignKey(
                     entity = Member::class,
-                    parentColumns = ["id"],
-                    childColumns = ["member_id"]
+                    parentColumns = ["email"],
+                    childColumns = ["member_email"]
             ),
             ForeignKey(
                     entity = Group::class,
@@ -21,7 +21,7 @@ import androidx.room.PrimaryKey
         ]
 )
 class LastSend constructor(
-        @ColumnInfo(name = "member_id") val memberId: String,
+        @ColumnInfo(name = "member_email") val memberEmail: String,
         @ColumnInfo(name = "group_name", index = true) val groupName: String,
         @ColumnInfo(name = "date_time") val dateTime: String
 ) {

@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "debtors",
-        primaryKeys = ["bill_id", "member_id"],
+        primaryKeys = ["bill_id", "member_email"],
         foreignKeys = [
             ForeignKey(
                     entity = Bill::class,
@@ -15,12 +15,12 @@ import androidx.room.PrimaryKey
             ),
             ForeignKey(
                     entity = Member::class,
-                    parentColumns = ["id"],
-                    childColumns = ["member_id"]
+                    parentColumns = ["email"],
+                    childColumns = ["member_email"]
             )
         ])
 data class Debtor constructor(
         @ColumnInfo(name = "bill_id") val billId : String,
-        @ColumnInfo(name = "member_id", index = true) val memberId : String
+        @ColumnInfo(name = "member_email", index = true) val memberEmail : String
 ) {
 }

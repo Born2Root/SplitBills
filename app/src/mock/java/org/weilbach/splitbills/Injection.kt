@@ -16,12 +16,13 @@
 package org.weilbach.splitbills
 
 import android.content.Context
-import org.weilbach.splitbills.data.FakeGroupsRemoteDataSource
 import org.weilbach.splitbills.data.local.GroupsLocalDataSource
 import org.weilbach.splitbills.data.local.GroupsMembersLocalDataSource
+import org.weilbach.splitbills.data.local.MembersLocalDataSource
 import org.weilbach.splitbills.data.local.SplitBillsDatabase
 import org.weilbach.splitbills.data.source.GroupsMembersRepository
 import org.weilbach.splitbills.data.source.GroupsRepository
+import org.weilbach.splitbills.data.source.MembersRepository
 
 import org.weilbach.splitbills.util.AppExecutors
 
@@ -34,13 +35,22 @@ object Injection {
 
     fun provideGroupsRepository(context: Context): GroupsRepository {
         val database = SplitBillsDatabase.getInstance(context)
-        return GroupsRepository.getInstance(FakeGroupsRemoteDataSource,
-                GroupsLocalDataSource.getInstance(AppExecutors(), database.groupsDao()))
+        return GroupsRepository.getInstance(
+                GroupsLocalDataSource.getInstance(AppExecutors(),
+                database.groupsDao()))
+    }
+
+    fun provideMembersRepository(context: Context): MembersRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return MembersRepository.getInstance(
+                MembersLocalDataSource.getInstance(AppExecutors(),
+                database.memberDao()))
     }
 
     fun provideGroupsMembersRepository(context: Context): GroupsMembersRepository {
         val database = SplitBillsDatabase.getInstance(context)
-        return GroupsMembersRepository.getInstance(FakeGroupsMembersRemoteDataSource,
-                GroupsMembersLocalDataSource.getInstance(AppExecutors(), database.groupsMembersDao()))
+        return GroupsMembersRepository.getInstance(
+                GroupsMembersLocalDataSource.getInstance(AppExecutors(),
+                        database.groupsMembersDao()))
     }
 }

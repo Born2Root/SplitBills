@@ -4,7 +4,6 @@ import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.util.EspressoIdlingResource
 
 class MembersRepository(
-        val membersRemoteDataSource: MembersDataSource,
         val membersLocalDataSource: MembersDataSource
 ) : MembersDataSource {
 
@@ -20,26 +19,21 @@ class MembersRepository(
 
         EspressoIdlingResource.increment()
 
-        if (cacheIsDirty) {
-            getMembersFromRemoteDataSource(callback)
-        } else {
-            membersLocalDataSource.getMembers(object : MembersDataSource.GetMembersCallback {
-                override fun onMembersLoaded(members: List<Member>) {
-                    refreshCache(members)
-                    EspressoIdlingResource.decrement()
-                    callback.onMembersLoaded(ArrayList(cachedMembers.values))
-                }
+        membersLocalDataSource.getMembers(object : MembersDataSource.GetMembersCallback {
+            override fun onMembersLoaded(members: List<Member>) {
+                refreshCache(members)
+                EspressoIdlingResource.decrement()
+                callback.onMembersLoaded(ArrayList(cachedMembers.values))
+            }
 
-                override fun onDataNotAvailable() {
-                    getMembersFromRemoteDataSource(callback)
-                }
-            })
-        }
+            override fun onDataNotAvailable() {
+                callback.onDataNotAvailable()
+            }
+        })
     }
 
     override fun saveMember(member: Member) {
         cacheAndPerform(member) {
-            membersRemoteDataSource.saveMember(it)
             membersLocalDataSource.saveMember(it)
         }
     }
@@ -62,19 +56,8 @@ class MembersRepository(
             }
 
             override fun onDataNotAvailable() {
-                membersRemoteDataSource.getMember(memberEmail, object : MembersDataSource.GetMemberCallback {
-                    override fun onMemberLoaded(member: Member) {
-                        cacheAndPerform(member) {
-                            EspressoIdlingResource.decrement()
-                            callback.onMemberLoaded(it)
-                        }
-                    }
-
-                    override fun onDataNotAvailable() {
-                        EspressoIdlingResource.decrement()
-                        callback.onDataNotAvailable()
-                    }
-                })
+                EspressoIdlingResource.decrement()
+                callback.onDataNotAvailable()
             }
         })
     }
@@ -84,32 +67,13 @@ class MembersRepository(
     }
 
     override fun deleteAllMembers() {
-        membersRemoteDataSource.deleteAllMembers()
         membersLocalDataSource.deleteAllMembers()
         cachedMembers.clear()
     }
 
     override fun deleteMember(memberEmail: String) {
-        membersRemoteDataSource.deleteMember(memberEmail)
         membersLocalDataSource.deleteMember(memberEmail)
         cachedMembers.remove(memberEmail)
-    }
-
-    private fun getMembersFromRemoteDataSource(callback: MembersDataSource.GetMembersCallback) {
-        membersRemoteDataSource.getMembers(object : MembersDataSource.GetMembersCallback {
-            override fun onMembersLoaded(members: List<Member>) {
-                refreshCache(members)
-                refreshLocalDataSource(members)
-
-                EspressoIdlingResource.decrement()
-                callback.onMembersLoaded(ArrayList(cachedMembers.values))
-            }
-
-            override fun onDataNotAvailable() {
-                EspressoIdlingResource.decrement()
-                callback.onDataNotAvailable()
-            }
-        })
     }
 
     private fun refreshCache(members: List<Member>) {
@@ -118,13 +82,6 @@ class MembersRepository(
             cacheAndPerform(it) { }
         }
         cacheIsDirty = false
-    }
-
-    private fun refreshLocalDataSource(members: List<Member>) {
-        membersLocalDataSource.deleteAllMembers()
-        for (member in members) {
-            membersLocalDataSource.saveMember(member)
-        }
     }
 
     private inline fun cacheAndPerform(member: Member, perform: (Member) -> Unit) {
@@ -139,13 +96,11 @@ class MembersRepository(
         private var INSTANCE: MembersRepository? = null
 
         @JvmStatic
-        fun getInstance(membersRemoteDataSource: MembersDataSource,
-                        membersLocalDataSource: MembersDataSource) {
+        fun getInstance(membersLocalDataSource: MembersDataSource) =
             INSTANCE ?: synchronized(MembersRepository::class.java) {
-                INSTANCE ?: MembersRepository(membersRemoteDataSource, membersLocalDataSource)
+                INSTANCE ?: MembersRepository(membersLocalDataSource)
                         .also { INSTANCE = it }
             }
-        }
 
         @JvmStatic
         fun destroyInstance() {

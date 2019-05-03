@@ -23,7 +23,9 @@ import androidx.lifecycle.ViewModelProvider
 import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity
 import org.weilbach.splitbills.addeditgroup.AddEditGroupViewModel
 import org.weilbach.splitbills.addmember.AddMemberViewModel
+import org.weilbach.splitbills.data.source.GroupsMembersRepository
 import org.weilbach.splitbills.data.source.GroupsRepository
+import org.weilbach.splitbills.data.source.MembersRepository
 import org.weilbach.splitbills.group.GroupViewModel
 
 
@@ -35,7 +37,9 @@ import org.weilbach.splitbills.group.GroupViewModel
  * actually necessary in this case, as the product ID can be passed in a public method.
  */
 class ViewModelFactory private constructor(
-        private val groupsRepository: GroupsRepository
+        private val groupsRepository: GroupsRepository,
+        private val membersRepository: MembersRepository,
+        private val groupsMembersRepository: GroupsMembersRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
@@ -48,9 +52,11 @@ class ViewModelFactory private constructor(
                     isAssignableFrom(AddEditTaskViewModel::class.java) ->
                         AddEditTaskViewModel(tasksRepository)*/
                     isAssignableFrom(AddMemberViewModel::class.java) ->
-                        AddMemberViewModel();
+                        AddMemberViewModel()
                     isAssignableFrom(AddEditGroupViewModel::class.java) ->
-                        AddEditGroupViewModel(groupsRepository);
+                        AddEditGroupViewModel(groupsRepository,
+                                membersRepository,
+                                groupsMembersRepository)
                     isAssignableFrom(GroupViewModel::class.java) ->
                         GroupViewModel(groupsRepository)
                     else ->
@@ -66,7 +72,9 @@ class ViewModelFactory private constructor(
         fun getInstance(application: Application) =
                 INSTANCE ?: synchronized(ViewModelFactory::class.java) {
                     INSTANCE ?: ViewModelFactory(
-                            Injection.provideGroupsRepository(application.applicationContext))
+                            Injection.provideGroupsRepository(application.applicationContext),
+                            Injection.provideMembersRepository(application.applicationContext),
+                            Injection.provideGroupsMembersRepository(application.applicationContext))
                             .also { INSTANCE = it }
                 }
 

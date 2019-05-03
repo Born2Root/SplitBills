@@ -3,19 +3,19 @@ package org.weilbach.splitbills.data.source
 import org.weilbach.splitbills.data.GroupMember
 import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.util.EspressoIdlingResource
+import java.util.*
+import kotlin.collections.LinkedHashMap
 
 class GroupsMembersRepository(
-        val groupsMembersRemoteDataSource: GroupsMembersDataSource,
         val groupsMembersLocalDataSource: GroupsMembersDataSource
 ) : GroupsMembersDataSource {
 
-    var cachedGroupsMembers: LinkedHashMap<String, GroupMember> = LinkedHashMap()
+    var cachedGroupsMembers: LinkedList<GroupMember> = LinkedList()
 
     var cacheIsDirty = false
 
     override fun saveGroupMember(groupMember: GroupMember) {
         cacheAndPerform(groupMember) {
-            groupsMembersRemoteDataSource.saveGroupMember(it)
             groupsMembersLocalDataSource.saveGroupMember(it)
         }
     }
@@ -25,8 +25,8 @@ class GroupsMembersRepository(
     }
 
     private inline fun cacheAndPerform(groupMember: GroupMember, perform: (GroupMember) -> Unit) {
-        val cachedGroupMember = GroupMember(groupMember.groupName, groupMember.memberId)
-        cachedGroupsMembers[cachedGroupMember.memberId] = cachedGroupMember
+        val cachedGroupMember = GroupMember(groupMember.groupName, groupMember.memberEmail)
+        cachedGroupsMembers.add(cachedGroupMember)
         perform(cachedGroupMember)
     }
 
@@ -34,15 +34,11 @@ class GroupsMembersRepository(
         private var INSTANCE: GroupsMembersRepository? = null
 
         @JvmStatic
-        fun getInstance(groupsMembersRemoteDataSource: GroupsMembersDataSource,
-                        groupsMembersLocalDataSource: GroupsMembersDataSource) {
+        fun getInstance(groupsMembersLocalDataSource: GroupsMembersDataSource) =
             INSTANCE ?: synchronized(GroupsMembersRepository::class.java) {
-                INSTANCE ?: GroupsMembersRepository(
-                        groupsMembersRemoteDataSource,
-                        groupsMembersLocalDataSource)
+                INSTANCE ?: GroupsMembersRepository(groupsMembersLocalDataSource)
                         .also { INSTANCE = it }
             }
-        }
 
         @JvmStatic
         fun destroyInstance() {

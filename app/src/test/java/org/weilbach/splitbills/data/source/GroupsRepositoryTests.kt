@@ -29,8 +29,6 @@ class GroupsRepositoryTest {
     private lateinit var groupsRepository: GroupsRepository
 
     @Mock
-    private lateinit var groupsRemoteDataSource: GroupsDataSource
-    @Mock
     private lateinit var groupsLocalDataSource: GroupsDataSource
     @Mock
     private lateinit var getGroupCallback: GroupsDataSource.GetGroupCallback
@@ -56,8 +54,7 @@ class GroupsRepositoryTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        groupsRepository = GroupsRepository.getInstance(
-                groupsRemoteDataSource, groupsLocalDataSource)
+        groupsRepository = GroupsRepository.getInstance(groupsLocalDataSource)
     }
 
     @After
@@ -65,6 +62,7 @@ class GroupsRepositoryTest {
         GroupsRepository.destroyInstance()
     }
 
+    /// MARK
     @Test
     fun getGroups_repositoryCachesAfterFirstApiCall() {
         // Given a setup Captor to capture callbacks
@@ -72,8 +70,7 @@ class GroupsRepositoryTest {
         twoGroupsLoadCallsToRepository(loadGroupsCallback)
 
         // Then tasks were only requested once from Service API
-        verify<GroupsDataSource>(groupsRemoteDataSource).getGroups(
-                any<GroupsDataSource.GetGroupsCallback>())
+        verify<GroupsDataSource>(groupsLocalDataSource).getGroups(any())
     }
 
     @Test
@@ -95,10 +92,7 @@ class GroupsRepositoryTest {
         groupsRepository.saveGroup(newGroup, saveGroupCallback)
 
         // Then the service API and persistent repository are called and the cache is updated
-        verify<GroupsDataSource>(groupsRemoteDataSource).saveGroup(newGroup,
-                any<GroupsDataSource.SaveGroupCallback>())
-        verify<GroupsDataSource>(groupsLocalDataSource).saveGroup(newGroup,
-                any<GroupsDataSource.SaveGroupCallback>())
+        verify<GroupsDataSource>(groupsLocalDataSource).saveGroup(eq(newGroup), any())
         assertThat(groupsRepository.cachedGroups.size, `is`(1))
     }
 
@@ -126,8 +120,6 @@ class GroupsRepositoryTest {
             deleteAllGroups(deleteGroupsCallback)
 
             // Verify the data sources were called
-            verify(this@GroupsRepositoryTest.groupsRemoteDataSource)
-                    .deleteAllGroups(deleteGroupsCallback)
             verify(this@GroupsRepositoryTest.groupsLocalDataSource)
                     .deleteAllGroups(deleteGroupsCallback)
 
@@ -147,8 +139,6 @@ class GroupsRepositoryTest {
             deleteGroup(newGroup.name, deleteGroupCallback)
 
             // Verify the data sources were called
-            verify(this@GroupsRepositoryTest.groupsRemoteDataSource)
-                    .deleteGroup(newGroup.name, deleteGroupCallback)
             verify(this@GroupsRepositoryTest.groupsLocalDataSource)
                     .deleteGroup(newGroup.name, deleteGroupCallback)
 
@@ -158,7 +148,7 @@ class GroupsRepositoryTest {
     }
 
     @Test
-    fun getGroupsWithDirtyCache_GroupsAreRetrievedFromRemote() {
+    fun getGroupsWithDirtyCache_GroupsAreRetrievedFromLocal() {
         with(groupsRepository) {
             // When calling getGroups in the repository with dirty cache
             refreshGroups()
@@ -166,45 +156,26 @@ class GroupsRepositoryTest {
         }
 
         // And the remote data source has data available
-        setGroupsAvailable(groupsRemoteDataSource, GROUP)
+        setGroupsAvailable(groupsLocalDataSource, GROUP)
 
         // Verify the groups from the remote data source are returned, not the local
-        verify(groupsLocalDataSource, never()).getGroups(loadGroupsCallback)
         verify(loadGroupsCallback).onGroupsLoaded(GROUP)
     }
 
     @Test
-    fun getGroupsWithLocalDataSourceUnavailable_groupsAreRetrievedFromRemote() {
-        // When calling getGroups in the repository
-        groupsRepository.getGroups(loadGroupsCallback)
-
-        // And the local data source has no data available
-        setGroupsNotAvailable(groupsLocalDataSource)
-
-        // And the remote data source has data available
-        setGroupsAvailable(groupsRemoteDataSource, GROUP)
-
-        // Verify the tasks from the local data source are returned
-        verify(loadGroupsCallback).onGroupsLoaded(GROUP)
-    }
-
-    @Test
-    fun getGroupsWithBothDataSourcesUnavailable_firesOnDataUnavailable() {
+    fun getGroupsWithDataSourceUnavailable_firesOnDataUnavailable() {
         // When calling getTasks in the repository
         groupsRepository.getGroups(loadGroupsCallback)
 
         // And the local data source has no data available
         setGroupsNotAvailable(groupsLocalDataSource)
 
-        // And the remote data source has no data available
-        setGroupsNotAvailable(groupsRemoteDataSource)
-
         // Verify no data is returned
         verify(loadGroupsCallback).onDataNotAvailable()
     }
 
     @Test
-    fun getGroupWithBothDataSourcesUnavailable_firesOnDataUnavailable() {
+    fun getGroupWithDataSourceUnavailable_firesOnDataUnavailable() {
         // Given a task id
         val groupId = "123"
 
@@ -214,14 +185,11 @@ class GroupsRepositoryTest {
         // And the local data source has no data available
         setGroupNotAvailable(groupsLocalDataSource, groupId)
 
-        // And the remote data source has no data available
-        setGroupNotAvailable(groupsRemoteDataSource, groupId)
-
         // Verify no data is returned
         verify(getGroupCallback).onDataNotAvailable()
     }
 
-    @Test
+    /*@Test
     fun getGroups_refreshesLocalDataSource() {
         with(groupsRepository) {
             // Mark cache as dirty to force a reload of data from remote data source.
@@ -232,12 +200,12 @@ class GroupsRepositoryTest {
         }
 
         // Make the remote data source return data
-        setGroupsAvailable(groupsRemoteDataSource, GROUP)
+        setGroupsAvailable(groupsLocalDataSource, GROUP)
 
         // Verify that the data fetched from the remote data source was saved in local.
         verify(groupsLocalDataSource, times(GROUP.size))
                 .saveGroup(any<Group>(), any<GroupsDataSource.SaveGroupCallback>())
-    }
+    }*/
 
     /**
      * Convenience method that issues two calls to the groups repository
@@ -248,13 +216,6 @@ class GroupsRepositoryTest {
 
         // Use the Mockito Captor to capture the callback
         verify(groupsLocalDataSource).getGroups(capture(getGroupsCallbackCaptor))
-
-        // Local data source doesn't have data yet
-        getGroupsCallbackCaptor.value.onDataNotAvailable()
-
-
-        // Verify the remote data source is queried
-        verify(groupsRemoteDataSource).getGroups(capture(getGroupsCallbackCaptor))
 
         // Trigger callback so tasks are cached
         getGroupsCallbackCaptor.value.onGroupsLoaded(GROUP)

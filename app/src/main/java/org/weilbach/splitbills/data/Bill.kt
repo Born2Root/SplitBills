@@ -14,7 +14,7 @@ import androidx.room.*
 data class Bill constructor(
         @ColumnInfo(name = "date_time") val dateTime: String,
         @ColumnInfo(name = "description") val description: String,
-        @ColumnInfo(name = "creditor") val creditor: String,
+        @ColumnInfo(name = "creditor_email") val creditorEmail: String,
         @ColumnInfo(name = "group_name", index = true) val groupName: String,
         @ColumnInfo(name = "valid") var valid: Boolean
 ) {

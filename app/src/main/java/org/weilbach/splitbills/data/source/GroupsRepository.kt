@@ -5,7 +5,6 @@ import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.util.EspressoIdlingResource
 
 class GroupsRepository(
-        val groupsRemoteDataSource: GroupsDataSource,
         val groupsLocalDataSource: GroupsDataSource
 ) : GroupsDataSource {
 
@@ -29,30 +28,24 @@ class GroupsRepository(
 
         EspressoIdlingResource.increment() // Set app as busy.
 
-        if (cacheIsDirty) {
-            // If the cache is dirty we need to fetch new data from the network.
-            getGroupsFromRemoteDataSource(callback)
-        } else {
-            Log.d(DEBUG_TAG, "Fetch data from local storage.")
-            // Query the local storage if available. If not, query the network.
-            groupsLocalDataSource.getGroups(object : GroupsDataSource.GetGroupsCallback {
-                override fun onGroupsLoaded(groups: List<Group>) {
-                    refreshCache(groups)
-                    EspressoIdlingResource.decrement() // Set app as idle.
-                    callback.onGroupsLoaded(ArrayList(cachedGroups.values))
-                }
+        // Query the local storage if available.
+        groupsLocalDataSource.getGroups(object : GroupsDataSource.GetGroupsCallback {
+            override fun onGroupsLoaded(groups: List<Group>) {
+                refreshCache(groups)
+                EspressoIdlingResource.decrement() // Set app as idle.
+                callback.onGroupsLoaded(ArrayList(cachedGroups.values))
+            }
 
-                override fun onDataNotAvailable() {
-                    getGroupsFromRemoteDataSource(callback)
-                }
-            })
-        }
+            override fun onDataNotAvailable() {
+                EspressoIdlingResource.decrement() // Set app as idle.
+                callback.onDataNotAvailable()
+            }
+        })
     }
 
     override fun saveGroup(group: Group, callback: GroupsDataSource.SaveGroupCallback) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(group) {
-            groupsRemoteDataSource.saveGroup(it, callback)
             groupsLocalDataSource.saveGroup(it, callback)
         }
     }
@@ -78,7 +71,7 @@ class GroupsRepository(
 
         // Load from server/persisted if needed.
 
-        // Is the task in the local data source? If not, query the network.
+        // Is the task in the local data source?
         groupsLocalDataSource.getGroup(groupName, object : GroupsDataSource.GetGroupCallback {
             override fun onGroupLoaded(group: Group) {
                 // Do in memory cache update to keep the app UI up to date
@@ -89,20 +82,8 @@ class GroupsRepository(
             }
 
             override fun onDataNotAvailable() {
-                groupsRemoteDataSource.getGroup(groupName, object : GroupsDataSource.GetGroupCallback {
-                    override fun onGroupLoaded(group: Group) {
-                        // Do in memory cache update to keep the app UI up to date
-                        cacheAndPerform(group) {
-                            EspressoIdlingResource.decrement() // Set app as idle.
-                            callback.onGroupLoaded(it)
-                        }
-                    }
-
-                    override fun onDataNotAvailable() {
-                        EspressoIdlingResource.decrement() // Set app as idle.
-                        callback.onDataNotAvailable()
-                    }
-                })
+                EspressoIdlingResource.decrement() // Set app as idle.
+                callback.onDataNotAvailable()
             }
         })
     }
@@ -112,33 +93,13 @@ class GroupsRepository(
     }
 
     override fun deleteAllGroups(callback: GroupsDataSource.DeleteGroupsCallback) {
-        groupsRemoteDataSource.deleteAllGroups(callback)
         groupsLocalDataSource.deleteAllGroups(callback)
         cachedGroups.clear()
     }
 
     override fun deleteGroup(groupName: String, callback: GroupsDataSource.DeleteGroupCallback) {
-        groupsRemoteDataSource.deleteGroup(groupName, callback)
         groupsLocalDataSource.deleteGroup(groupName, callback)
         cachedGroups.remove(groupName)
-    }
-
-    private fun getGroupsFromRemoteDataSource(callback: GroupsDataSource.GetGroupsCallback) {
-        groupsRemoteDataSource.getGroups(object : GroupsDataSource.GetGroupsCallback {
-            override fun onGroupsLoaded(groups: List<Group>) {
-                refreshCache(groups)
-                refreshLocalDataSource(groups)
-
-                EspressoIdlingResource.decrement() // Set app as idle.
-                callback.onGroupsLoaded(ArrayList(cachedGroups.values))
-            }
-
-            override fun onDataNotAvailable() {
-                Log.d(DEBUG_TAG, "data not available in remote data source")
-                EspressoIdlingResource.decrement() // Set app as idle.
-                callback.onDataNotAvailable()
-            }
-        })
     }
 
     private fun refreshCache(groups: List<Group>) {
@@ -147,25 +108,6 @@ class GroupsRepository(
             cacheAndPerform(it) {}
         }
         cacheIsDirty = false
-    }
-
-    private fun refreshLocalDataSource(groups: List<Group>) {
-        groupsLocalDataSource.deleteAllGroups(object : GroupsDataSource.DeleteGroupsCallback {
-            override fun onGroupsDeleted() {
-            }
-
-            override fun onDataNotAvailable() {
-            }
-        })
-        for (group in groups) {
-            groupsLocalDataSource.saveGroup(group, object : GroupsDataSource.SaveGroupCallback {
-                override fun onGroupSaved() {
-                }
-
-                override fun onDataNotAvailable() {
-                }
-            })
-        }
     }
 
     private inline fun cacheAndPerform(group: Group, perform: (Group) -> Unit) {
@@ -180,12 +122,9 @@ class GroupsRepository(
 
         private var INSTANCE: GroupsRepository? = null
 
-        private val DEBUG_TAG = GroupsRepository::class.java.name
-
-        @JvmStatic fun getInstance(groupsRemoteDataSource: GroupsDataSource,
-                                   groupsLocalDataSource: GroupsDataSource) =
+        @JvmStatic fun getInstance(groupsLocalDataSource: GroupsDataSource) =
                 INSTANCE ?: synchronized(GroupsRepository::class.java) {
-                    INSTANCE ?: GroupsRepository(groupsRemoteDataSource, groupsLocalDataSource)
+                    INSTANCE ?: GroupsRepository(groupsLocalDataSource)
                             .also { INSTANCE = it }
                 }
 

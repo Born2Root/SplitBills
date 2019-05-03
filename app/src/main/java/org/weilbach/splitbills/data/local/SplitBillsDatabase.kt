@@ -11,6 +11,7 @@ import org.weilbach.splitbills.data.*
         entities = [
             Group::class,
             Member::class,
+            GroupMember::class,
             Bill::class,
             Debtor::class,
             Amount::class,

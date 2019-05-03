@@ -48,11 +48,6 @@ class GroupsLocalDataSourceTest {
     private lateinit var localDataSource: GroupsLocalDataSource
     private lateinit var database: SplitBillsDatabase
 
-    @Mock
-    private lateinit var saveGroupCallback: GroupsDataSource.SaveGroupCallback
-    @Mock
-    private lateinit var deleteGroupsCallback: GroupsDataSource.DeleteGroupsCallback
-
     @Before
     fun setup() {
         // using an in-memory database for testing, since it doesn't survive killing the process
@@ -83,7 +78,13 @@ class GroupsLocalDataSourceTest {
 
         with(localDataSource) {
             // When saved into the persistent repository
-            saveGroup(newGroup, saveGroupCallback)
+            saveGroup(newGroup, object : GroupsDataSource.SaveGroupCallback {
+                override fun onGroupSaved() {
+                }
+
+                override fun onDataNotAvailable() {
+                }
+            })
 
             // Then the task can be retrieved from the persistent repository
             getGroup(newGroup.name, object : GroupsDataSource.GetGroupCallback {
@@ -106,10 +107,22 @@ class GroupsLocalDataSourceTest {
         val newGroup = Group(TITLE)
 
         with(localDataSource) {
-            saveGroup(newGroup, saveGroupCallback)
+            saveGroup(newGroup, object : GroupsDataSource.SaveGroupCallback {
+                override fun onGroupSaved() {
+                }
+
+                override fun onDataNotAvailable() {
+                }
+            })
 
             // When all groups are deleted
-            deleteAllGroups(deleteGroupsCallback)
+            deleteAllGroups(object : GroupsDataSource.DeleteGroupsCallback {
+                override fun onGroupsDeleted() {
+                }
+
+                override fun onDataNotAvailable() {
+                }
+            })
 
             // Then the retrieved groups is an empty list
             getGroups(callback)
@@ -126,8 +139,20 @@ class GroupsLocalDataSourceTest {
         val newGroup2 = Group(TITLE)
 
         with(localDataSource) {
-            saveGroup(newGroup1, saveGroupCallback)
-            saveGroup(newGroup2, saveGroupCallback)
+            saveGroup(newGroup1, object : GroupsDataSource.SaveGroupCallback {
+                override fun onGroupSaved() {
+                }
+
+                override fun onDataNotAvailable() {
+                }
+            })
+            saveGroup(newGroup2, object : GroupsDataSource.SaveGroupCallback {
+                override fun onGroupSaved() {
+                }
+
+                override fun onDataNotAvailable() {
+                }
+            })
             // Then the groups can be retrieved from the persistent repository
             getGroups(object : GroupsDataSource.GetGroupsCallback {
                 override fun onGroupsLoaded(groups: List<Group>) {

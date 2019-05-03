@@ -2,6 +2,7 @@ package org.weilbach.splitbills.addeditgroup
 
 import android.app.Activity
 import android.content.Intent
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -126,10 +127,10 @@ class AddEditGroupViewModel(
             _snackbarText.value = Event(R.string.no_group_name_message)
             return
         }
-        if (memberContainer.size == 0) {
+        /*if (memberContainer.size == 0) {
             _snackbarText.value = Event(R.string.add_at_least_one_member)
             return
-        }
+        }*/
         val group = Group(currentName)
         // group.setMemberContainer(memberContainer)
         createGroup(group)
@@ -161,8 +162,8 @@ class AddEditGroupViewModel(
             override fun onDataNotAvailable() {
             }
         })
-        createMembers(memberContainer)
-        addMembersToGroup(memberContainer)
+        // createMembers(memberContainer)
+        // addMembersToGroup(memberContainer)
         _groupUpdated.value = Event(Unit)
     }
 
@@ -174,6 +175,5 @@ class AddEditGroupViewModel(
     }
 
     private fun addMembersToGroup(memberContainer: MemberContainer) {
-        TODO("IMPLEMENT")
     }
 }
