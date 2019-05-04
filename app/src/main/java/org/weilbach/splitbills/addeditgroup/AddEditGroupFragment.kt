@@ -3,7 +3,9 @@ package org.weilbach.splitbills.addeditgroup
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -57,8 +59,8 @@ class AddEditGroupFragment : Fragment() {
             memberListAdapter = MemberAdapter(ArrayList(0), viewModel)
             viewDataBinding.membersList.adapter = memberListAdapter
         } else {
-        Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
-    }
+            Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
+        }
     }
 
     private fun setupSaveButton() {

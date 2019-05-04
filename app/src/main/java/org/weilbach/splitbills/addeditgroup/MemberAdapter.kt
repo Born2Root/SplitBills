@@ -7,7 +7,6 @@ import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.databinding.MemberItemBinding
-import java.lang.IllegalStateException
 
 class MemberAdapter(
         private var members: List<Member>,

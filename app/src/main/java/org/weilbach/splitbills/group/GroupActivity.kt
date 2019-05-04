@@ -3,13 +3,12 @@ package org.weilbach.splitbills.group
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import org.weilbach.splitbills.R
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.google.android.material.navigation.NavigationView
 import org.weilbach.splitbills.Event
+import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
@@ -95,7 +94,7 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       viewModel.handleActivityResult(requestCode, resultCode)
+        viewModel.handleActivityResult(requestCode, resultCode)
     }
 
     override fun openGroupDetails(groupId: String) {

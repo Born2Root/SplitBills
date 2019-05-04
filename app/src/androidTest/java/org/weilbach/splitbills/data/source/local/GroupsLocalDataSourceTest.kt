@@ -25,7 +25,6 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.data.local.GroupsLocalDataSource
@@ -100,7 +99,7 @@ class GroupsLocalDataSourceTest {
     }
 
     @Test
-    fun deleteAllGroups_emptyListOfRetrievedTask() {
+    fun deleteAllGroups_emptyListOfRetrievedGroups() {
         val callback = mock(GroupsDataSource.GetGroupsCallback::class.java)
 
         // Given a new group in the persistent repository and a mocked callback
@@ -136,7 +135,7 @@ class GroupsLocalDataSourceTest {
     fun getGroups_retrieveSavedGroups() {
         // Given 2 new groups in the persistent repository
         val newGroup1 = Group(TITLE)
-        val newGroup2 = Group(TITLE)
+        val newGroup2 = Group(TITLE2)
 
         with(localDataSource) {
             saveGroup(newGroup1, object : GroupsDataSource.SaveGroupCallback {

@@ -18,5 +18,7 @@ data class Amount constructor(
         @ColumnInfo(name = "amount") val amount: String,
         @ColumnInfo(name = "valid") val valid: Boolean
 ) {
-    @PrimaryKey @ColumnInfo(name = "id") var id = billId + amount
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    var id = billId + amount
 }

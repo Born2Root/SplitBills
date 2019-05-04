@@ -38,7 +38,8 @@ class GroupsDaoTest {
     fun initDb() {
         // using an in-memory database because the information stored here disappears when the
         // process is killed
-        database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
+        database = Room.inMemoryDatabaseBuilder(
+                InstrumentationRegistry.getContext(),
                 SplitBillsDatabase::class.java).build()
     }
 
@@ -127,7 +128,7 @@ class GroupsDaoTest {
         // When deleting all groups
         database.groupsDao().deleteGroups()
 
-        // When getting the tasks
+        // When getting the groups
         val groups = database.groupsDao().getGroups()
 
         // The list is empty
@@ -141,7 +142,7 @@ class GroupsDaoTest {
     }
 
     companion object {
-        private val DEFAULT_NAME = "id"
+        private const val DEFAULT_NAME = "id"
         private val DEFAULT_GROUP = Group(DEFAULT_NAME)
     }
 }

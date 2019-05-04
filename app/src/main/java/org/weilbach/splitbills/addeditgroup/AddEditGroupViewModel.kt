@@ -2,7 +2,6 @@ package org.weilbach.splitbills.addeditgroup
 
 import android.app.Activity
 import android.content.Intent
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,7 +28,7 @@ class AddEditGroupViewModel(
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean>
-        get() =_dataLoading
+        get() = _dataLoading
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarMessage: LiveData<Event<Int>>
@@ -159,6 +158,7 @@ class AddEditGroupViewModel(
         groupsRepository.saveGroup(group, object : GroupsDataSource.SaveGroupCallback {
             override fun onGroupSaved() {
             }
+
             override fun onDataNotAvailable() {
             }
         })

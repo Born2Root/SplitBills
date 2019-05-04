@@ -7,7 +7,8 @@ import org.weilbach.splitbills.data.Group
 object GroupListBindings {
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(listView: ListView, items: List<Group>) {
+    @JvmStatic
+    fun setItems(listView: ListView, items: List<Group>) {
         with(listView.adapter as GroupAdapter) {
             replaceData(items)
         }

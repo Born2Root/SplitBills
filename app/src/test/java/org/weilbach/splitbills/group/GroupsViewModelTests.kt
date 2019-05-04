@@ -5,7 +5,8 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.collect.Lists
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,8 +20,6 @@ import org.weilbach.splitbills.R
 import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.data.source.GroupsDataSource.GetGroupsCallback
 import org.weilbach.splitbills.data.source.GroupsRepository
-import org.weilbach.splitbills.util.ADD_EDIT_RESULT_OK
-import org.weilbach.splitbills.util.EDIT_RESULT_OK
 import org.weilbach.splitbills.util.capture
 
 /**
@@ -31,8 +30,10 @@ class GroupsViewModelTests {
     // Executes each task synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
-    @Mock private lateinit var groupsRepository: GroupsRepository
-    @Mock private lateinit var context: Application
+    @Mock
+    private lateinit var groupsRepository: GroupsRepository
+    @Mock
+    private lateinit var context: Application
     @Captor
     private lateinit var loadGroupsCallbackCaptor: ArgumentCaptor<GetGroupsCallback>
     private lateinit var groupsViewModel: GroupViewModel

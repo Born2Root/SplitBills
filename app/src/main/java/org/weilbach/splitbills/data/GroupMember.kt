@@ -3,7 +3,6 @@ package org.weilbach.splitbills.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "groups_members",
         primaryKeys = ["group_name", "member_email"],
@@ -21,7 +20,7 @@ import androidx.room.PrimaryKey
         ]
 )
 data class GroupMember constructor(
-        @ColumnInfo(name = "group_name") val groupName : String,
-        @ColumnInfo(name = "member_email") val memberEmail : String
-){
+        @ColumnInfo(name = "group_name") val groupName: String,
+        @ColumnInfo(name = "member_email") val memberEmail: String
+) {
 }

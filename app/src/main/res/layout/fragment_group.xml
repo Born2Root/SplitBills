@@ -1,130 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<data>
+    <data>
 
-    <import type="android.view.View" />
+        <import type="android.view.View" />
 
-    <import type="androidx.core.content.ContextCompat" />
+        <import type="androidx.core.content.ContextCompat" />
 
-    <variable
-        name="viewmodel"
-        type="org.weilbach.splitbills.group.GroupViewModel" />
+        <variable
+            name="viewmodel"
+            type="org.weilbach.splitbills.group.GroupViewModel" />
 
-</data>
+    </data>
 
-<org.weilbach.splitbills.ScrollChildSwipeRefreshLayout
-    android:id="@+id/frag_group_refresh_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:onRefresh="@{viewmodel}"
-    app:refreshing="@{viewmodel.dataLoading}" >
-
-    <RelativeLayout
-        android:id="@+id/frag_group_group_container"
+    <org.weilbach.splitbills.ScrollChildSwipeRefreshLayout
+        android:id="@+id/frag_group_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:orientation="vertical">
+        android:onRefresh="@{viewmodel}"
+        app:refreshing="@{viewmodel.dataLoading}">
 
-        <LinearLayout
-            android:id="@+id/frag_group_groups_linear_layout"
+        <RelativeLayout
+            android:id="@+id/frag_group_group_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="true"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/frag_group_groups_linear_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/total_balance"
-                android:textAllCaps="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"/>
-            <TextView
-                android:id="@+id/frag_group_text_view_total_balance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/you_get_or_owe"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"/>
-            <!--android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}" >-->
-            <!--<TextView
-                android:id="@+id/filteringLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/list_item_padding"
-                android:layout_marginRight="@dimen/list_item_padding"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:text="@{context.getString(viewmodel.currentFilteringLabel)}" />-->
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/act_group_button_add_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/add_group"
-                android:onClick="@{() -> viewmodel.addNewGroup()}"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_balance"
+                    android:textAllCaps="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp" />
 
-            <ListView
-                android:id="@+id/frag_group_groups_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:items="@{viewmodel.items}" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/frag_group_text_view_total_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/you_get_or_owe"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp" />
+                <!--android:visibility="@{viewmodel.empty ? View.GONE : View.VISIBLE}" >-->
+                <!--<TextView
+                    android:id="@+id/filteringLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/list_item_padding"
+                    android:layout_marginRight="@dimen/list_item_padding"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:text="@{context.getString(viewmodel.currentFilteringLabel)}" />-->
 
-        <!--<LinearLayout
-            android:id="@+id/frag_group_no_groups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}" >
+                <Button
+                    android:id="@+id/act_group_button_add_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/add_group"
+                    android:onClick="@{() -> viewmodel.addNewGroup()}" />
 
-            <ImageView
-                android:id="@+id/frag_group_no_groups_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@{ContextCompat.getDrawable(context, viewmodel.noGroupsIconRes)}"
-                android:layout_gravity="center" />
+                <ListView
+                    android:id="@+id/frag_group_groups_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:items="@{viewmodel.items}" />
+            </LinearLayout>
 
-
-            <TextView
-                android:id="@+id/frag_group_no_groups_main"
+            <!--<LinearLayout
+                android:id="@+id/frag_group_no_groups"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@{context.getString(viewmodel.noGroupsLabel)}"
-                android:layout_marginBottom="@dimen/list_item_padding"/>
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:visibility="@{viewmodel.empty ? View.VISIBLE : View.GONE}" >
 
-            <TextView
-                android:id="@+id/frag_group_no_groups_add"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:background="@drawable/touch_feedback"
-                android:gravity="center"
-                android:visibility="@{viewmodel.groupsAddViewVisible ? View.VISIBLE : View.GONE}"
-                android:text="@string/no_groups_added" />
+                <ImageView
+                    android:id="@+id/frag_group_no_groups_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@{ContextCompat.getDrawable(context, viewmodel.noGroupsIconRes)}"
+                    android:layout_gravity="center" />
 
-        </LinearLayout>-->
-    </RelativeLayout>
-</org.weilbach.splitbills.ScrollChildSwipeRefreshLayout>
-</layout>
-<!--
+
+                <TextView
+                    android:id="@+id/frag_group_no_groups_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{context.getString(viewmodel.noGroupsLabel)}"
+                    android:layout_marginBottom="@dimen/list_item_padding"/>
+
+                <TextView
+                    android:id="@+id/frag_group_no_groups_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/touch_feedback"
+                    android:gravity="center"
+                    android:visibility="@{viewmodel.groupsAddViewVisible ? View.VISIBLE : View.GONE}"
+                    android:text="@string/no_groups_added" />
+
+            </LinearLayout>-->
+        </RelativeLayout>
+    </org.weilbach.splitbills.ScrollChildSwipeRefreshLayout>
+</layout><!--
     <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto">

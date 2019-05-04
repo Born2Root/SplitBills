@@ -11,7 +11,7 @@ import org.weilbach.splitbills.databinding.GroupItemBinding
 class GroupAdapter(
         private var groups: List<Group>,
         private val groupViewModel: GroupViewModel
-        ) : BaseAdapter() {
+) : BaseAdapter() {
 
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
         val binding: GroupItemBinding

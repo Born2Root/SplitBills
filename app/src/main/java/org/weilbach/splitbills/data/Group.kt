@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.weilbach.splitbills.util.MemberContainer
-import java.util.*
 
 @Entity(tableName = "groups")
 data class Group constructor(

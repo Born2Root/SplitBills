@@ -33,8 +33,8 @@ class AddMemberActivity : AppCompatActivity() {
         replaceFragmentInActivity(obtainViewFragment(), R.id.act_add_member_content_frame)
 
         viewModel = obtainViewModel().apply {
-            saveMemberEvent.observe(this@AddMemberActivity, Observer<Event<Member>> {event ->
-                event.getContentIfNotHandled()?.let {member ->
+            saveMemberEvent.observe(this@AddMemberActivity, Observer<Event<Member>> { event ->
+                event.getContentIfNotHandled()?.let { member ->
                     this@AddMemberActivity.saveMember(member)
                 }
             })

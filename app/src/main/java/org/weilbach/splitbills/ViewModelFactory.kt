@@ -20,7 +20,6 @@ import android.app.Application
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity
 import org.weilbach.splitbills.addeditgroup.AddEditGroupViewModel
 import org.weilbach.splitbills.addmember.AddMemberViewModel
 import org.weilbach.splitbills.data.source.GroupsMembersRepository
@@ -67,7 +66,8 @@ class ViewModelFactory private constructor(
     companion object {
 
         @SuppressLint("StaticFieldLeak")
-        @Volatile private var INSTANCE: ViewModelFactory? = null
+        @Volatile
+        private var INSTANCE: ViewModelFactory? = null
 
         fun getInstance(application: Application) =
                 INSTANCE ?: synchronized(ViewModelFactory::class.java) {
@@ -79,7 +79,8 @@ class ViewModelFactory private constructor(
                 }
 
 
-        @VisibleForTesting fun destroyInstance() {
+        @VisibleForTesting
+        fun destroyInstance() {
             INSTANCE = null
         }
     }

@@ -37,14 +37,14 @@ object Injection {
         val database = SplitBillsDatabase.getInstance(context)
         return GroupsRepository.getInstance(
                 GroupsLocalDataSource.getInstance(AppExecutors(),
-                database.groupsDao()))
+                        database.groupsDao()))
     }
 
     fun provideMembersRepository(context: Context): MembersRepository {
         val database = SplitBillsDatabase.getInstance(context)
         return MembersRepository.getInstance(
                 MembersLocalDataSource.getInstance(AppExecutors(),
-                database.memberDao()))
+                        database.memberDao()))
     }
 
     fun provideGroupsMembersRepository(context: Context): GroupsMembersRepository {

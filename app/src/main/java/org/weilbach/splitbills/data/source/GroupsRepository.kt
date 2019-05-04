@@ -1,6 +1,5 @@
 package org.weilbach.splitbills.data.source
 
-import android.util.Log
 import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.util.EspressoIdlingResource
 
@@ -122,13 +121,15 @@ class GroupsRepository(
 
         private var INSTANCE: GroupsRepository? = null
 
-        @JvmStatic fun getInstance(groupsLocalDataSource: GroupsDataSource) =
+        @JvmStatic
+        fun getInstance(groupsLocalDataSource: GroupsDataSource) =
                 INSTANCE ?: synchronized(GroupsRepository::class.java) {
                     INSTANCE ?: GroupsRepository(groupsLocalDataSource)
                             .also { INSTANCE = it }
                 }
 
-        @JvmStatic fun destroyInstance() {
+        @JvmStatic
+        fun destroyInstance() {
             INSTANCE = null
         }
     }

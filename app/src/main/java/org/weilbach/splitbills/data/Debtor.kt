@@ -3,7 +3,6 @@ package org.weilbach.splitbills.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
 
 @Entity(tableName = "debtors",
         primaryKeys = ["bill_id", "member_email"],
@@ -20,7 +19,7 @@ import androidx.room.PrimaryKey
             )
         ])
 data class Debtor constructor(
-        @ColumnInfo(name = "bill_id") val billId : String,
-        @ColumnInfo(name = "member_email", index = true) val memberEmail : String
+        @ColumnInfo(name = "bill_id") val billId: String,
+        @ColumnInfo(name = "member_email", index = true) val memberEmail: String
 ) {
 }

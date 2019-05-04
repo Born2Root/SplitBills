@@ -1,13 +1,10 @@
 package org.weilbach.splitbills.data.source
 
 import org.weilbach.splitbills.data.GroupMember
-import org.weilbach.splitbills.data.Member
-import org.weilbach.splitbills.util.EspressoIdlingResource
 import java.util.*
-import kotlin.collections.LinkedHashMap
 
 class GroupsMembersRepository(
-        val groupsMembersLocalDataSource: GroupsMembersDataSource
+        private val groupsMembersLocalDataSource: GroupsMembersDataSource
 ) : GroupsMembersDataSource {
 
     var cachedGroupsMembers: LinkedList<GroupMember> = LinkedList()
@@ -35,10 +32,10 @@ class GroupsMembersRepository(
 
         @JvmStatic
         fun getInstance(groupsMembersLocalDataSource: GroupsMembersDataSource) =
-            INSTANCE ?: synchronized(GroupsMembersRepository::class.java) {
-                INSTANCE ?: GroupsMembersRepository(groupsMembersLocalDataSource)
-                        .also { INSTANCE = it }
-            }
+                INSTANCE ?: synchronized(GroupsMembersRepository::class.java) {
+                    INSTANCE ?: GroupsMembersRepository(groupsMembersLocalDataSource)
+                            .also { INSTANCE = it }
+                }
 
         @JvmStatic
         fun destroyInstance() {

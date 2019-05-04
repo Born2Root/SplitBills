@@ -97,10 +97,10 @@ class MembersRepository(
 
         @JvmStatic
         fun getInstance(membersLocalDataSource: MembersDataSource) =
-            INSTANCE ?: synchronized(MembersRepository::class.java) {
-                INSTANCE ?: MembersRepository(membersLocalDataSource)
-                        .also { INSTANCE = it }
-            }
+                INSTANCE ?: synchronized(MembersRepository::class.java) {
+                    INSTANCE ?: MembersRepository(membersLocalDataSource)
+                            .also { INSTANCE = it }
+                }
 
         @JvmStatic
         fun destroyInstance() {

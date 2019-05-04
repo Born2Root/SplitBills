@@ -9,7 +9,7 @@ import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.util.any
@@ -62,7 +62,6 @@ class GroupsRepositoryTest {
         GroupsRepository.destroyInstance()
     }
 
-    /// MARK
     @Test
     fun getGroups_repositoryCachesAfterFirstApiCall() {
         // Given a setup Captor to capture callbacks
@@ -128,7 +127,7 @@ class GroupsRepositoryTest {
     }
 
     @Test
-    fun deleteGroup_deleteTaskGroupToServiceAPIRemovedFromCache() {
+    fun deleteGroup_deleteGroupToServiceAPIRemovedFromCache() {
         with(groupsRepository) {
             // Given a task in the repository
             val newGroup = Group(GROUP_TITLE)
