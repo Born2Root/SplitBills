@@ -11,6 +11,11 @@ class GroupsMembersRepository(
 
     var cacheIsDirty = false
 
+    override fun deleteAllGroupsMembers() {
+        groupsMembersLocalDataSource.deleteAllGroupsMembers()
+        cachedGroupsMembers.clear()
+    }
+
     override fun saveGroupMember(groupMember: GroupMember) {
         cacheAndPerform(groupMember) {
             groupsMembersLocalDataSource.saveGroupMember(it)

@@ -12,36 +12,15 @@ interface AmountsDataSource {
         fun onAmountLoaded(amount: Amount)
         fun onDataNotAvailable()
     }
-
-    interface SaveAmountCallback {
-        fun onAmountSaved()
-        fun onDataNotAvailable()
-    }
-
-    interface SetAmountValidCallback {
-        fun onAmountUpdated()
-        fun onDataNotAvailable()
-    }
-
-    interface DeleteAmountCallback {
-        fun onAmountDeleted()
-        fun onDataNotAvailable()
-    }
-
-    interface DeleteAllAmountsCallback {
-        fun onAmountsDeleted()
-        fun onDataNotAvailable()
-    }
-
     fun getAmounts(callback: GetAmountsCallback)
 
-    fun getAmount(amountId: String, callback: GetAmountCallback)
+    fun getAmountByBillId(billId: String, callback: GetAmountsCallback)
 
-    fun saveAmount(amount: Amount, callback: SaveAmountCallback)
+    fun getValidAmountByBillId(billId: String, callback: GetAmountCallback)
 
-    fun setAmountValid(amountId: String, value: Boolean, callback: SetAmountValidCallback)
+    fun saveAmount(amount: Amount)
 
-    fun deleteAmount(amountId: String, callback: DeleteAmountCallback)
+    fun deleteAllAmounts()
 
-    fun deleteAllAmounts(callback: DeleteAllAmountsCallback)
+    fun refreshAmounts()
 }

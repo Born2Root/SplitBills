@@ -10,6 +10,12 @@ class GroupsMembersLocalDataSource private constructor(
         val groupsMembersDao: GroupsMembersDao
 ) : GroupsMembersDataSource {
 
+    override fun deleteAllGroupsMembers() {
+        appExecutors.diskIO.execute {
+            groupsMembersDao.deleteAllGroupsMembers()
+        }
+    }
+
     override fun saveGroupMember(groupMember: GroupMember) {
         appExecutors.diskIO.execute {
             groupsMembersDao.insertGroupMember(groupMember)

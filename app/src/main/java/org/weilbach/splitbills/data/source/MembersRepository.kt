@@ -3,8 +3,8 @@ package org.weilbach.splitbills.data.source
 import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.util.EspressoIdlingResource
 
-class MembersRepository(
-        val membersLocalDataSource: MembersDataSource
+class MembersRepository private constructor(
+        private val membersLocalDataSource: MembersDataSource
 ) : MembersDataSource {
 
     var cachedMembers: LinkedHashMap<String, Member> = LinkedHashMap()
@@ -27,6 +27,7 @@ class MembersRepository(
             }
 
             override fun onDataNotAvailable() {
+                EspressoIdlingResource.decrement()
                 callback.onDataNotAvailable()
             }
         })

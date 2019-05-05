@@ -39,8 +39,31 @@ class GroupsMembersRepositoryTests {
         assertThat(groupsMembersRepository.cachedGroupsMembers.size, `is`(1))
     }
 
+    @Test
+    fun deleteAllGroupsMembers_deleteGroupsMembersToServiceAPIUpdatesCache() {
+        with(groupsMembersRepository) {
+            val newGroupMember = GroupMember(GROUP_NAME, MEMBER_EMAIL)
+            saveGroupMember(newGroupMember)
+            val newGroupMember2 = GroupMember(GROUP_NAME2, MEMBER_EMAIL2)
+            saveGroupMember(newGroupMember2)
+            val newGroupMember3 = GroupMember(GROUP_NAME3, MEMBER_EMAIL3)
+            saveGroupMember(newGroupMember3)
+
+            deleteAllGroupsMembers()
+
+            verify(this@GroupsMembersRepositoryTests.groupsMembersLocalDataSource)
+                    .deleteAllGroupsMembers()
+
+            assertThat(cachedGroupsMembers.size, `is`(0))
+        }
+    }
+
     companion object {
         private const val GROUP_NAME = "name"
         private const val MEMBER_EMAIL = "mail@mail.com"
+        private const val GROUP_NAME2 = "name2"
+        private const val MEMBER_EMAIL2 = "mail2@mail.com"
+        private const val GROUP_NAME3 = "name3"
+        private const val MEMBER_EMAIL3 = "mail3@mail.com"
     }
 }

@@ -9,6 +9,7 @@ import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity
 import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.GroupMember
 import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.data.source.GroupsDataSource
 import org.weilbach.splitbills.data.source.GroupsMembersRepository
@@ -126,32 +127,8 @@ class AddEditGroupViewModel(
             _snackbarText.value = Event(R.string.no_group_name_message)
             return
         }
-        /*if (memberContainer.size == 0) {
-            _snackbarText.value = Event(R.string.add_at_least_one_member)
-            return
-        }*/
         val group = Group(currentName)
-        // group.setMemberContainer(memberContainer)
         createGroup(group)
-        /*val currentName = name.value
-
-        if (currentName == null) {
-            _snackbarText.value =  Event(R.string.empty_group_message)
-            return
-        }
-        if (Group(currentName).isEmpty) {
-            _snackbarText.value =  Event(R.string.empty_group_message)
-            return
-        }
-
-        val currentTaskId = taskId
-        if (isNewTask || currentTaskId == null) {
-            createTask(Task(currentName, currentDescription))
-        } else {
-            val task = Task(currentName, currentDescription, currentTaskId)
-                    .apply { isCompleted = taskCompleted }
-            updateTask(task)
-        }*/
     }
 
     private fun createGroup(group: Group) {
@@ -162,8 +139,8 @@ class AddEditGroupViewModel(
             override fun onDataNotAvailable() {
             }
         })
-        // createMembers(memberContainer)
-        // addMembersToGroup(memberContainer)
+        createMembers(memberContainer)
+        addMembersToGroup(group.name, memberContainer)
         _groupUpdated.value = Event(Unit)
     }
 
@@ -174,6 +151,9 @@ class AddEditGroupViewModel(
         }
     }
 
-    private fun addMembersToGroup(memberContainer: MemberContainer) {
+    private fun addMembersToGroup(groupName: String, memberContainer: MemberContainer) {
+        memberContainer.forEach { member ->
+            groupsMembersRepository.saveGroupMember(GroupMember(groupName, member.email))
+        }
     }
 }

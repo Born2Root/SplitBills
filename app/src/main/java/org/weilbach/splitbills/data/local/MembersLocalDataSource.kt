@@ -6,8 +6,8 @@ import org.weilbach.splitbills.data.source.MembersDataSource
 import org.weilbach.splitbills.util.AppExecutors
 
 class MembersLocalDataSource private constructor(
-        val appExecutors: AppExecutors,
-        val membersDao: MemberDao
+        private val appExecutors: AppExecutors,
+        private val membersDao: MemberDao
 ) : MembersDataSource {
 
     override fun getMembers(callback: MembersDataSource.GetMembersCallback) {
@@ -15,7 +15,6 @@ class MembersLocalDataSource private constructor(
             val members = membersDao.getMembers()
             appExecutors.mainThread.execute {
                 if (members.isEmpty()) {
-                    // This will be called if the table is new or just empty.
                     callback.onDataNotAvailable()
                 } else {
                     callback.onMembersLoaded(members)

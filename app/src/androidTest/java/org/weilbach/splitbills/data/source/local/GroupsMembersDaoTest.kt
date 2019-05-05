@@ -42,6 +42,17 @@ class GroupsMembersDaoTest {
         assertGroupMember(loaded[0], DEFAULT_GROUP_NAME, DEFAULT_MEMBER_EMAIL)
     }
 
+    @Test
+    fun deleteGroupsMembersAndGettingGroupsMembers() {
+        database.groupsMembersDao().insertGroupMember(DEFAULT_GROUP_MEMBER)
+
+        database.groupsMembersDao().deleteAllGroupsMembers()
+
+        val groups = database.groupsMembersDao().getGroupsMembers()
+
+        assertThat(groups.size, `is`(0))
+    }
+
     private fun assertGroupMember(groupMember: GroupMember?, groupName: String, memberEmail: String) {
         assertThat<GroupMember>(groupMember as GroupMember, notNullValue())
         assertThat(groupMember.groupName, `is`(groupName))

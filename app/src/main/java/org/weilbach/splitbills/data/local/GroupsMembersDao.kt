@@ -14,4 +14,7 @@ interface GroupsMembersDao {
 
     @Query("SELECT * FROM groups_members")
     fun getGroupsMembers(): List<GroupMember>
+
+    @Query("DELETE FROM groups_members")
+    fun deleteAllGroupsMembers()
 }

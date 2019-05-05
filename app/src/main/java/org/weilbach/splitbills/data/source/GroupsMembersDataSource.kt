@@ -7,4 +7,6 @@ interface GroupsMembersDataSource {
     fun saveGroupMember(groupMember: GroupMember)
 
     fun refreshGroupsMembers()
+
+    fun deleteAllGroupsMembers()
 }

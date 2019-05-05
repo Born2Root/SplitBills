@@ -13,35 +13,15 @@ interface BillsDataSource {
         fun onDataNotAvailable()
     }
 
-    interface SaveBillCallback {
-        fun onBillSaved()
-        fun onDataNotAvailable()
-    }
-
-    interface SetBillValidCallback {
-        fun onBillUpdated()
-        fun onDataNotAvailable()
-    }
-
-    interface DeleteBillCallback {
-        fun onBillDeleted()
-        fun onDataNotAvailable()
-    }
-
-    interface DeleteAllBillsCallback {
-        fun onBillsDeleted()
-        fun onDataNotAvailable()
-    }
-
     fun getBills(callback: GetBillsCallback)
 
     fun getBill(billId: String, callback: GetBillCallback)
 
-    fun saveBill(bill: Bill, callback: SaveBillCallback)
+    fun saveBill(bill: Bill)
 
-    fun setBillValid(billId: String, value: Boolean, callback: SetBillValidCallback)
+    fun deleteBill(billId: String)
 
-    fun deleteBill(billId: String, callback: DeleteBillCallback)
+    fun deleteAllBills()
 
-    fun deleteAllBills(callback: DeleteAllBillsCallback)
+    fun refreshBills()
 }
