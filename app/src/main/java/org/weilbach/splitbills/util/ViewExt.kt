@@ -28,6 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.ScrollChildSwipeRefreshLayout
+import org.weilbach.splitbills.bills.BillsViewModel
 import org.weilbach.splitbills.group.GroupViewModel
 
 /**
@@ -73,4 +74,10 @@ fun View.setupSnackbar(
 fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(
         viewModel: GroupViewModel) {
     setOnRefreshListener { viewModel.loadGroups(true) }
+}
+
+@BindingAdapter("android:onRefresh")
+fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(
+        viewModel: BillsViewModel) {
+    setOnRefreshListener { viewModel.loadBills(true) }
 }

@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.weilbach.splitbills.addeditgroup.AddEditGroupViewModel
 import org.weilbach.splitbills.addmember.AddMemberViewModel
+import org.weilbach.splitbills.bills.BillsViewModel
+import org.weilbach.splitbills.data.source.BillsRepository
 import org.weilbach.splitbills.data.source.GroupsMembersRepository
 import org.weilbach.splitbills.data.source.GroupsRepository
 import org.weilbach.splitbills.data.source.MembersRepository
@@ -37,6 +39,7 @@ import org.weilbach.splitbills.group.GroupViewModel
  */
 class ViewModelFactory private constructor(
         private val groupsRepository: GroupsRepository,
+        private val billsRepository: BillsRepository,
         private val membersRepository: MembersRepository,
         private val groupsMembersRepository: GroupsMembersRepository
 ) : ViewModelProvider.NewInstanceFactory() {
@@ -50,6 +53,8 @@ class ViewModelFactory private constructor(
                         TaskDetailViewModel(tasksRepository)
                     isAssignableFrom(AddEditTaskViewModel::class.java) ->
                         AddEditTaskViewModel(tasksRepository)*/
+                    isAssignableFrom(BillsViewModel::class.java) ->
+                        BillsViewModel(billsRepository)
                     isAssignableFrom(AddMemberViewModel::class.java) ->
                         AddMemberViewModel()
                     isAssignableFrom(AddEditGroupViewModel::class.java) ->
@@ -73,6 +78,7 @@ class ViewModelFactory private constructor(
                 INSTANCE ?: synchronized(ViewModelFactory::class.java) {
                     INSTANCE ?: ViewModelFactory(
                             Injection.provideGroupsRepository(application.applicationContext),
+                            Injection.provideBillsRepository(application.applicationContext),
                             Injection.provideMembersRepository(application.applicationContext),
                             Injection.provideGroupsMembersRepository(application.applicationContext))
                             .also { INSTANCE = it }

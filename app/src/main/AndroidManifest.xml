@@ -20,6 +20,7 @@
         <activity android:name=".addeditgroup.AddEditGroupActivity" />
         <activity android:name=".addmember.AddMemberActivity" />
         <activity android:name=".bills.BillsActivity" />
+        <activity android:name=".addeditbill.AddEditBillActivity" />
     </application>
 
 </manifest>

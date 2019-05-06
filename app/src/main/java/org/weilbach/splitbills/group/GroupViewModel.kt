@@ -72,19 +72,6 @@ class GroupViewModel(private val groupsRepository: GroupsRepository) : ViewModel
     }
 
     fun handleActivityResult(requestCode: Int, resultCode: Int) {
-        /*if (AddEditTaskActivity.REQUEST_CODE == requestCode) {
-            when (resultCode) {
-                EDIT_RESULT_OK -> _snackbarText.setValue(
-                        Event(R.string.successfully_saved_task_message)
-                )
-                ADD_EDIT_RESULT_OK -> _snackbarText.setValue(
-                        Event(R.string.successfully_added_task_message)
-                )
-                DELETE_RESULT_OK -> _snackbarText.setValue(
-                        Event(R.string.successfully_deleted_task_message)
-                )
-            }
-        }*/
     }
 
     private fun loadGroups(forceUpdate: Boolean, showLoadingUI: Boolean) {
@@ -120,6 +107,7 @@ class GroupViewModel(private val groupsRepository: GroupsRepository) : ViewModel
             }
         })
     }
+
 
     internal fun openGroup(groupName: String) {
         _openGroupEvent.value = Event(groupName)

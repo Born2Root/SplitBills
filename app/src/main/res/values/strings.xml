@@ -38,4 +38,11 @@
     <string name="member_successful_added">Member added</string>
     <string name="member_already_added">Member already added</string>
     <string name="add_at_least_one_member">Add at least one member.</string>
+    <string name="choose_group">Choose a group</string>
+    <string name="enter_a_description">Enter a description</string>
+    <string name="empty_amount">0.00</string>
+    <string name="who_paid">Who paid</string>
+    <string name="who_owes">Who owes</string>
+    <string name="add_member">Add member</string>
+    <string name="no_bills_all">No bills added</string>
 </resources>

@@ -16,10 +16,8 @@
 package org.weilbach.splitbills
 
 import android.content.Context
-import org.weilbach.splitbills.data.local.GroupsLocalDataSource
-import org.weilbach.splitbills.data.local.GroupsMembersLocalDataSource
-import org.weilbach.splitbills.data.local.MembersLocalDataSource
-import org.weilbach.splitbills.data.local.SplitBillsDatabase
+import org.weilbach.splitbills.data.local.*
+import org.weilbach.splitbills.data.source.BillsRepository
 import org.weilbach.splitbills.data.source.GroupsMembersRepository
 import org.weilbach.splitbills.data.source.GroupsRepository
 import org.weilbach.splitbills.data.source.MembersRepository
@@ -32,6 +30,13 @@ import org.weilbach.splitbills.util.AppExecutors
  * a fake instance of the class to isolate the dependencies and run a test hermetically.
  */
 object Injection {
+
+    fun provideBillsRepository(context: Context): BillsRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return BillsRepository.getInstance(
+                BillsLocalDataSource.getInstance(AppExecutors(),
+                        database.billDao()))
+    }
 
     fun provideGroupsRepository(context: Context): GroupsRepository {
         val database = SplitBillsDatabase.getInstance(context)
