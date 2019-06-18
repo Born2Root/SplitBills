@@ -21,6 +21,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
+            android:theme="@style/Toolbar"
             android:fitsSystemWindows="true">
 
             <androidx.appcompat.widget.Toolbar
