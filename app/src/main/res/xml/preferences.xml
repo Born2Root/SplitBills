@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
+        android:defaultValue="Default Name"
         app:key="user_name"
-        app:title="User name"
-        app:summary="Your real name"
-        android:defaultValue="Default Name"/>
+        app:summary="@string/your_real_name"
+        app:title="@string/user_name" />
 
     <EditTextPreference
+        android:defaultValue="default@splitbills.org"
         app:key="user_email"
-        app:title="User email"
-        app:summary="Your email address"
-        android:defaultValue="default@splitbills.org"/>
+        app:summary="@string/your_email_address"
+        app:title="@string/user_email" />
 
     <ListPreference
         app:key="currency_code"
-        app:title="Default currency"
-        app:summary="Default currency to use in new bill" />
+        app:summary="@string/default_currency_to_use"
+        app:title="@string/default_currency" />
 
 </androidx.preference.PreferenceScreen>

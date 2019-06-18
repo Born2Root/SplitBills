@@ -4,9 +4,6 @@ import junit.framework.Assert.fail
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.weilbach.splitbills.*
-import org.weilbach.splitbills.util.BillContainer
-import org.weilbach.splitbills.util.MemberContainer
 
 class GroupTests {
 
@@ -171,7 +168,7 @@ class GroupTests {
         group1ToMerge.members.add(member3)
         group1ToMerge.bills.add(bill1)
 
-        mergeGroups(group1, group1ToMerge, object: GroupMergeCallback {
+        mergeGroups(group1, group1ToMerge, object : GroupMergeCallback {
             override fun success(group: Group) {
                 successCalled = true
             }
@@ -259,10 +256,10 @@ class GroupTests {
         Assert.assertEquals(true, successCalled)
         Assert.assertEquals(true, bill2Removed)
         Assert.assertEquals(true, group1.bills.contains(bill1))
-        Assert.assertEquals(0, group1.bills.get(bill2.id)?.debtors?.size)
-        Assert.assertEquals("7.00", group1.bills.get(bill2.id)?.amount)
-        Assert.assertEquals("EUR", group1.bills.get(bill2.id)?.currency)
-        Assert.assertEquals(false, group1.bills.get(bill2.id)?.valid)
+        Assert.assertEquals(0, group1.bills.get(bill2.id).debtors.size)
+        Assert.assertEquals("7.00", group1.bills.get(bill2.id).amount)
+        Assert.assertEquals("EUR", group1.bills.get(bill2.id).currency)
+        Assert.assertEquals(false, group1.bills.get(bill2.id).valid)
     }
 
     @Test
@@ -315,7 +312,7 @@ class GroupTests {
 
         Assert.assertEquals(true, successCalled)
         Assert.assertEquals(true, group1.bills.contains(bill1))
-        Assert.assertEquals(false, group1.bills.get(bill2.id)?.valid)
+        Assert.assertEquals(false, group1.bills.get(bill2.id).valid)
     }
 
 }

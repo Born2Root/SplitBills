@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:layout_margin="16dp"
-        android:text="@string/welcome_to_splitbills"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:text="@string/welcome_text"/>
+        android:text="@string/welcome_to_splitbills"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:text="@string/welcome_text" />
 
     <Button
         android:id="@+id/act_firststart_button_start"
@@ -26,6 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:onClick="onClick"
-        android:text="@string/okay"/>
+        android:text="@string/okay" />
 
 </LinearLayout>

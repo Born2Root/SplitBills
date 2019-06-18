@@ -1,27 +1,5 @@
 package org.weilbach.splitbills.group
 
-import android.app.Application
-import android.content.Context
-import android.content.res.Resources
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.collect.Lists
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
-import org.weilbach.splitbills.LiveDataTestUtil
-import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data.GroupData
-import org.weilbach.splitbills.data.source.GroupsDataSource.GetGroupsCallback
-import org.weilbach.splitbills.data.source.GroupsRepository
-import org.weilbach.splitbills.util.capture
-
 /**
  * Unit tests for the implementation of [GroupsViewModel]
  */

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -16,12 +15,13 @@
             name="listener"
             type="org.weilbach.splitbills.bills.BillItemUserActionsListener" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/touch_feedback"
-        android:orientation="vertical"
-        android:onClick="@{() -> listener.onBillClicked(viewmodel)}">
+        android:onClick="@{() -> listener.onBillClicked(viewmodel)}"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,14 +33,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:text="@{viewmodel.description}" />
+                android:text="@{viewmodel.description}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@{viewmodel.date}"/>
+                android:text="@{viewmodel.date}" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,15 +53,15 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:textColor="@{context.getColor(viewmodel.memberPaidColor)}"
-                android:text="@{viewmodel.memberPaid}"/>
+                android:text="@{viewmodel.memberPaid}"
+                android:textColor="@{context.getColor(viewmodel.memberPaidColor)}" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="@{context.getColor(viewmodel.userLentOrBorrowedColor)}"
-                android:text="@{viewmodel.userLentOrBorrowed}"/>
+                android:text="@{viewmodel.userLentOrBorrowed}"
+                android:textColor="@{context.getColor(viewmodel.userLentOrBorrowedColor)}" />
         </LinearLayout>
     </LinearLayout>
 </layout>

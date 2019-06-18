@@ -2,8 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/tools">
-    
+
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -16,26 +17,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:textAllCaps="true"
-            android:text="@string/add_bill_to" />
+            android:text="@string/add_bill_to"
+            android:textAllCaps="true" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/frag_add_edit_bill_spinner_groups"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
-            app:items="@{viewmodel.groupItems}"
-            android:selection="@={viewmodel.posGroupSpinner}">
+            android:layout_marginTop="8dp"
+            android:selection="@={viewmodel.posGroupSpinner}"
+            app:items="@{viewmodel.groupItems}">
 
         </androidx.appcompat.widget.AppCompatSpinner>
 
@@ -47,41 +48,41 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="@={viewmodel.description}"
             android:hint="@string/enter_a_description"
-            android:inputType="textCapWords" />
+            android:inputType="textCapWords"
+            android:text="@={viewmodel.description}" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:ems="10"
-            android:text="@={viewmodel.amount}"
-            android:hint="@string/empty_amount"
-            android:inputType="numberDecimal"
-            android:textSize="32sp" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/frag_add_edit_bill_spinner_currency"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            app:items="@{viewmodel.currencyItems}"
-            android:selection="@={viewmodel.posCurrencySpinner}">
+            android:orientation="horizontal">
 
-        </androidx.appcompat.widget.AppCompatSpinner>
-    </LinearLayout>
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/empty_amount"
+                android:inputType="numberDecimal"
+                android:text="@={viewmodel.amount}"
+                android:textSize="32sp" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/frag_add_edit_bill_spinner_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:selection="@={viewmodel.posCurrencySpinner}"
+                app:items="@{viewmodel.currencyItems}">
+
+            </androidx.appcompat.widget.AppCompatSpinner>
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -89,8 +90,8 @@
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
             android:paddingLeft="8dp"
-            android:paddingRight="8dp"
             android:paddingTop="4dp"
+            android:paddingRight="8dp"
             android:paddingBottom="4dp"
             android:text="@string/who_paid"
             android:textAllCaps="true" />
@@ -100,27 +101,27 @@
             layout="@layout/member_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            bind:viewmodel="@={viewmodel.creditor}"
-            bind:navigator="@{viewmodel}" />
+            bind:navigator="@{viewmodel}"
+            bind:viewmodel="@={viewmodel.creditor}" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textAllCaps="true"
             android:paddingStart="8dp"
             android:paddingLeft="8dp"
-            android:paddingRight="8dp"
             android:paddingTop="4dp"
+            android:paddingRight="8dp"
             android:paddingBottom="4dp"
-            android:text="@string/who_owes" />
+            android:text="@string/who_owes"
+            android:textAllCaps="true" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/add_member"
-            android:onClick="@{() -> viewmodel.addDebtor()}" />
+            android:onClick="@{() -> viewmodel.addDebtor()}"
+            android:text="@string/add_member" />
 
         <ListView
             android:id="@+id/frag_add_edit_bill_list_view_debtors"
@@ -128,8 +129,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:isScrollContainer="true"
-            app:items="@{viewmodel.debtorItems}">
-        </ListView>
+            app:items="@{viewmodel.debtorItems}"></ListView>
+
         <Button
             android:id="@+id/frag_add_edit_bill_button_save"
             android:layout_width="match_parent"
@@ -139,7 +140,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="0dp"
-            android:text="@string/save"
-            android:onClick="@{() -> viewmodel.saveBill()}" />
+            android:onClick="@{() -> viewmodel.saveBill()}"
+            android:text="@string/save" />
     </LinearLayout>
 </layout>

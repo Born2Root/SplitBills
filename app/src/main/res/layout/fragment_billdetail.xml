@@ -13,24 +13,25 @@
             type="org.weilbach.splitbills.billdetail.BillDetailViewModel" />
 
     </data>
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
-            android:theme="@style/Toolbar"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:theme="@style/Toolbar">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/frag_bill_detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
                 android:theme="@style/Toolbar"
-                app:title="@{viewmodel.description}"/>
+                app:layout_collapseMode="pin"
+                app:title="@{viewmodel.description}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -38,7 +39,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="0dp"
                 android:text="@{viewmodel.amount}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display2"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -55,30 +56,31 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:text="@string/split_details"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:textColor="@color/colorGet"
+            android:text="@{viewmodel.creditorPaid}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:text="@{viewmodel.creditorPaid}"/>
+            android:textColor="@color/colorGet" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorOwe"
+                android:text="@{viewmodel.membersOwe}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:text="@{viewmodel.membersOwe}"/>
+                android:textColor="@color/colorOwe" />
         </ScrollView>
 
         <!--<android.support.design.widget.AppBarLayout

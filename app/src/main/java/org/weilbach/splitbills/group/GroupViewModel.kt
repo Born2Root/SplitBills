@@ -319,7 +319,10 @@ class GroupViewModel(val groupRepository: GroupRepository,
             groupRepository.saveGroupSync(group)
 
             members.forEach { member ->
-                memberRepository.saveMemberSync(member)
+                val oldMember = memberRepository.getMemberByEmailSync(member.email)
+                if (oldMember == null) {
+                    memberRepository.saveMemberSync(member)
+                }
                 groupMemberRepository.saveGroupMemberSync(GroupMember(group.name, member.email))
             }
 

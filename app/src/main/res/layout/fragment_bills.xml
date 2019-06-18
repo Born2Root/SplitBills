@@ -18,8 +18,8 @@
         android:id="@+id/frag_bills_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:refreshing="@{viewmodel.dataLoading}"
-        android:onRefresh="@{viewmodel}" >
+        android:onRefresh="@{viewmodel}"
+        app:refreshing="@{viewmodel.dataLoading}">
 
         <RelativeLayout
             android:id="@+id/frag_bill_bill_container"
@@ -36,21 +36,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
                     android:visibility="@{viewmodel.exportingGroup ? View.VISIBLE : View.GONE}">
+
                     <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
-                        android:text="@string/exporting_group"/>
+                        android:text="@string/exporting_group"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
                 </LinearLayout>
 
                 <Button
@@ -63,8 +65,8 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/view_balances"
-                    android:onClick="@{() -> viewmodel.openBalances()}" />
+                    android:onClick="@{() -> viewmodel.openBalances()}"
+                    android:text="@string/view_balances" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/frag_bill_bills_list"
