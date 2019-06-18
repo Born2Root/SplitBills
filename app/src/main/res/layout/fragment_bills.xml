@@ -28,11 +28,50 @@
             android:clickable="true"
             android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/frag_bill_bills_list"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:items="@{viewmodel.items}" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="@{viewmodel.exportingGroup ? View.VISIBLE : View.GONE}">
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/exporting_group"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/act_bill_button_view_balances"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/view_balances"
+                    android:onClick="@{() -> viewmodel.openBalances()}" />
+
+                <ListView
+                    android:id="@+id/frag_bill_bills_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:items="@{viewmodel.items}" />
+            </LinearLayout>
         </RelativeLayout>
     </org.weilbach.splitbills.ScrollChildSwipeRefreshLayout>
 </layout>

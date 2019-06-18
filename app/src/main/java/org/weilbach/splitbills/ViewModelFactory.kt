@@ -17,17 +17,19 @@ package org.weilbach.splitbills
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import org.weilbach.splitbills.addeditbill.AddEditBillViewModel
 import org.weilbach.splitbills.addeditgroup.AddEditGroupViewModel
 import org.weilbach.splitbills.addmember.AddMemberViewModel
+import org.weilbach.splitbills.balances.BalancesItemViewModel
+import org.weilbach.splitbills.balances.BalancesViewModel
 import org.weilbach.splitbills.bills.BillsViewModel
-import org.weilbach.splitbills.data.source.BillsRepository
-import org.weilbach.splitbills.data.source.GroupsMembersRepository
-import org.weilbach.splitbills.data.source.GroupsRepository
-import org.weilbach.splitbills.data.source.MembersRepository
+import org.weilbach.splitbills.data2.source.*
 import org.weilbach.splitbills.group.GroupViewModel
+import org.weilbach.splitbills.util.AppExecutors
 
 
 /**
@@ -38,31 +40,64 @@ import org.weilbach.splitbills.group.GroupViewModel
  * actually necessary in this case, as the product ID can be passed in a public method.
  */
 class ViewModelFactory private constructor(
-        private val groupsRepository: GroupsRepository,
-        private val billsRepository: BillsRepository,
-        private val membersRepository: MembersRepository,
-        private val groupsMembersRepository: GroupsMembersRepository
+        private val groupsRepository: GroupRepository,
+        private val billsRepository: BillRepository,
+        private val membersRepository: MemberRepository,
+        private val groupsMembersRepository: GroupMemberRepository,
+        private val debtorsRepository: DebtorRepository,
+        private val appContext: Context
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
             with(modelClass) {
                 when {
-/*                    isAssignableFrom(StatisticsViewModel::class.java) ->
-                        StatisticsViewModel(tasksRepository)
-                    isAssignableFrom(TaskDetailViewModel::class.java) ->
-                        TaskDetailViewModel(tasksRepository)
-                    isAssignableFrom(AddEditTaskViewModel::class.java) ->
-                        AddEditTaskViewModel(tasksRepository)*/
+                    isAssignableFrom(BalancesViewModel::class.java) ->
+                        BalancesViewModel(
+                                billsRepository,
+                                membersRepository,
+                                groupsMembersRepository,
+                                debtorsRepository,
+                                groupsRepository)
+
+                    isAssignableFrom(AddEditBillViewModel::class.java) ->
+                        AddEditBillViewModel(
+                                groupsRepository,
+                                billsRepository,
+                                debtorsRepository,
+                                membersRepository,
+                                groupsMembersRepository,
+                                AppExecutors(),
+                                appContext)
+
                     isAssignableFrom(BillsViewModel::class.java) ->
-                        BillsViewModel(billsRepository)
+                        BillsViewModel(
+                                billsRepository,
+                                membersRepository,
+                                debtorsRepository,
+                                groupsMembersRepository,
+                                groupsRepository,
+                                appContext)
+
                     isAssignableFrom(AddMemberViewModel::class.java) ->
                         AddMemberViewModel()
+
                     isAssignableFrom(AddEditGroupViewModel::class.java) ->
-                        AddEditGroupViewModel(groupsRepository,
+                        AddEditGroupViewModel(
+                                groupsRepository,
                                 membersRepository,
-                                groupsMembersRepository)
+                                groupsMembersRepository,
+                                AppExecutors(),
+                                appContext)
+
                     isAssignableFrom(GroupViewModel::class.java) ->
-                        GroupViewModel(groupsRepository)
+                        GroupViewModel(
+                                groupsRepository,
+                                membersRepository,
+                                groupsMembersRepository,
+                                billsRepository,
+                                debtorsRepository,
+                                AppExecutors(),
+                                appContext)
                     else ->
                         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
                 }
@@ -77,10 +112,12 @@ class ViewModelFactory private constructor(
         fun getInstance(application: Application) =
                 INSTANCE ?: synchronized(ViewModelFactory::class.java) {
                     INSTANCE ?: ViewModelFactory(
-                            Injection.provideGroupsRepository(application.applicationContext),
-                            Injection.provideBillsRepository(application.applicationContext),
-                            Injection.provideMembersRepository(application.applicationContext),
-                            Injection.provideGroupsMembersRepository(application.applicationContext))
+                            Injection.provideGroupRepository(application.applicationContext),
+                            Injection.provideBillRepository(application.applicationContext),
+                            Injection.provideMemberRepository(application.applicationContext),
+                            Injection.provideGroupMemberRepository(application.applicationContext),
+                            Injection.provideDebtorRepository(application.applicationContext),
+                            application.applicationContext)
                             .also { INSTANCE = it }
                 }
 

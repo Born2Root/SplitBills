@@ -5,16 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
-import org.weilbach.splitbills.data.Member
+import androidx.fragment.app.Fragment
+import org.weilbach.splitbills.MemberItemNavigator
+import org.weilbach.splitbills.R
+import org.weilbach.splitbills.data2.Member
 import org.weilbach.splitbills.databinding.MemberItemBinding
 
 class MemberAdapter(
+        private val memberItemNavigator: MemberItemNavigator,
         private var members: List<Member>,
-        private val viewModel: AddEditGroupViewModel
-) : BaseAdapter() {
+        private val parent: Fragment) : BaseAdapter() {
 
-    fun replaceData(members: List<Member>) {
-        setList(members)
+    fun replaceData(memberData: List<Member>) {
+        setList(memberData)
     }
 
     override fun getItem(position: Int): Any {
@@ -39,15 +42,21 @@ class MemberAdapter(
         }
 
         with(binding) {
-            member = members[position]
+            viewmodel = members[position]
+            navigator = memberItemNavigator
+            parent.context?.let { context ->
+                root.setOnCreateContextMenuListener { menu, _, _ ->
+                    menu?.add(0, 0, position, context.getString(R.string.remove))
+                }
+            }
             executePendingBindings()
         }
 
         return binding.root
     }
 
-    private fun setList(members: List<Member>) {
-        this.members = members
+    private fun setList(member: List<Member>) {
+        this.members = member
         notifyDataSetChanged()
     }
 }

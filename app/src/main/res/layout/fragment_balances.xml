@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="viewmodel"
+            type="org.weilbach.splitbills.balances.BalancesViewModel" />
+
+    </data>
+
+    <org.weilbach.splitbills.ScrollChildSwipeRefreshLayout
+        android:id="@+id/frag_balances_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onRefresh="@{viewmodel}"
+        app:refreshing="@{viewmodel.dataLoading}">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:focusable="true">
+
+            <ListView
+                android:id="@+id/frag_balances_balances_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:items="@{viewmodel.items}" />
+        </RelativeLayout>
+    </org.weilbach.splitbills.ScrollChildSwipeRefreshLayout>
+</layout>

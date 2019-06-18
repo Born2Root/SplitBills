@@ -39,7 +39,7 @@ class AddEditGroupActivity : AppCompatActivity(), AddEditGroupNavigator {
         subscribeToNavigationChanges()
 
         viewModel = obtainViewModel().apply {
-            addMemberEvent.observe(this@AddEditGroupActivity, Observer<Event<Unit>> { event ->
+            addMember.observe(this@AddEditGroupActivity, Observer<Event<Unit>> { event ->
                 event.getContentIfNotHandled()?.let {
                     this@AddEditGroupActivity.addMember()
                 }

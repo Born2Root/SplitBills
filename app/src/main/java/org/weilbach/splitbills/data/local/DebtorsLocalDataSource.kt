@@ -1,7 +1,8 @@
+/*
 package org.weilbach.splitbills.data.local
 
 import androidx.annotation.VisibleForTesting
-import org.weilbach.splitbills.data.Debtor
+import org.weilbach.splitbills.data.DebtorData
 import org.weilbach.splitbills.data.source.DebtorsDataSource
 import org.weilbach.splitbills.util.AppExecutors
 
@@ -36,12 +37,28 @@ class DebtorsLocalDataSource private constructor(
         }
     }
 
-    override fun saveDebtor(debtor: Debtor) {
-        appExecutors.diskIO.execute { debtorsDao.insertDebtor(debtor) }
+    override fun getDebtorsByBillIdSync(billId: String): List<DebtorData> {
+        return debtorsDao.getDebtorsByBillId(billId)
+    }
+
+    override fun saveDebtor(debtorData: DebtorData) {
+        appExecutors.diskIO.execute { debtorsDao.insertDebtor(debtorData) }
+    }
+
+    override fun saveDebtorSync(debtorData: DebtorData) {
+        debtorsDao.insertDebtor(debtorData)
     }
 
     override fun deleteAllDebtors() {
         appExecutors.diskIO.execute { debtorsDao.deleteDebtors() }
+    }
+
+    override fun deleteDebtorsByBillId(billId: String) {
+        appExecutors.diskIO.execute { debtorsDao.deleteDebtorsByBillId(billId) }
+    }
+
+    override fun deleteDebtorsByBillIdSync(billId: String) {
+        debtorsDao.deleteDebtorsByBillId(billId)
     }
 
     override fun refreshDebtors() {
@@ -66,4 +83,4 @@ class DebtorsLocalDataSource private constructor(
             INSTANCE = null
         }
     }
-}
+}*/

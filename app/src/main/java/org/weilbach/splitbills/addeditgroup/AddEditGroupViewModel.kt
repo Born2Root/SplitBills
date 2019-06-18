@@ -1,29 +1,34 @@
 package org.weilbach.splitbills.addeditgroup
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.weilbach.splitbills.Event
+import org.weilbach.splitbills.MemberItemNavigator
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity
-import org.weilbach.splitbills.data.Group
-import org.weilbach.splitbills.data.GroupMember
-import org.weilbach.splitbills.data.Member
-import org.weilbach.splitbills.data.source.GroupsDataSource
-import org.weilbach.splitbills.data.source.GroupsMembersRepository
-import org.weilbach.splitbills.data.source.GroupsRepository
-import org.weilbach.splitbills.data.source.MembersRepository
-import org.weilbach.splitbills.util.MemberContainer
+import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data2.Member
+import org.weilbach.splitbills.data2.source.GroupMemberRepository
+import org.weilbach.splitbills.data2.source.GroupRepository
+import org.weilbach.splitbills.data2.source.MemberRepository
+import org.weilbach.splitbills.util.AppExecutors
+import org.weilbach.splitbills.util.getUser
 
 class AddEditGroupViewModel(
-        private val groupsRepository: GroupsRepository,
-        private val membersRepository: MembersRepository,
-        private val groupsMembersRepository: GroupsMembersRepository
-) : ViewModel(), GroupsDataSource.GetGroupCallback {
+        private val groupsRepository: GroupRepository,
+        private val membersRepository: MemberRepository,
+        private val groupsMembersRepository: GroupMemberRepository,
+        private val appExecutors: AppExecutors,
+        private val appContext: Context
+) : ViewModel(), MemberItemNavigator {
 
-    val memberContainer = MemberContainer()
+    val memberContainer = HashMap<String, Member>()
 
     val name = MutableLiveData<String>()
 
@@ -40,15 +45,16 @@ class AddEditGroupViewModel(
         get() = _groupUpdated
 
     private val _addMember = MutableLiveData<Event<Unit>>()
-    val addMemberEvent: LiveData<Event<Unit>>
+    val addMember: LiveData<Event<Unit>>
         get() = _addMember
 
     private val _memberUpdated = MutableLiveData<Event<Member>>()
-    val memberUpdatedEvent: LiveData<Event<Member>>
+    val memberDataUpdatedEvent: LiveData<Event<Member>>
         get() = _memberUpdated
 
     private val _memberItems = MutableLiveData<ArrayList<Member>>().apply {
-        value = ArrayList()
+        val user = getUser(appContext)
+        value = arrayListOf(user)
     }
     val memberItems: LiveData<ArrayList<Member>>
         get() = _memberItems
@@ -63,17 +69,7 @@ class AddEditGroupViewModel(
         _addMember.value = Event(Unit)
     }
 
-    override fun onGroupLoaded(group: Group) {
-        name.value = group.name
-        _dataLoading.value = false
-        isDataLoaded = true
-    }
-
-    override fun onDataNotAvailable() {
-        _dataLoading.value = false
-    }
-
-    fun start(groupName: String?) {
+    /*fun start() {
         _dataLoading.value?.let { isLoading ->
             // Already loading, ignore.
             if (isLoading) return
@@ -91,16 +87,16 @@ class AddEditGroupViewModel(
         isNewGroup = false
         _dataLoading.value = true
 
-        groupsRepository.getGroup(groupName, this)
-    }
+        groupRepository.getGroup(groupName, this)
+    }*/
 
     private fun memberAdded(name: String, email: String) {
         val newMember = Member(name, email)
-        if (memberContainer.contains(newMember)) {
+        if (memberContainer.contains(newMember.email)) {
             _snackbarText.value = Event(R.string.member_already_added)
             return
         }
-        memberContainer.add(newMember)
+        memberContainer[newMember.email] = newMember
         addMemberToList(newMember)
         _snackbarText.value = Event(R.string.member_successful_added)
     }
@@ -111,7 +107,9 @@ class AddEditGroupViewModel(
                 Activity.RESULT_OK -> {
                     val name = data?.getStringExtra(AddMemberActivity.RESULT_MEMBER_NAME)
                     val email = data?.getStringExtra(AddMemberActivity.RESULT_MEMBER_EMAIL)
-                    memberAdded(name!!, email!!)
+                    if (name != null && email != null) {
+                        memberAdded(name, email)
+                    }
                 }
             }
         }
@@ -119,41 +117,76 @@ class AddEditGroupViewModel(
 
     private fun addMemberToList(member: Member) {
         _memberItems.value?.add(member)
+        _memberItems.value = _memberItems.value
     }
 
-    internal fun saveGroup() {
+    fun saveGroup() {
         val currentName = name.value
         if (currentName == null) {
             _snackbarText.value = Event(R.string.no_group_name_message)
             return
         }
+        if (memberContainer.isEmpty()) {
+            _snackbarText.value = Event(R.string.add_at_least_one_member)
+            return
+        }
         val group = Group(currentName)
-        createGroup(group)
-    }
-
-    private fun createGroup(group: Group) {
-        groupsRepository.saveGroup(group, object : GroupsDataSource.SaveGroupCallback {
-            override fun onGroupSaved() {
-            }
-
-            override fun onDataNotAvailable() {
-            }
-        })
-        createMembers(memberContainer)
-        addMembersToGroup(group.name, memberContainer)
+        groupsMembersRepository.createNewGroup(group, memberContainer.values.toList())
         _groupUpdated.value = Event(Unit)
     }
 
-    private fun createMembers(memberContainer: MemberContainer) {
-        memberContainer.forEach { member ->
-            membersRepository.saveMember(member)
+    /*private fun createGroup(group: Group) {
+        *//*appExecutors.diskIO.execute {
+            groupRepository.saveGroupSync(group)
+
+            memberContainer.forEach { member ->
+                membersRepository.saveMemberSync(MemberData(member.name, member.email))
+                appExecutors.mainThread.execute {
+                    _memberUpdated.value = Event(member)
+                }
+            }
+
+            memberContainer.forEach { member ->
+                groupsMembersRepository.saveGroupMemberSync(GroupMemberData(group.name, member.email))
+            }
+
+            appExecutors.mainThread.execute {
+                _groupUpdated.value = Event(Unit)
+            }
+        }*//*
+    }*/
+
+    /*private fun createMembers(memberContainer: HashMap<String, Member>) {
+        *//*memberContainer.forEach { member ->
+            memberRepository.saveMember(member)
             _memberUpdated.value = Event(member)
-        }
+        }*//*
     }
 
-    private fun addMembersToGroup(groupName: String, memberContainer: MemberContainer) {
-        memberContainer.forEach { member ->
-            groupsMembersRepository.saveGroupMember(GroupMember(groupName, member.email))
+    private fun addMembersToGroup(groupName: String, memberContainer: HashMap<String, Member>) {
+        *//*memberContainer.forEach { member ->
+            groupMemberRepository.saveGroupMember(GroupMemberData(groupName, member.email))
+        }*//*
+    }*/
+
+    fun onContextItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            0 -> {
+                val pos = item.order
+                _memberItems.value?.get(pos)?.let {
+                    memberContainer.remove(it.email)
+                }
+                _memberItems.value?.removeAt(pos)
+                _memberItems.value = _memberItems.value
+            }
         }
+        return false
+    }
+
+    override fun onClick(view: View) {
+    }
+
+    companion object {
+        private const val TAG = "AddEditGroupViewModel"
     }
 }

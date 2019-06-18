@@ -1,18 +1,20 @@
-package org.weilbach.splitbills.data.source
+//package org.weilbach.splitbills.data.source
+/*
 
-import org.weilbach.splitbills.data.Amount
 import org.weilbach.splitbills.util.EspressoIdlingResource
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.LinkedHashMap
+*/
 
+/*
 class AmountsRepository private constructor(
         private val amountsLocalDataSource: AmountsDataSource
 ) : AmountsDataSource {
 
-    var cachedAmounts: LinkedHashMap<String, Amount> = LinkedHashMap()
-    var cachedAmountsByBillId: LinkedHashMap<String, List<Amount>> = LinkedHashMap()
-    var cachedValidAmountsByBillId: LinkedHashMap<String, Amount> = LinkedHashMap()
+    var cachedAmounts: LinkedHashMap<String, AmountData> = LinkedHashMap()
+    var cachedAmountsByBillId: LinkedHashMap<String, List<AmountData>> = LinkedHashMap()
+    var cachedValidAmountsByBillId: LinkedHashMap<String, AmountData> = LinkedHashMap()
 
     var cacheIsDirty = false
     var cacheByBillIdIsDirty = false
@@ -27,8 +29,8 @@ class AmountsRepository private constructor(
         EspressoIdlingResource.increment()
 
         amountsLocalDataSource.getAmounts(object : AmountsDataSource.GetAmountsCallback {
-            override fun onAmountsLoaded(amounts: List<Amount>) {
-                refreshCache(amounts)
+            override fun onAmountsLoaded(amountData: List<AmountData>) {
+                refreshCache(amountData)
                 EspressoIdlingResource.decrement()
                 callback.onAmountsLoaded(ArrayList(cachedAmounts.values))
             }
@@ -40,20 +42,21 @@ class AmountsRepository private constructor(
         })
     }
 
-    override fun getAmountByBillId(billId: String, callback: AmountsDataSource.GetAmountsCallback) {
+    override fun getAmountsByBillId(billId: String, callback: AmountsDataSource.GetAmountsCallback) {
         val amountsInCache = getAmountsWithBillId(billId)
 
         if (amountsInCache != null
                 && amountsInCache.isNotEmpty()
                 && !cacheByBillIdIsDirty) {
             callback.onAmountsLoaded(amountsInCache)
+            return
         }
 
         EspressoIdlingResource.increment()
 
-        amountsLocalDataSource.getAmountByBillId(billId, object : AmountsDataSource.GetAmountsCallback {
-            override fun onAmountsLoaded(amounts: List<Amount>) {
-                cacheByBillIdAndPerform(amounts) {
+        amountsLocalDataSource.getAmountsByBillId(billId, object : AmountsDataSource.GetAmountsCallback {
+            override fun onAmountsLoaded(amountData: List<AmountData>) {
+                cacheByBillIdAndPerform(amountData) {
                     EspressoIdlingResource.decrement()
                     callback.onAmountsLoaded(it)
                 }
@@ -66,18 +69,37 @@ class AmountsRepository private constructor(
         })
     }
 
+    override fun getAmountsByBillIdSync(billId: String): List<AmountData> {
+        val amountsInCache = getAmountsWithBillId(billId)
+
+        if (amountsInCache != null
+                && amountsInCache.isNotEmpty()
+                && !cacheByBillIdIsDirty) {
+            return amountsInCache
+        }
+
+        val amounts = amountsLocalDataSource.getAmountsByBillIdSync(billId)
+
+        if (amounts.isNotEmpty()) {
+            cacheByBillIdAndPerform(amounts) {}
+        }
+
+        return amounts
+    }
+
     override fun getValidAmountByBillId(billId: String, callback: AmountsDataSource.GetAmountCallback) {
         val amountInCache = getValidAmountsWithBillId(billId)
 
         if (amountInCache != null) {
             callback.onAmountLoaded(amountInCache)
+            return
         }
 
         EspressoIdlingResource.increment()
 
         amountsLocalDataSource.getValidAmountByBillId(billId, object : AmountsDataSource.GetAmountCallback {
-            override fun onAmountLoaded(amount: Amount) {
-                cacheValidByBillIdAndPerform(amount) {
+            override fun onAmountLoaded(amountData: AmountData) {
+                cacheValidByBillIdAndPerform(amountData) {
                     EspressoIdlingResource.decrement()
                     callback.onAmountLoaded(it)
                 }
@@ -90,14 +112,50 @@ class AmountsRepository private constructor(
         })
     }
 
-    override fun saveAmount(amount: Amount) {
-        cacheAndPerform(amount) {
-            amountsLocalDataSource.saveAmount(amount)
+    override fun getValidAmountByBillIdSync(billId: String): AmountData? {
+        val amountInCache = getValidAmountsWithBillId(billId)
+
+        if (amountInCache != null) {
+            return amountInCache
+        }
+
+        val amount = amountsLocalDataSource.getValidAmountByBillIdSync(billId)
+
+        if (amount != null) {
+            cacheValidByBillIdAndPerform(amount) {}
+        }
+
+        return amount
+    }
+
+    override fun saveAmount(amountData: AmountData) {
+        cacheAndPerform(amountData) {
+            amountsLocalDataSource.saveAmount(amountData)
+        }
+    }
+
+    override fun saveAmountSync(amountData: AmountData) {
+        cacheAndPerform(amountData) {
+            amountsLocalDataSource.saveAmountSync(amountData)
         }
     }
 
     override fun deleteAllAmounts() {
         amountsLocalDataSource.deleteAllAmounts()
+        cachedAmounts.clear()
+        cachedAmountsByBillId.clear()
+        cachedValidAmountsByBillId.clear()
+    }
+
+    override fun deleteAmountsByBillId(billId: String) {
+        amountsLocalDataSource.deleteAmountsByBillId(billId)
+        cachedAmounts.clear()
+        cachedAmountsByBillId.clear()
+        cachedValidAmountsByBillId.clear()
+    }
+
+    override fun deleteAmountsByBillIdSync(billId: String) {
+        amountsLocalDataSource.deleteAmountsByBillIdSync(billId)
         cachedAmounts.clear()
         cachedAmountsByBillId.clear()
         cachedValidAmountsByBillId.clear()
@@ -109,15 +167,17 @@ class AmountsRepository private constructor(
         cacheValidByBillIdIsDirty = true
     }
 
-    private fun refreshCache(amounts: List<Amount>) {
+    private fun refreshCache(amountData: List<AmountData>) {
+        cachedAmountsByBillId.clear()
+        cachedValidAmountsByBillId.clear()
         cachedAmounts.clear()
-        amounts.forEach {
+        amountData.forEach {
             cacheAndPerform(it) { }
         }
         cacheIsDirty = false
     }
 
-    private fun refreshCacheByBillId(amountsList: List<List<Amount>>) {
+    private fun refreshCacheByBillId(amountsList: List<List<AmountData>>) {
         cachedAmountsByBillId.clear()
         amountsList.forEach {
             cacheByBillIdAndPerform(it) { }
@@ -125,31 +185,31 @@ class AmountsRepository private constructor(
         cacheByBillIdIsDirty = false
     }
 
-    private fun refreshCacheValidByBillId(amounts: List<Amount>) {
+    private fun refreshCacheValidByBillId(amountData: List<AmountData>) {
         cachedValidAmountsByBillId.clear()
-        amounts.forEach {
+        amountData.forEach {
             cacheValidByBillIdAndPerform(it) { }
         }
         cacheValidByBillIdIsDirty = false
     }
 
-    private inline fun cacheAndPerform(amount: Amount, perform: (Amount) -> Unit) {
-        val cachedAmount = Amount(amount.billId, amount.amount, amount.valid)
+    private inline fun cacheAndPerform(amountData: AmountData, perform: (AmountData) -> Unit) {
+        val cachedAmount = AmountData(amountData.billId, amountData.amount, amountData.currency, amountData.valid)
         cachedAmounts[cachedAmount.id] = cachedAmount
         perform(cachedAmount)
     }
 
-    private inline fun cacheByBillIdAndPerform(amounts: List<Amount>, perform: (List<Amount>) -> Unit) {
-        val cachedAmounts = LinkedList<Amount>()
-        amounts.forEach { amount ->
-            cachedAmounts.add(Amount(amount.billId, amount.amount, amount.valid))
+    private inline fun cacheByBillIdAndPerform(amountData: List<AmountData>, perform: (List<AmountData>) -> Unit) {
+        val cachedAmounts = LinkedList<AmountData>()
+        amountData.forEach { amount ->
+            cachedAmounts.add(AmountData(amount.billId, amount.amount, amount.currency, amount.valid))
         }
         cachedAmountsByBillId[cachedAmounts[0].id] = cachedAmounts
         perform(cachedAmounts)
     }
 
-    private inline fun cacheValidByBillIdAndPerform(amount: Amount, perform: (Amount) -> Unit) {
-        val cachedAmount = Amount(amount.billId, amount.amount, amount.valid)
+    private inline fun cacheValidByBillIdAndPerform(amountData: AmountData, perform: (AmountData) -> Unit) {
+        val cachedAmount = AmountData(amountData.billId, amountData.amount, amountData.currency, amountData.valid)
         cachedValidAmountsByBillId[cachedAmount.id] = cachedAmount
         perform(cachedAmount)
     }
@@ -175,4 +235,4 @@ class AmountsRepository private constructor(
             INSTANCE = null
         }
     }
-}
+}*/

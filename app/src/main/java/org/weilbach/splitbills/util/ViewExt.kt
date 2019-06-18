@@ -19,6 +19,7 @@ package org.weilbach.splitbills.util
  * Extension functions for View and subclasses of View.
  */
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
@@ -28,6 +29,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.ScrollChildSwipeRefreshLayout
+import org.weilbach.splitbills.balances.BalancesViewModel
 import org.weilbach.splitbills.bills.BillsViewModel
 import org.weilbach.splitbills.group.GroupViewModel
 
@@ -38,11 +40,15 @@ fun View.showSnackbar(snackbarText: String, timeLength: Int) {
     Snackbar.make(this, snackbarText, timeLength).run {
         addCallback(object : Snackbar.Callback() {
             override fun onShown(sb: Snackbar?) {
-                EspressoIdlingResource.increment()
+                Log.d("View.showSnackbar", "increment idling res")
+                // Commented out since this may cause problems
+                //EspressoIdlingResource.increment()
             }
 
             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                EspressoIdlingResource.decrement()
+                Log.d("View.showSnackbar", "decrement idling res")
+                // Commented out since this may cause problems
+                //EspressoIdlingResource.decrement()
             }
         })
         show()
@@ -79,5 +85,13 @@ fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(
 @BindingAdapter("android:onRefresh")
 fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(
         viewModel: BillsViewModel) {
+
     setOnRefreshListener { viewModel.loadBills(true) }
+}
+
+@BindingAdapter("android:onRefresh")
+fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(
+        viewModel: BalancesViewModel) {
+
+    setOnRefreshListener { viewModel.loadMembers(true) }
 }

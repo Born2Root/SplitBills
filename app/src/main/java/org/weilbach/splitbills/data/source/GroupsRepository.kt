@@ -1,21 +1,26 @@
+/*
 package org.weilbach.splitbills.data.source
 
-import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.GroupData
 import org.weilbach.splitbills.util.EspressoIdlingResource
 
 class GroupsRepository(
         val groupsLocalDataSource: GroupsDataSource
 ) : GroupsDataSource {
 
-    /**
+    */
+/**
      * This variable has public visibility so it can be accessed from tests.
-     */
-    var cachedGroups: LinkedHashMap<String, Group> = LinkedHashMap()
+     *//*
 
-    /**
+    var cachedGroups: LinkedHashMap<String, GroupData> = LinkedHashMap()
+
+    */
+/**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
      * has package local visibility so it can be accessed from tests.
-     */
+     *//*
+
     var cacheIsDirty = false
 
     override fun getGroups(callback: GroupsDataSource.GetGroupsCallback) {
@@ -29,8 +34,8 @@ class GroupsRepository(
 
         // Query the local storage if available.
         groupsLocalDataSource.getGroups(object : GroupsDataSource.GetGroupsCallback {
-            override fun onGroupsLoaded(groups: List<Group>) {
-                refreshCache(groups)
+            override fun onGroupsLoaded(group: List<GroupData>) {
+                refreshCache(group)
                 EspressoIdlingResource.decrement() // Set app as idle.
                 callback.onGroupsLoaded(ArrayList(cachedGroups.values))
             }
@@ -42,21 +47,40 @@ class GroupsRepository(
         })
     }
 
-    override fun saveGroup(group: Group, callback: GroupsDataSource.SaveGroupCallback) {
+    override fun getGroupsSync(): List<GroupData> {
+        if (cachedGroups.isNotEmpty() && !cacheIsDirty) {
+            return ArrayList(cachedGroups.values)
+        }
+
+        val groups = groupsLocalDataSource.getGroupsSync()
+        if (groups.isNotEmpty()) refreshCache(groups)
+
+        return groups
+    }
+
+    override fun saveGroup(group: GroupData, callback: GroupsDataSource.SaveGroupCallback) {
         // Do in memory cache update to keep the app UI up to date
         cacheAndPerform(group) {
             groupsLocalDataSource.saveGroup(it, callback)
         }
     }
 
-    /**
+    override fun saveGroupSync(group: GroupData) {
+        // Do in memory cache update to keep the app UI up to date
+        groupsLocalDataSource.saveGroupSync(group)
+        cacheAndPerform(group) { }
+    }
+
+    */
+/**
      * Gets tasks from local data source (sqlite) unless the table is new or empty. In that case it
      * uses the network data source. This is done to simplify the sample.
      *
      *
      * Note: [GetTaskCallback.onDataNotAvailable] is fired if both data sources fail to
      * get the data.
-     */
+     *//*
+
     override fun getGroup(groupName: String, callback: GroupsDataSource.GetGroupCallback) {
         val groupInCache = getGroupWithId(groupName)
 
@@ -72,7 +96,7 @@ class GroupsRepository(
 
         // Is the task in the local data source?
         groupsLocalDataSource.getGroup(groupName, object : GroupsDataSource.GetGroupCallback {
-            override fun onGroupLoaded(group: Group) {
+            override fun onGroupLoaded(group: GroupData) {
                 // Do in memory cache update to keep the app UI up to date
                 cacheAndPerform(group) {
                     EspressoIdlingResource.decrement() // Set app as idle.
@@ -96,21 +120,26 @@ class GroupsRepository(
         cachedGroups.clear()
     }
 
+    override fun deleteGroupSync(groupName: String) {
+        groupsLocalDataSource.deleteGroupSync(groupName)
+        cachedGroups.clear()
+    }
+
     override fun deleteGroup(groupName: String, callback: GroupsDataSource.DeleteGroupCallback) {
         groupsLocalDataSource.deleteGroup(groupName, callback)
         cachedGroups.remove(groupName)
     }
 
-    private fun refreshCache(groups: List<Group>) {
+    private fun refreshCache(group: List<GroupData>) {
         cachedGroups.clear()
-        groups.forEach {
+        group.forEach {
             cacheAndPerform(it) {}
         }
         cacheIsDirty = false
     }
 
-    private inline fun cacheAndPerform(group: Group, perform: (Group) -> Unit) {
-        val cachedGroup = Group(group.name)
+    private inline fun cacheAndPerform(group: GroupData, perform: (GroupData) -> Unit) {
+        val cachedGroup = GroupData(group.name)
         cachedGroups[cachedGroup.name] = cachedGroup
         perform(cachedGroup)
     }
@@ -133,4 +162,4 @@ class GroupsRepository(
             INSTANCE = null
         }
     }
-}
+}*/

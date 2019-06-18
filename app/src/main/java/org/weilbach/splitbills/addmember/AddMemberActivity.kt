@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data2.Member
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
 import org.weilbach.splitbills.util.setupActionBar
@@ -33,7 +33,7 @@ class AddMemberActivity : AppCompatActivity() {
         replaceFragmentInActivity(obtainViewFragment(), R.id.act_add_member_content_frame)
 
         viewModel = obtainViewModel().apply {
-            saveMemberEvent.observe(this@AddMemberActivity, Observer<Event<Member>> { event ->
+            saveMemberDataEvent.observe(this@AddMemberActivity, Observer<Event<Member>> { event ->
                 event.getContentIfNotHandled()?.let { member ->
                     this@AddMemberActivity.saveMember(member)
                 }
@@ -41,10 +41,10 @@ class AddMemberActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveMember(member: Member) {
+    private fun saveMember(memberData: Member) {
         intent = Intent()
-        intent.putExtra(RESULT_MEMBER_NAME, member.name)
-        intent.putExtra(RESULT_MEMBER_EMAIL, member.email)
+        intent.putExtra(RESULT_MEMBER_NAME, memberData.name)
+        intent.putExtra(RESULT_MEMBER_EMAIL, memberData.email)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

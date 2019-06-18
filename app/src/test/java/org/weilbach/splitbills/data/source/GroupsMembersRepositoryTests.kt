@@ -8,7 +8,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.weilbach.splitbills.data.GroupMember
+import org.weilbach.splitbills.data.GroupMemberData
 import org.weilbach.splitbills.util.eq
 
 class GroupsMembersRepositoryTests {
@@ -31,22 +31,22 @@ class GroupsMembersRepositoryTests {
 
     @Test
     fun saveGroupMember_savesGroupMemberToServiceApi() {
-        val newGroupMember = GroupMember(GROUP_NAME, MEMBER_EMAIL)
+        val newGroupMember = GroupMemberData(GROUP_NAME, MEMBER_EMAIL)
 
         groupsMembersRepository.saveGroupMember(newGroupMember)
 
         verify<GroupsMembersDataSource>(groupsMembersLocalDataSource).saveGroupMember(eq(newGroupMember))
-        assertThat(groupsMembersRepository.cachedGroupsMembers.size, `is`(1))
+        assertThat(groupsMembersRepository.cachedGroupsMemberData.size, `is`(1))
     }
 
     @Test
     fun deleteAllGroupsMembers_deleteGroupsMembersToServiceAPIUpdatesCache() {
         with(groupsMembersRepository) {
-            val newGroupMember = GroupMember(GROUP_NAME, MEMBER_EMAIL)
+            val newGroupMember = GroupMemberData(GROUP_NAME, MEMBER_EMAIL)
             saveGroupMember(newGroupMember)
-            val newGroupMember2 = GroupMember(GROUP_NAME2, MEMBER_EMAIL2)
+            val newGroupMember2 = GroupMemberData(GROUP_NAME2, MEMBER_EMAIL2)
             saveGroupMember(newGroupMember2)
-            val newGroupMember3 = GroupMember(GROUP_NAME3, MEMBER_EMAIL3)
+            val newGroupMember3 = GroupMemberData(GROUP_NAME3, MEMBER_EMAIL3)
             saveGroupMember(newGroupMember3)
 
             deleteAllGroupsMembers()
@@ -54,7 +54,7 @@ class GroupsMembersRepositoryTests {
             verify(this@GroupsMembersRepositoryTests.groupsMembersLocalDataSource)
                     .deleteAllGroupsMembers()
 
-            assertThat(cachedGroupsMembers.size, `is`(0))
+            assertThat(cachedGroupsMemberData.size, `is`(0))
         }
     }
 

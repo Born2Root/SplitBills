@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 package org.weilbach.splitbills.data.source.local
 
 import androidx.room.Room
@@ -26,7 +27,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
-import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.GroupData
 import org.weilbach.splitbills.data.local.GroupsLocalDataSource
 import org.weilbach.splitbills.data.local.SplitBillsDatabase
 import org.weilbach.splitbills.data.source.GroupsDataSource
@@ -34,13 +35,14 @@ import org.weilbach.splitbills.util.any
 import org.weilbach.splitbills.utils.SingleExecutors
 
 
+*/
 /**
  * Integration test for the [GroupsDataSource].
- */
+ *//*
+
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class GroupsLocalDataSourceTest {
-
     private val TITLE = "title"
     private val TITLE2 = "title2"
     private val TITLE3 = "title3"
@@ -73,7 +75,7 @@ class GroupsLocalDataSourceTest {
     @Test
     fun saveGroup_retrievesGroup() {
         // Given a new group
-        val newGroup = Group(TITLE)
+        val newGroup = GroupData(TITLE)
 
         with(localDataSource) {
             // When saved into the persistent repository
@@ -87,8 +89,8 @@ class GroupsLocalDataSourceTest {
 
             // Then the task can be retrieved from the persistent repository
             getGroup(newGroup.name, object : GroupsDataSource.GetGroupCallback {
-                override fun onGroupLoaded(group: Group) {
-                    assertThat(group, `is`(newGroup))
+                override fun onGroupLoaded(groupData: GroupData) {
+                    assertThat(groupData, `is`(newGroup))
                 }
 
                 override fun onDataNotAvailable() {
@@ -103,7 +105,7 @@ class GroupsLocalDataSourceTest {
         val callback = mock(GroupsDataSource.GetGroupsCallback::class.java)
 
         // Given a new group in the persistent repository and a mocked callback
-        val newGroup = Group(TITLE)
+        val newGroup = GroupData(TITLE)
 
         with(localDataSource) {
             saveGroup(newGroup, object : GroupsDataSource.SaveGroupCallback {
@@ -128,14 +130,14 @@ class GroupsLocalDataSourceTest {
         }
         verify<GroupsDataSource.GetGroupsCallback>(callback).onDataNotAvailable()
         verify<GroupsDataSource.GetGroupsCallback>(callback, never())
-                .onGroupsLoaded(any<List<Group>>())
+                .onGroupsLoaded(any<List<GroupData>>())
     }
 
     @Test
     fun getGroups_retrieveSavedGroups() {
         // Given 2 new groups in the persistent repository
-        val newGroup1 = Group(TITLE)
-        val newGroup2 = Group(TITLE2)
+        val newGroup1 = GroupData(TITLE)
+        val newGroup2 = GroupData(TITLE2)
 
         with(localDataSource) {
             saveGroup(newGroup1, object : GroupsDataSource.SaveGroupCallback {
@@ -154,13 +156,13 @@ class GroupsLocalDataSourceTest {
             })
             // Then the groups can be retrieved from the persistent repository
             getGroups(object : GroupsDataSource.GetGroupsCallback {
-                override fun onGroupsLoaded(groups: List<Group>) {
-                    assertNotNull(groups)
-                    assertTrue(groups.size >= 2)
+                override fun onGroupsLoaded(groupData: List<GroupData>) {
+                    assertNotNull(groupData)
+                    assertTrue(groupData.size >= 2)
 
                     var newGroup1IdFound = false
                     var newGroup2IdFound = false
-                    for ((name) in groups) {
+                    for ((name) in groupData) {
                         if (name == newGroup1.name) {
                             newGroup1IdFound = true
                         }
@@ -179,3 +181,4 @@ class GroupsLocalDataSourceTest {
         }
     }
 }
+*/

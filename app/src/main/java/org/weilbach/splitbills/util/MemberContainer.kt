@@ -1,37 +1,32 @@
 package org.weilbach.splitbills.util
 
-import org.weilbach.splitbills.data.Member
-
+/*
 class MemberContainer {
 
-    val members: HashMap<String, Member> = HashMap()
+    private val _items: LinkedHashMap<String, Member> = LinkedHashMap()
 
-    var size = members.size
-        get() = members.size
-        private set
+    val items = _items.values
 
-    fun contains(member: Member): Boolean {
-        if (members.contains(member.email)) {
-            return true
-        }
-        return false
-    }
+    val size: Int
+        get() = _items.size
 
-    fun add(member: Member): Boolean {
-        if (contains(member)) {
+    fun contains(item: Member) = _items.contains(item.id)
+
+    fun add(item: Member): Boolean {
+        if (contains(item)) {
             return false
         }
-        members[member.email] = member
+        _items[item.id] = item
         return true
     }
 
-    fun get(email: String): Member? {
-        return members[email]
-    }
+    fun get(id: String) = _items[id]
+
+    fun remove(id: String) = _items.remove(id)
 
     fun forEach(operation: (Member) -> Unit) {
-        members.forEach {
+        _items.forEach {
             operation(it.value)
         }
     }
-}
+}*/

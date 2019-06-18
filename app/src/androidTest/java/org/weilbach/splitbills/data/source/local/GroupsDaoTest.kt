@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package org.weilbach.splitbills.data.source.local
 
@@ -26,7 +27,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.GroupData
 import org.weilbach.splitbills.data.local.SplitBillsDatabase
 
 @RunWith(AndroidJUnit4::class)
@@ -65,7 +66,7 @@ class GroupsDaoTest {
         database.groupsDao().insertGroup(DEFAULT_GROUP)
 
         // When a group with the same id is inserted
-        val newGroup = Group(DEFAULT_NAME)
+        val newGroup = GroupData(DEFAULT_NAME)
         database.groupsDao().insertGroup(newGroup)
 
         // When getting the group by name from the database
@@ -95,7 +96,7 @@ class GroupsDaoTest {
         database.groupsDao().insertGroup(DEFAULT_GROUP)
 
         // When the group is updated
-        val updatedGroup = Group(DEFAULT_NAME)
+        val updatedGroup = GroupData(DEFAULT_NAME)
         database.groupsDao().updateGroup(updatedGroup)
 
         // When getting the group by name from the database
@@ -136,13 +137,13 @@ class GroupsDaoTest {
     }
 
 
-    private fun assertGroup(group: Group?, name: String) {
-        assertThat<Group>(group as Group, notNullValue())
-        assertThat(group.name, `is`(name))
+    private fun assertGroup(groupData: GroupData?, name: String) {
+        assertThat<GroupData>(groupData as GroupData, notNullValue())
+        assertThat(groupData.name, `is`(name))
     }
 
     companion object {
         private const val DEFAULT_NAME = "id"
-        private val DEFAULT_GROUP = Group(DEFAULT_NAME)
+        private val DEFAULT_GROUP = GroupData(DEFAULT_NAME)
     }
-}
+}*/

@@ -1,26 +1,37 @@
-package org.weilbach.splitbills.data.source
+//package org.weilbach.splitbills.data.source
 
-import org.weilbach.splitbills.data.Amount
+/*
+import org.weilbach.splitbills.data.AmountData
 
 interface AmountsDataSource {
     interface GetAmountsCallback {
-        fun onAmountsLoaded(amounts: List<Amount>)
+        fun onAmountsLoaded(amountData: List<AmountData>)
         fun onDataNotAvailable()
     }
 
     interface GetAmountCallback {
-        fun onAmountLoaded(amount: Amount)
+        fun onAmountLoaded(amountData: AmountData)
         fun onDataNotAvailable()
     }
     fun getAmounts(callback: GetAmountsCallback)
 
-    fun getAmountByBillId(billId: String, callback: GetAmountsCallback)
+    fun getAmountsByBillId(billId: String, callback: GetAmountsCallback)
+
+    fun getAmountsByBillIdSync(billId: String): List<AmountData>
 
     fun getValidAmountByBillId(billId: String, callback: GetAmountCallback)
 
-    fun saveAmount(amount: Amount)
+    fun getValidAmountByBillIdSync(billId: String): AmountData?
+
+    fun saveAmount(amountData: AmountData)
+
+    fun saveAmountSync(amountData: AmountData)
 
     fun deleteAllAmounts()
 
+    fun deleteAmountsByBillId(billId: String)
+
+    fun deleteAmountsByBillIdSync(billId: String)
+
     fun refreshAmounts()
-}
+}*/

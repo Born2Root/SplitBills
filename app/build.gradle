@@ -88,6 +88,9 @@ dependencies {
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.annotation:annotation:$androidXAnnotations"
+    implementation "androidx.preference:preference:$androidXPreference"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
 
     implementation "androidx.legacy:legacy-support-v4:$androidXLegacySupport"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
@@ -103,7 +106,7 @@ dependencies {
 
     // Dependencies for local unit tests
     testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
     testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
     testImplementation "android.arch.core:core-testing:$archTestingVersion"
 
@@ -111,6 +114,7 @@ dependencies {
     androidTestImplementation "junit:junit:$junitVersion"
     androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion"
+    androidTestImplementation "android.arch.core:core-testing:$archTestingVersion"
 
     // Android Testing Support Library - Instrumented testing
     androidTestImplementation "androidx.test:runner:$androidXTestVersion"
@@ -120,6 +124,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
     androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espressoVersion"
+    androidTestImplementation "com.jraska.livedata:testing-ktx:$livedataTesting"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
 
     // Resolve conflicts between main and test APK:

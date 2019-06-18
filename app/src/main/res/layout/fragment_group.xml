@@ -34,6 +34,26 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:visibility="@{viewmodel.groupMerging ? View.VISIBLE : View.GONE}">
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/merging_group"/>
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,7 +69,8 @@
                     android:id="@+id/frag_group_text_view_total_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/you_get_or_owe"
+                    android:text="@{viewmodel.oweGetTotal}"
+                    android:textColor="@{context.getColor(viewmodel.totalBalanceColor)}"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"

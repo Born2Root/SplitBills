@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data2.Member
 
 class AddMemberViewModel : ViewModel() {
 
@@ -18,7 +18,7 @@ class AddMemberViewModel : ViewModel() {
         get() = _snackbarText
 
     private val _saveMemberEvent = MutableLiveData<Event<Member>>()
-    val saveMemberEvent: LiveData<Event<Member>>
+    val saveMemberDataEvent: LiveData<Event<Member>>
         get() = _saveMemberEvent
 
     fun saveMember() {
@@ -35,7 +35,7 @@ class AddMemberViewModel : ViewModel() {
         createMember(Member(currentName, currentEmail))
     }
 
-    private fun createMember(member: Member) {
-        _saveMemberEvent.value = Event(member)
+    private fun createMember(memberData: Member) {
+        _saveMemberEvent.value = Event(memberData)
     }
 }

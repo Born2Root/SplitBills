@@ -17,10 +17,8 @@
 package org.weilbach.splitbills
 
 import android.content.Context
-import org.weilbach.splitbills.data.local.SplitBillsDatabase
-import org.weilbach.splitbills.data.local.GroupsLocalDataSource
-import org.weilbach.splitbills.data.remote.GroupsRemoteDataSource
-import org.weilbach.splitbills.data.source.GroupsRepository
+import org.weilbach.splitbills.data2.local.*
+import org.weilbach.splitbills.data2.source.*
 import org.weilbach.splitbills.util.AppExecutors
 
 /**
@@ -29,9 +27,39 @@ import org.weilbach.splitbills.util.AppExecutors
  */
 object Injection {
 
-    fun provideGroupsRepository(context: Context): GroupsRepository {
+    fun provideBillRepository(context: Context): BillRepository {
         val database = SplitBillsDatabase.getInstance(context)
-        return GroupsRepository.getInstance(GroupsRemoteDataSource,
-                GroupsLocalDataSource.getInstance(AppExecutors(), database.groupsDao()))
+        return BillRepository.getInstance(
+                BillLocalDataSource.getInstance(AppExecutors(),
+                        database.billDao()))
+    }
+
+    fun provideGroupRepository(context: Context): GroupRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return GroupRepository.getInstance(
+                GroupLocalDataSource.getInstance(
+                        AppExecutors(),
+                        database.groupDao()))
+    }
+
+    fun provideDebtorRepository(context: Context): DebtorRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return DebtorRepository.getInstance(
+                DebtorLocalDataSource.getInstance(AppExecutors(),
+                        database.debtorDao()))
+    }
+
+    fun provideMemberRepository(context: Context): MemberRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return MemberRepository.getInstance(
+                MemberLocalDataSource.getInstance(AppExecutors(),
+                        database.memberDao()))
+    }
+
+    fun provideGroupMemberRepository(context: Context): GroupMemberRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return GroupMemberRepository.getInstance(
+                GroupMemberLocalDataSource.getInstance(AppExecutors(),
+                        database.groupMemberDao()))
     }
 }

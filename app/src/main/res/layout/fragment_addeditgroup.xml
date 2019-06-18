@@ -39,7 +39,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:ems="10"
             android:text="@={viewmodel.name}"
             android:hint="@string/enter_group_name_hint"
             android:inputType="textCapWords" />
@@ -73,30 +72,15 @@
             android:onClick="@{() -> viewmodel.addMember()}"
             android:text="@string/add_group_member" />
 
-        <ScrollView
+        <ListView
+            android:id="@+id/members_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            app:items="@{viewmodel.memberItems}">
 
-            <ListView
-                android:id="@+id/members_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:items="@{viewmodel.memberItems}">
-
-            </ListView>
-            <!--            <TableLayout
-                            android:id="@+id/frag_add_edit_group_table_layout_members"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
-                            android:layout_marginTop="8dp"
-                            android:isScrollContainer="true">
-                        </TableLayout>-->
-        </ScrollView>
-
+        </ListView>
         <Button
             android:id="@+id/frag_add_edit_group_button_save"
             android:layout_width="match_parent"
@@ -106,6 +90,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="0dp"
+            android:onClick="@{() -> viewmodel.saveGroup()}"
             android:text="@string/save" />
     </LinearLayout>
 </layout>

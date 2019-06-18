@@ -1,10 +1,11 @@
-package org.weilbach.splitbills.data.local
+// package org.weilbach.splitbills.data.local
 
-import androidx.annotation.VisibleForTesting
-import org.weilbach.splitbills.data.Amount
+/*import androidx.annotation.VisibleForTesting
+import org.weilbach.splitbills.data.AmountData
 import org.weilbach.splitbills.data.source.AmountsDataSource
-import org.weilbach.splitbills.util.AppExecutors
+import org.weilbach.splitbills.util.AppExecutors*/
 
+/*
 class AmountsLocalDataSource private constructor(
         private val appExecutors: AppExecutors,
         private val amountsDao: AmountsDao
@@ -23,7 +24,7 @@ class AmountsLocalDataSource private constructor(
         }
     }
 
-    override fun getAmountByBillId(billId: String, callback: AmountsDataSource.GetAmountsCallback) {
+    override fun getAmountsByBillId(billId: String, callback: AmountsDataSource.GetAmountsCallback) {
         appExecutors.diskIO.execute {
             val amounts = amountsDao.getAmountsByBillId(billId)
             appExecutors.mainThread.execute {
@@ -34,6 +35,10 @@ class AmountsLocalDataSource private constructor(
                 }
             }
         }
+    }
+
+    override fun getAmountsByBillIdSync(billId: String): List<AmountData> {
+        return amountsDao.getAmountsByBillId(billId)
     }
 
     override fun getValidAmountByBillId(billId: String, callback: AmountsDataSource.GetAmountCallback) {
@@ -49,12 +54,28 @@ class AmountsLocalDataSource private constructor(
         }
     }
 
-    override fun saveAmount(amount: Amount) {
-        appExecutors.diskIO.execute { amountsDao.insertAmount(amount) }
+    override fun getValidAmountByBillIdSync(billId: String): AmountData? {
+        return amountsDao.getValidAmountByBillId(billId)
+    }
+
+    override fun saveAmount(amountData: AmountData) {
+        appExecutors.diskIO.execute { amountsDao.insertAmount(amountData) }
+    }
+
+    override fun saveAmountSync(amountData: AmountData) {
+        amountsDao.insertAmount(amountData)
     }
 
     override fun deleteAllAmounts() {
         appExecutors.diskIO.execute { amountsDao.deleteAmounts() }
+    }
+
+    override fun deleteAmountsByBillId(billId: String) {
+        appExecutors.diskIO.execute { amountsDao.deleteAmountsByBillId(billId) }
+    }
+
+    override fun deleteAmountsByBillIdSync(billId: String) {
+        amountsDao.deleteAmountsByBillId(billId)
     }
 
     override fun refreshAmounts() {
@@ -79,4 +100,4 @@ class AmountsLocalDataSource private constructor(
             INSTANCE = null
         }
     }
-}
+}*/

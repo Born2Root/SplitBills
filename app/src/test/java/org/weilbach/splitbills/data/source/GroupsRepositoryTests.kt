@@ -11,7 +11,7 @@ import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.GroupData
 import org.weilbach.splitbills.util.any
 import org.weilbach.splitbills.util.capture
 import org.weilbach.splitbills.util.eq
@@ -20,12 +20,12 @@ import org.weilbach.splitbills.util.eq
 /**
  * Unit tests for the implementation of the in-memory repository with cache.
  */
-class GroupsRepositoryTest {
+class GroupRepositoryTest {
 
     private val GROUP_TITLE = "title"
     private val GROUP_TITLE2 = "title2"
     private val GROUP_TITLE3 = "title3"
-    private val GROUP = Lists.newArrayList(Group("Title1"), Group("Title2"))
+    private val GROUP = Lists.newArrayList(GroupData("Title1"), GroupData("Title2"))
     private lateinit var groupsRepository: GroupsRepository
 
     @Mock
@@ -85,7 +85,7 @@ class GroupsRepositoryTest {
     @Test
     fun saveGroup_savesGroupToServiceAPI() {
         // Given a stub group with title and description
-        val newGroup = Group(GROUP_TITLE)
+        val newGroup = GroupData(GROUP_TITLE)
 
         // When a group is saved to the tasks repository
         groupsRepository.saveGroup(newGroup, saveGroupCallback)
@@ -108,18 +108,18 @@ class GroupsRepositoryTest {
     @Test
     fun deleteAllGroups_deleteGroupsToServiceAPIUpdatesCache() {
         with(groupsRepository) {
-            val newGroup = Group(GROUP_TITLE)
+            val newGroup = GroupData(GROUP_TITLE)
             saveGroup(newGroup, saveGroupCallback)
-            val newGroup2 = Group(GROUP_TITLE2)
+            val newGroup2 = GroupData(GROUP_TITLE2)
             saveGroup(newGroup2, saveGroupCallback)
-            val newGroup3 = Group(GROUP_TITLE3)
+            val newGroup3 = GroupData(GROUP_TITLE3)
             saveGroup(newGroup3, saveGroupCallback)
 
             // When all groups are deleted to the tasks repository
             deleteAllGroups(deleteGroupsCallback)
 
             // Verify the data sources were called
-            verify(this@GroupsRepositoryTest.groupsLocalDataSource)
+            verify(this@GroupRepositoryTest.groupsLocalDataSource)
                     .deleteAllGroups(deleteGroupsCallback)
 
             assertThat(cachedGroups.size, `is`(0))
@@ -130,7 +130,7 @@ class GroupsRepositoryTest {
     fun deleteGroup_deleteGroupToServiceAPIRemovedFromCache() {
         with(groupsRepository) {
             // Given a task in the repository
-            val newGroup = Group(GROUP_TITLE)
+            val newGroup = GroupData(GROUP_TITLE)
             saveGroup(newGroup, saveGroupCallback)
             assertThat(cachedGroups.containsKey(newGroup.name), `is`(true))
 
@@ -138,7 +138,7 @@ class GroupsRepositoryTest {
             deleteGroup(newGroup.name, deleteGroupCallback)
 
             // Verify the data sources were called
-            verify(this@GroupsRepositoryTest.groupsLocalDataSource)
+            verify(this@GroupRepositoryTest.groupsLocalDataSource)
                     .deleteGroup(newGroup.name, deleteGroupCallback)
 
             // Verify it's removed from repository
@@ -190,7 +190,7 @@ class GroupsRepositoryTest {
 
     /*@Test
     fun getGroups_refreshesLocalDataSource() {
-        with(groupsRepository) {
+        with(groupRepository) {
             // Mark cache as dirty to force a reload of data from remote data source.
             refreshGroups()
 
@@ -203,7 +203,7 @@ class GroupsRepositoryTest {
 
         // Verify that the data fetched from the remote data source was saved in local.
         verify(groupsLocalDataSource, times(GROUP.size))
-                .saveGroup(any<Group>(), any<GroupsDataSource.SaveGroupCallback>())
+                .saveGroup(any<GroupData>(), any<GroupsDataSource.SaveGroupCallback>())
     }*/
 
     /**
@@ -227,9 +227,9 @@ class GroupsRepositoryTest {
         getGroupsCallbackCaptor.value.onDataNotAvailable()
     }
 
-    private fun setGroupsAvailable(dataSource: GroupsDataSource, groups: List<Group>) {
+    private fun setGroupsAvailable(dataSource: GroupsDataSource, groupData: List<GroupData>) {
         verify(dataSource).getGroups(capture(getGroupsCallbackCaptor))
-        getGroupsCallbackCaptor.value.onGroupsLoaded(groups)
+        getGroupsCallbackCaptor.value.onGroupsLoaded(groupData)
     }
 
     private fun setGroupNotAvailable(dataSource: GroupsDataSource, groupName: String) {
@@ -237,8 +237,8 @@ class GroupsRepositoryTest {
         getGroupCallbackCaptor.value.onDataNotAvailable()
     }
 
-    private fun setGroupAvailable(dataSource: GroupsDataSource, group: Group) {
-        verify(dataSource).getGroup(eq(group.name), capture(getGroupCallbackCaptor))
-        getGroupCallbackCaptor.value.onGroupLoaded(group)
+    private fun setGroupAvailable(dataSource: GroupsDataSource, groupData: GroupData) {
+        verify(dataSource).getGroup(eq(groupData.name), capture(getGroupCallbackCaptor))
+        getGroupCallbackCaptor.value.onGroupLoaded(groupData)
     }
 }

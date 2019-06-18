@@ -1,7 +1,8 @@
+/*
 package org.weilbach.splitbills.data.local
 
 import androidx.annotation.VisibleForTesting
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.MemberData
 import org.weilbach.splitbills.data.source.MembersDataSource
 import org.weilbach.splitbills.util.AppExecutors
 
@@ -24,18 +25,28 @@ class MembersLocalDataSource private constructor(
     }
 
     override fun getMember(memberEmail: String, callback: MembersDataSource.GetMemberCallback) {
-        val member = membersDao.getMemberByEmail(memberEmail)
-        appExecutors.mainThread.execute {
-            if (member != null) {
-                callback.onMemberLoaded(member)
-            } else {
-                callback.onDataNotAvailable()
+        appExecutors.diskIO.execute {
+            val member = membersDao.getMemberByEmail(memberEmail)
+            appExecutors.mainThread.execute {
+                if (member != null) {
+                    callback.onMemberLoaded(member)
+                } else {
+                    callback.onDataNotAvailable()
+                }
             }
         }
     }
 
-    override fun saveMember(member: Member) {
-        appExecutors.diskIO.execute { membersDao.insertMember(member) }
+    override fun getMemberSync(memberEmail: String): MemberData? {
+        return membersDao.getMemberByEmail(memberEmail)
+    }
+
+    override fun saveMember(memberData: MemberData) {
+        appExecutors.diskIO.execute { membersDao.insertMember(memberData) }
+    }
+
+    override fun saveMemberSync(memberData: MemberData) {
+        membersDao.insertMember(memberData)
     }
 
     override fun deleteMember(memberEmail: String) {
@@ -68,4 +79,4 @@ class MembersLocalDataSource private constructor(
             INSTANCE = null
         }
     }
-}
+}*/

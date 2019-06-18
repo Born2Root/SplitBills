@@ -1,16 +1,22 @@
 package org.weilbach.splitbills.group
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
-import org.weilbach.splitbills.data.Group
+import androidx.fragment.app.Fragment
+import org.weilbach.splitbills.R
+import org.weilbach.splitbills.data2.Group
 import org.weilbach.splitbills.databinding.GroupItemBinding
+import org.weilbach.splitbills.util.AppExecutors
 
 class GroupAdapter(
         private var groups: List<Group>,
-        private val groupViewModel: GroupViewModel
+        private val groupViewModel: GroupViewModel,
+        private val parent: Fragment
 ) : BaseAdapter() {
 
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
@@ -27,14 +33,26 @@ class GroupAdapter(
         }
 
         val userActionsListener = object : GroupItemUserActionsListener {
-            override fun onGroupClicked(group: Group) {
-                groupViewModel.openGroup(group.name)
+            override fun onGroupClicked(groupItemViewModel: GroupItemViewModel) {
+                groupViewModel.openGroup(groupItemViewModel.groupName)
             }
         }
 
         with(binding) {
-            group = groups[position]
+            parent.context?.let { context ->
+                viewmodel = GroupItemViewModel(
+                        groups[position],
+                        groupViewModel,
+                        AppExecutors(),
+                        parent.viewLifecycleOwner,
+                        context)
+
+                root.setOnCreateContextMenuListener { menu, _, _ ->
+                    menu?.add(0, 0, position, context.getString(R.string.remove))
+                }
+            }
             listener = userActionsListener
+            lifecycleOwner = parent.viewLifecycleOwner
             executePendingBindings()
         }
 
@@ -53,12 +71,12 @@ class GroupAdapter(
         return groups.size
     }
 
-    fun replaceData(groups: List<Group>) {
-        setList(groups)
+    fun replaceData(groupData: List<Group>) {
+        setList(groupData)
     }
 
-    private fun setList(groups: List<Group>) {
-        this.groups = groups
+    private fun setList(groupData: List<Group>) {
+        this.groups = groupData
         notifyDataSetChanged()
     }
 }

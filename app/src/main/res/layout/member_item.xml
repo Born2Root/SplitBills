@@ -6,33 +6,35 @@
         <import type="android.view.View.OnClickListener" />
 
         <variable
-            name="member"
-            type="org.weilbach.splitbills.data.Member" />
+            name="viewmodel"
+            type="org.weilbach.splitbills.data2.Member" />
+
+        <variable
+            name="navigator"
+            type="org.weilbach.splitbills.MemberItemNavigator" />
 
     </data>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:onClick="@{navigator::onClick}">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@{member.name}" />
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:text="@{viewmodel.name}" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@{member.email}" />
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:text="@{viewmodel.email}" />
 
         </LinearLayout>
-
-    </RelativeLayout>
 </layout>

@@ -17,10 +17,7 @@ package org.weilbach.splitbills
 
 import android.content.Context
 import org.weilbach.splitbills.data.local.*
-import org.weilbach.splitbills.data.source.BillsRepository
-import org.weilbach.splitbills.data.source.GroupsMembersRepository
-import org.weilbach.splitbills.data.source.GroupsRepository
-import org.weilbach.splitbills.data.source.MembersRepository
+import org.weilbach.splitbills.data.source.*
 
 import org.weilbach.splitbills.util.AppExecutors
 
@@ -43,6 +40,20 @@ object Injection {
         return GroupsRepository.getInstance(
                 GroupsLocalDataSource.getInstance(AppExecutors(),
                         database.groupsDao()))
+    }
+
+/*    fun provideAmountsRepository(context: Context): AmountsRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return AmountsRepository.getInstance(
+                AmountsLocalDataSource.getInstance(AppExecutors(),
+                        database.amountsDao()))
+    }*/
+
+    fun provideDebtorsRepository(context: Context): DebtorsRepository {
+        val database = SplitBillsDatabase.getInstance(context)
+        return DebtorsRepository.getInstance(
+                DebtorsLocalDataSource.getInstance(AppExecutors(),
+                        database.debtorsDao()))
     }
 
     fun provideMembersRepository(context: Context): MembersRepository {

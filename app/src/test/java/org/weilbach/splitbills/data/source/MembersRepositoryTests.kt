@@ -11,7 +11,7 @@ import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.MemberData
 import org.weilbach.splitbills.util.any
 import org.weilbach.splitbills.util.capture
 import org.weilbach.splitbills.util.eq
@@ -58,7 +58,7 @@ class MembersRepositoryTests {
 
     @Test
     fun saveMember_savesMemberToServiceAPI() {
-        val newMember = Member(MEMBER_NAME1, MEMBER_EMAIL1)
+        val newMember = MemberData(MEMBER_NAME1, MEMBER_EMAIL1)
 
         membersRepository.saveMember(newMember)
 
@@ -75,11 +75,11 @@ class MembersRepositoryTests {
     @Test
     fun deleteAllMembers_deleteMembersToServiceAPIUpdatesCache() {
         with(membersRepository) {
-            val newMember = Member(MEMBER_NAME1, MEMBER_EMAIL1)
+            val newMember = MemberData(MEMBER_NAME1, MEMBER_EMAIL1)
             saveMember(newMember)
-            val newMember2 = Member(MEMBER_NAME2, MEMBER_EMAIL2)
+            val newMember2 = MemberData(MEMBER_NAME2, MEMBER_EMAIL2)
             saveMember(newMember2)
-            val newMember3 = Member(MEMBER_NAME3, MEMBER_EMAIL3)
+            val newMember3 = MemberData(MEMBER_NAME3, MEMBER_EMAIL3)
             saveMember(newMember3)
 
             deleteAllMembers()
@@ -94,7 +94,7 @@ class MembersRepositoryTests {
     @Test
     fun deleteMember_deleteMemberToServiceAPIRemovedFromCache() {
         with(membersRepository) {
-            val newMember = Member(MEMBER_NAME1, MEMBER_NAME1)
+            val newMember = MemberData(MEMBER_NAME1, MEMBER_NAME1)
             saveMember(newMember)
             assertThat(cachedMembers.containsKey(newMember.name), `is`(true))
 
@@ -150,9 +150,9 @@ class MembersRepositoryTests {
         getMembersCallbackCaptor.value.onDataNotAvailable()
     }
 
-    private fun setMembersAvailable(dataSource: MembersDataSource, members: List<Member>) {
+    private fun setMembersAvailable(dataSource: MembersDataSource, memberData: List<MemberData>) {
         verify(dataSource).getMembers(capture(getMembersCallbackCaptor))
-        getMembersCallbackCaptor.value.onMembersLoaded(members)
+        getMembersCallbackCaptor.value.onMembersLoaded(memberData)
     }
 
     private fun setMemberNotAvailable(dataSource: MembersDataSource, memberEmail: String) {
@@ -169,9 +169,9 @@ class MembersRepositoryTests {
         private const val MEMBER_EMAIL3 = "mail3@mail.com"
 
         private val MEMBERS = Lists.newArrayList(
-                Member(MEMBER_NAME1, MEMBER_EMAIL1),
-                Member(MEMBER_NAME2, MEMBER_EMAIL2),
-                Member(MEMBER_NAME3, MEMBER_EMAIL3)
+                MemberData(MEMBER_NAME1, MEMBER_EMAIL1),
+                MemberData(MEMBER_NAME2, MEMBER_EMAIL2),
+                MemberData(MEMBER_NAME3, MEMBER_EMAIL3)
         )
     }
 }

@@ -1,16 +1,17 @@
+/*
 package org.weilbach.splitbills.data.source
 
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.MemberData
 
 interface MembersDataSource {
 
     interface GetMembersCallback {
-        fun onMembersLoaded(members: List<Member>)
+        fun onMembersLoaded(memberData: List<MemberData>)
         fun onDataNotAvailable()
     }
 
     interface GetMemberCallback {
-        fun onMemberLoaded(member: Member)
+        fun onMemberLoaded(memberData: MemberData)
         fun onDataNotAvailable()
     }
 
@@ -18,11 +19,15 @@ interface MembersDataSource {
 
     fun getMember(memberEmail: String, callback: GetMemberCallback)
 
-    fun saveMember(member: Member)
+    fun getMemberSync(memberEmail: String): MemberData?
+
+    fun saveMember(memberData: MemberData)
+
+    fun saveMemberSync(memberData: MemberData)
 
     fun deleteMember(memberEmail: String)
 
     fun deleteAllMembers()
 
     fun refreshMembers()
-}
+}*/

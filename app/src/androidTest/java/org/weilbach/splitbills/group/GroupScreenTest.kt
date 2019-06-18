@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 package org.weilbach.splitbills.group
 
 import android.view.View
@@ -42,14 +43,17 @@ import org.weilbach.splitbills.ViewModelFactory
 import org.weilbach.splitbills.data.source.GroupsDataSource
 import org.weilbach.splitbills.util.EspressoIdlingResource
 
+*/
 /**
  * Tests for the groups screen, the main screen which contains a list of all groups.
- */
+ *//*
+
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class GroupScreenTest {
 
-    val NAME1 = "Group name 1"
+    */
+/*val NAME1 = "GroupData name 1"
 
     @get:Rule
     var groupsActivityTestRule =
@@ -58,7 +62,7 @@ class GroupScreenTest {
     @Before
     fun resetState() {
         ViewModelFactory.destroyInstance()
-        Injection.provideGroupsRepository(ApplicationProvider.getApplicationContext())
+        Injection.provideGroupRepository(ApplicationProvider.getApplicationContext())
                 .deleteAllGroups(object : GroupsDataSource.DeleteGroupsCallback {
                     override fun onGroupsDeleted() {
                     }
@@ -122,7 +126,9 @@ class GroupScreenTest {
         }
     }
 
-    /*@Test
+    *//*
+*/
+/*@Test
     fun editTask() {
         // First add a task
         createGroup(TITLE1, DESCRIPTION)
@@ -153,6 +159,10 @@ class GroupScreenTest {
         // Verify previous task is not displayed
         onView(withItemText(TITLE1)).check(doesNotExist())
     }*//*
+*/
+/**//*
+*/
+/*
 
     @Test
     fun markTaskAsComplete() {
@@ -495,9 +505,14 @@ class GroupScreenTest {
         onView(withId(R.id.noTasksAdd)).check(matches(not(isDisplayed())))
     }
 
-    */
-    /*
+    *//*
+*/
+/*
+    *//*
+*/
+/*
 
     private fun getText(stringId: Int) =
-            groupsActivityTestRule.activity.resources.getString(stringId)*/
-}
+            groupsActivityTestRule.activity.resources.getString(stringId)*//*
+
+}*/

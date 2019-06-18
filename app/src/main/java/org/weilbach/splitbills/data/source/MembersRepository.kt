@@ -1,13 +1,14 @@
+/*
 package org.weilbach.splitbills.data.source
 
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.MemberData
 import org.weilbach.splitbills.util.EspressoIdlingResource
 
 class MembersRepository private constructor(
         private val membersLocalDataSource: MembersDataSource
 ) : MembersDataSource {
 
-    var cachedMembers: LinkedHashMap<String, Member> = LinkedHashMap()
+    var cachedMembers: LinkedHashMap<String, MemberData> = LinkedHashMap()
 
     var cacheIsDirty = false
 
@@ -20,8 +21,8 @@ class MembersRepository private constructor(
         EspressoIdlingResource.increment()
 
         membersLocalDataSource.getMembers(object : MembersDataSource.GetMembersCallback {
-            override fun onMembersLoaded(members: List<Member>) {
-                refreshCache(members)
+            override fun onMembersLoaded(memberData: List<MemberData>) {
+                refreshCache(memberData)
                 EspressoIdlingResource.decrement()
                 callback.onMembersLoaded(ArrayList(cachedMembers.values))
             }
@@ -33,10 +34,15 @@ class MembersRepository private constructor(
         })
     }
 
-    override fun saveMember(member: Member) {
-        cacheAndPerform(member) {
+    override fun saveMember(memberData: MemberData) {
+        cacheAndPerform(memberData) {
             membersLocalDataSource.saveMember(it)
         }
+    }
+
+    override fun saveMemberSync(memberData: MemberData) {
+        membersLocalDataSource.saveMemberSync(memberData)
+        cacheAndPerform(memberData) {}
     }
 
     override fun getMember(memberEmail: String, callback: MembersDataSource.GetMemberCallback) {
@@ -44,13 +50,14 @@ class MembersRepository private constructor(
 
         if (memberInCache != null) {
             callback.onMemberLoaded(memberInCache)
+            return
         }
 
         EspressoIdlingResource.increment()
 
         membersLocalDataSource.getMember(memberEmail, object : MembersDataSource.GetMemberCallback {
-            override fun onMemberLoaded(member: Member) {
-                cacheAndPerform(member) {
+            override fun onMemberLoaded(memberData: MemberData) {
+                cacheAndPerform(memberData) {
                     EspressoIdlingResource.decrement()
                     callback.onMemberLoaded(it)
                 }
@@ -61,6 +68,20 @@ class MembersRepository private constructor(
                 callback.onDataNotAvailable()
             }
         })
+    }
+
+    override fun getMemberSync(memberEmail: String): MemberData? {
+        val memberInCache = getMemberWithEmail(memberEmail)
+
+        if (memberInCache != null) {
+            return memberInCache
+        }
+
+        val member = membersLocalDataSource.getMemberSync(memberEmail)
+        member?.let {
+            cacheAndPerform(it) {}
+        }
+        return member
     }
 
     override fun refreshMembers() {
@@ -77,16 +98,16 @@ class MembersRepository private constructor(
         cachedMembers.remove(memberEmail)
     }
 
-    private fun refreshCache(members: List<Member>) {
+    private fun refreshCache(memberData: List<MemberData>) {
         cachedMembers.clear()
-        members.forEach {
+        memberData.forEach {
             cacheAndPerform(it) { }
         }
         cacheIsDirty = false
     }
 
-    private inline fun cacheAndPerform(member: Member, perform: (Member) -> Unit) {
-        val cachedMember = Member(member.name, member.email)
+    private inline fun cacheAndPerform(memberData: MemberData, perform: (MemberData) -> Unit) {
+        val cachedMember = MemberData(memberData.name, memberData.email)
         cachedMembers[cachedMember.email] = cachedMember
         perform(cachedMember)
     }
@@ -108,4 +129,4 @@ class MembersRepository private constructor(
             INSTANCE = null
         }
     }
-}
+}*/

@@ -1,11 +1,12 @@
+/*
 package org.weilbach.splitbills.data.source
 
-import org.weilbach.splitbills.data.Debtor
+import org.weilbach.splitbills.data.DebtorData
 
 interface DebtorsDataSource {
 
     interface GetDebtorsCallback {
-        fun onDebtorsLoaded(debtors: List<Debtor>)
+        fun onDebtorsLoaded(debtorData: List<DebtorData>)
         fun onDataNotAvailable()
     }
 
@@ -13,9 +14,17 @@ interface DebtorsDataSource {
 
     fun getDebtorsByBillId(billId: String, callback: GetDebtorsCallback)
 
-    fun saveDebtor(debtor: Debtor)
+    fun getDebtorsByBillIdSync(billId: String): List<DebtorData>
+
+    fun saveDebtor(debtorData: DebtorData)
+
+    fun saveDebtorSync(debtorData: DebtorData)
 
     fun deleteAllDebtors()
 
+    fun deleteDebtorsByBillId(billId: String)
+
+    fun deleteDebtorsByBillIdSync(billId: String)
+
     fun refreshDebtors()
-}
+}*/

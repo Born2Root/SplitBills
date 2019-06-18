@@ -1,7 +1,8 @@
+/*
 package org.weilbach.splitbills.data.local
 
 import androidx.annotation.VisibleForTesting
-import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.GroupData
 import org.weilbach.splitbills.data.source.GroupsDataSource
 import org.weilbach.splitbills.util.AppExecutors
 
@@ -24,6 +25,10 @@ class GroupsLocalDataSource private constructor(
         }
     }
 
+    override fun getGroupsSync(): List<GroupData> {
+        return groupsDao.getGroups()
+    }
+
     override fun getGroup(groupName: String, callback: GroupsDataSource.GetGroupCallback) {
         val group = groupsDao.getGroupByName(groupName)
         appExecutors.mainThread.execute {
@@ -35,12 +40,26 @@ class GroupsLocalDataSource private constructor(
         }
     }
 
-    override fun saveGroup(group: Group, callback: GroupsDataSource.SaveGroupCallback) {
-        appExecutors.diskIO.execute { groupsDao.insertGroup(group) }
+    override fun saveGroup(group: GroupData, callback: GroupsDataSource.SaveGroupCallback) {
+        appExecutors.diskIO.execute {
+            groupsDao.insertGroup(group)
+            callback.onGroupSaved()
+        }
+    }
+
+    override fun saveGroupSync(group: GroupData) {
+        groupsDao.insertGroup(group)
     }
 
     override fun deleteGroup(groupName: String, callback: GroupsDataSource.DeleteGroupCallback) {
-        appExecutors.diskIO.execute { groupsDao.deleteGroupByName(groupName) }
+        appExecutors.diskIO.execute {
+            groupsDao.deleteGroupByName(groupName)
+            callback.onGroupDeleted()
+        }
+    }
+
+    override fun deleteGroupSync(groupName: String) {
+        groupsDao.deleteGroupByName(groupName)
     }
 
     override fun deleteAllGroups(callback: GroupsDataSource.DeleteGroupsCallback) {
@@ -71,4 +90,4 @@ class GroupsLocalDataSource private constructor(
             INSTANCE = null
         }
     }
-}
+}*/

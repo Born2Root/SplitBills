@@ -1,4 +1,4 @@
-package org.weilbach.splitbills.data
+package org.weilbach.splitbills.data2
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,17 +10,21 @@ import androidx.room.ForeignKey
             ForeignKey(
                     entity = Group::class,
                     parentColumns = ["name"],
-                    childColumns = ["group_name"]
+                    childColumns = ["group_name"],
+                    onUpdate = ForeignKey.CASCADE,
+                    onDelete = ForeignKey.CASCADE
             ),
             ForeignKey(
                     entity = Member::class,
                     parentColumns = ["email"],
-                    childColumns = ["member_email"]
+                    childColumns = ["member_email"],
+                    onUpdate = ForeignKey.CASCADE,
+                    onDelete = ForeignKey.CASCADE
             )
         ]
 )
 data class GroupMember constructor(
         @ColumnInfo(name = "group_name") val groupName: String,
-        @ColumnInfo(name = "member_email") val memberEmail: String
+        @ColumnInfo(name = "member_email", index = true) val memberEmail: String
 ) {
 }

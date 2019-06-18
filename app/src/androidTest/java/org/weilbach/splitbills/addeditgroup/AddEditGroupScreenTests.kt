@@ -1,3 +1,4 @@
+/*
 package org.weilbach.splitbills.addeditgroup
 
 import androidx.test.core.app.ApplicationProvider
@@ -15,7 +16,8 @@ import org.weilbach.splitbills.data.source.GroupsDataSource
 @LargeTest
 class AddEditGroupScreenTests {
 
-    @get:Rule
+    */
+/*@get:Rule
     var addEditGroupActivityTestRule =
             ActivityTestRule<AddEditGroupActivity>(AddEditGroupActivity::class.java)
 
@@ -34,5 +36,6 @@ class AddEditGroupScreenTests {
                 .deleteAllMembers()
         Injection.provideGroupsMembersRepository(ApplicationProvider.getApplicationContext())
                 .deleteAllGroupsMembers()
-    }
-}
+    }*//*
+
+}*/
