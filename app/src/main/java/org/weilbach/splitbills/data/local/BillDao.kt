@@ -1,30 +1,41 @@
-/*
 package org.weilbach.splitbills.data.local
 
-import androidx.room.*
-import org.weilbach.splitbills.data.BillData
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import org.weilbach.splitbills.data.Bill
+import org.weilbach.splitbills.data.BillDebtors
 
 @Dao
-interface BillDao {
-
-    @Query("SELECT * FROM bills")
-    fun getBills(): List<BillData>
-
-    @Query("SELECT * FROM bills WHERE id = :billId")
-    fun getBillById(billId: String): BillData?
-
-    @Query("SELECT * FROM bills WHERE group_name = :groupName")
-    fun getBillsByGroupName(groupName: String): List<BillData>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBill(bill: BillData)
-
-    @Update
-    fun updateBill(bill: BillData): Int
+interface BillDao : BaseDao<Bill> {
 
     @Query("DELETE FROM bills WHERE id = :billId")
     fun deleteBillById(billId: String): Int
 
+    @Query("SELECT * FROM bills")
+    fun getBills(): LiveData<List<Bill>>
+
+    @Query("SELECT * FROM bills WHERE id = :billId")
+    fun getBillById(billId: String): LiveData<Bill>
+
+    @Query("SELECT * FROM bills WHERE id = :billId")
+    fun getBillWithDebtorsById(billId: String): LiveData<BillDebtors>
+
+    @Query("SELECT * FROM bills WHERE id = :billId")
+    fun getBillByIdSync(billId: String): Bill?
+
+    @Query("SELECT * FROM bills WHERE group_name = :groupName")
+    fun getBillsByGroupName(groupName: String): LiveData<List<Bill>>
+
+    @Query("SELECT * FROM bills WHERE group_name = :groupName ORDER BY date_time DESC")
+    fun getBillsByGroupNameOrdered(groupName: String): LiveData<List<Bill>>
+
+    @Transaction
+    @Query("SELECT * FROM bills WHERE group_name = :groupName")
+    fun getBillsWithDebtorsByGroupName(groupName: String): LiveData<List<BillDebtors>>
+
     @Query("DELETE FROM bills")
     fun deleteBills()
-}*/
+
+}

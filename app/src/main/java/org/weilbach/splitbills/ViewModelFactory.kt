@@ -24,10 +24,10 @@ import androidx.lifecycle.ViewModelProvider
 import org.weilbach.splitbills.addeditbill.AddEditBillViewModel
 import org.weilbach.splitbills.addeditgroup.AddEditGroupViewModel
 import org.weilbach.splitbills.addmember.AddMemberViewModel
-import org.weilbach.splitbills.balances.BalancesItemViewModel
 import org.weilbach.splitbills.balances.BalancesViewModel
+import org.weilbach.splitbills.billdetail.BillDetailViewModel
 import org.weilbach.splitbills.bills.BillsViewModel
-import org.weilbach.splitbills.data2.source.*
+import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.group.GroupViewModel
 import org.weilbach.splitbills.util.AppExecutors
 
@@ -51,6 +51,12 @@ class ViewModelFactory private constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>) =
             with(modelClass) {
                 when {
+                    isAssignableFrom(BillDetailViewModel::class.java) ->
+                        BillDetailViewModel(
+                                billsRepository,
+                                membersRepository,
+                                groupsMembersRepository,
+                                appContext)
                     isAssignableFrom(BalancesViewModel::class.java) ->
                         BalancesViewModel(
                                 billsRepository,

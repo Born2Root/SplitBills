@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.FragmentBalancesBinding
 import org.weilbach.splitbills.util.setupSnackbar
 

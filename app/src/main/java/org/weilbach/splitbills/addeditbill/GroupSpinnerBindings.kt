@@ -3,7 +3,7 @@ package org.weilbach.splitbills.addeditbill
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import org.weilbach.splitbills.addeditgroup.GroupSpinnerAdapter
-import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data.Group
 
 object GroupSpinnerBindings {
 
@@ -16,10 +16,4 @@ object GroupSpinnerBindings {
             }
         }
     }
-
-    /*@BindingAdapter("android:selection")
-    @JvmStatic
-    fun setSelection(spinner: Spinner, pos: Int) {
-
-    }*/
 }

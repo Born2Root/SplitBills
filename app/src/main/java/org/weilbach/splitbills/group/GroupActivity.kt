@@ -26,20 +26,14 @@ import org.weilbach.splitbills.util.setupActionBar
 
 class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
 
-    private lateinit var drawerLayout: DrawerLayout
-
     private lateinit var viewModel: GroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
 
-        setupActionBar(R.id.act_group_toolbar) {
-            // setHomeAsUpIndicator(R.drawable.ic_menu)
-            // setDisplayHomeAsUpEnabled(true)
-        }
+        setupActionBar(R.id.act_group_toolbar) { }
 
-        // setupNavigationDrawer()
         setupFab()
         setupViewFragment()
 
@@ -50,7 +44,7 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
 
                 }
             })
-            // Subscribe to "new group" event
+
             newGroupEvent.observe(this@GroupActivity, Observer<Event<Unit>> { event ->
                 event.getContentIfNotHandled()?.let {
                     this@GroupActivity.addNewGroup()
@@ -79,10 +73,6 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
         handleFirstStart()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun handleFirstStart() {
         if (getFirstStart(applicationContext)) {
             startActivity(Intent(this, FirstStartActivity::class.java))
@@ -109,7 +99,7 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
                 return false
             }
         }
-        return  obtainViewModel().onContextItemSelected(item)
+        return obtainViewModel().onContextItemSelected(item)
     }
 
     private fun setupFab() {
@@ -126,14 +116,6 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
                         R.id.act_group_content_frame)
     }
 
-    /*private fun setupNavigationDrawer() {
-        drawerLayout = (findViewById<DrawerLayout>(R.id.act_group_drawer_layout))
-                .apply {
-                    setStatusBarBackground(R.color.colorPrimaryDark)
-                }
-        setupDrawerContent(findViewById(R.id.act_group_nav_view))
-    }*/
-
     override fun onOptionsItemSelected(item: MenuItem) =
             when (item.itemId) {
                 R.id.menu_frag_groups_settings -> {
@@ -145,35 +127,11 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
                     startImportGroupActivity()
                     true
                 }
-/*                android.R.id.home -> {
-                    // Open the navigation drawer when the home icon is selected from the toolbar.
-                    drawerLayout.openDrawer(GravityCompat.START)
-                    true
-                } */
                 else -> super.onOptionsItemSelected(item)
             }
 
-    private fun setupDrawerContent(navigationView: NavigationView) {
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                /*R.id.list_navigation_menu_item -> {
-                    // Do nothing, we're already on that screen
-                }*/
-                /*R.id.statistics_navigation_menu_item -> {
-                    val intent = Intent(this@TasksActivity, StatisticsActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    }
-                    startActivity(intent)
-                }*/
-            }
-            // Close the navigation drawer when an item is selected.
-            menuItem.isChecked = true
-            drawerLayout.closeDrawers()
-            true
-        }
-    }
-
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleActivityResult(requestCode, resultCode, data)
     }
 
@@ -189,11 +147,6 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
             putExtra(BillsActivity.EXTRA_GROUP_NAME, groupId)
         }
         startActivity(intent)
-/*        val intent = Intent(this, TaskDetailActivity::class.java).apply {
-            putExtra(GroupDetailActivity.EXTRA_TASK_ID, taskId)
-        }
-        startActivityForResult(intent, AddEditGroupActivity.REQUEST_CODE*/
-
     }
 
     override fun addNewGroup() {

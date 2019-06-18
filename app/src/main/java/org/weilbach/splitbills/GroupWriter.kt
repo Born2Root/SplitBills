@@ -1,16 +1,10 @@
 package org.weilbach.splitbills
 
 import android.util.Xml
-import org.weilbach.splitbills.data2.GroupMembersBillsDebtors
-import org.weilbach.splitbills.data2.Member
-import org.weilbach.splitbills.data2.local.Converter
-import org.weilbach.splitbills.data2.local.SplitBillsDatabase
+import org.weilbach.splitbills.data.GroupMembersBillsDebtors
+import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.local.Converter
 import java.io.StringWriter
-
-/*interface GroupWriterCallback {
-    fun onSuccess(xml: String)
-    fun onFailure()
-}*/
 
 private val converter = Converter()
 private const val DB_VERSION = "1"

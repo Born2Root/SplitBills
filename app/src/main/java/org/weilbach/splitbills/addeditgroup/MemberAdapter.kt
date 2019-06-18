@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import org.weilbach.splitbills.MemberItemNavigator
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data2.Member
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.databinding.MemberItemBinding
 
 class MemberAdapter(

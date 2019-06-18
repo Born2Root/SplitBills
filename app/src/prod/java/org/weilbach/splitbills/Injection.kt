@@ -17,8 +17,8 @@
 package org.weilbach.splitbills
 
 import android.content.Context
-import org.weilbach.splitbills.data2.local.*
-import org.weilbach.splitbills.data2.source.*
+import org.weilbach.splitbills.data.local.*
+import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.util.AppExecutors
 
 /**

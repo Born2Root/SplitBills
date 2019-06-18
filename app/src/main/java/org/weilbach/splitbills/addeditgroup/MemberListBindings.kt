@@ -3,7 +3,7 @@ package org.weilbach.splitbills.addeditgroup
 import android.widget.ListView
 import androidx.databinding.BindingAdapter
 import org.weilbach.splitbills.balances.BalancesAdapter
-import org.weilbach.splitbills.data2.Member
+import org.weilbach.splitbills.data.Member
 
 object MemberListBindings {
     @BindingAdapter("app:items")

@@ -1,10 +1,10 @@
 package org.weilbach.splitbills
 
 import android.util.Xml
-import org.weilbach.splitbills.data2.*
-import org.weilbach.splitbills.data2.Bill
-import org.weilbach.splitbills.data2.Group
-import org.weilbach.splitbills.data2.local.Converter
+import org.weilbach.splitbills.data.*
+import org.weilbach.splitbills.data.Bill
+import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.local.Converter
 import org.xmlpull.v1.XmlPullParser
 import java.io.InputStream
 import org.xmlpull.v1.XmlPullParserException

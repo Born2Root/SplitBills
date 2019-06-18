@@ -66,11 +66,11 @@
                     android:text="@string/view_balances"
                     android:onClick="@{() -> viewmodel.openBalances()}" />
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/frag_bill_bills_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:items="@{viewmodel.items}" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
         </RelativeLayout>
     </org.weilbach.splitbills.ScrollChildSwipeRefreshLayout>

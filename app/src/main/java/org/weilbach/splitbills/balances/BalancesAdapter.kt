@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import org.weilbach.splitbills.data2.Group
-import org.weilbach.splitbills.data2.Member
-import org.weilbach.splitbills.data2.source.GroupRepository
+import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.databinding.BalancesItemBinding
 import org.weilbach.splitbills.util.AppExecutors
 

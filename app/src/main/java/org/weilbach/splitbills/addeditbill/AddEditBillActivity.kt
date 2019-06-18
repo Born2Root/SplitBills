@@ -1,15 +1,8 @@
 package org.weilbach.splitbills.addeditbill
 
-import android.database.DataSetObserver
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.FrameLayout
-import android.widget.ListAdapter
-import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -44,14 +37,6 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
         subscribeToNavigationChanges()
         subscribeToCreditorChanges()
         subscribeToAddDebtorChanges()
-
-        /*viewModel = obtainViewModel().apply {
-            addMember.observe(this@AddEditGroupActivity, Observer<Event<Unit>> { event ->
-                event.getContentIfNotHandled()?.let {
-                    this@AddEditGroupActivity.addMember()
-                }
-            })
-        }*/
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -94,25 +79,7 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
 
         AlertDialog.Builder(this)
                 .setTitle(getString(R.string.alert_dialog_debtor_title))
-                /*.setAdapter(object : BaseAdapter() {
-                    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                    override fun getItem(position: Int): Any {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                    override fun getItemId(position: Int): Long {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                    override fun getCount(): Int {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
-
-                }) { dialog, which ->  }*/
-                .setItems(memberItems.toTypedArray()) { dialog, which ->
+                .setItems(memberItems.toTypedArray()) { _, which ->
                     obtainViewModel().debtorAdded(obtainViewModel().availableMembers.value!![which])
                 }
                 .create()
@@ -120,7 +87,6 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
     }
 
     private fun subscribeToNavigationChanges() {
-        // The activity observes the navigation events in the ViewModel
         obtainViewModel().billUpdatedEvent.observe(this, Observer {
             this@AddEditBillActivity.onBillSaved()
         })
@@ -134,10 +100,6 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
                                     intent.getStringExtra(AddEditBillFragment.ARGUMENT_EDIT_BILL_ID))
                         }
                     }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        viewModel.handleActivityOnResult(requestCode, resultCode, data)
-    }*/
 
     fun obtainViewModel(): AddEditBillViewModel = obtainViewModel(AddEditBillViewModel::class.java)
 

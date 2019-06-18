@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
-import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.GroupSpinnerItemBinding
 import java.lang.IllegalStateException
 

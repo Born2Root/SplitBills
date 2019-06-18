@@ -2,17 +2,9 @@ package org.weilbach.splitbills.group
 
 import android.widget.ListView
 import androidx.databinding.BindingAdapter
-import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data.Group
 
 object GroupListBindings {
-
-    /*@BindingAdapter("app:items")
-    @JvmStatic
-    fun setItems(listView: ListView, items: List<GroupData>) {
-        with(listView.adapter as GroupAdapter) {
-            replaceData(items)
-        }
-    }*/
 
     @BindingAdapter("app:items")
     @JvmStatic

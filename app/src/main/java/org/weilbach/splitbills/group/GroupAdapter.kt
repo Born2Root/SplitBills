@@ -1,7 +1,5 @@
 package org.weilbach.splitbills.group
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +7,7 @@ import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.GroupItemBinding
 import org.weilbach.splitbills.util.AppExecutors
 

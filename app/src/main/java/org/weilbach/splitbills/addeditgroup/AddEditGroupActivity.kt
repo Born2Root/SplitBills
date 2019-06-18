@@ -48,7 +48,6 @@ class AddEditGroupActivity : AppCompatActivity(), AddEditGroupNavigator {
     }
 
     private fun subscribeToNavigationChanges() {
-        // The activity observes the navigation events in the ViewModel
         obtainViewModel().groupUpdatedEvent.observe(this, Observer {
             this@AddEditGroupActivity.onGroupSaved()
         })
@@ -63,12 +62,13 @@ class AddEditGroupActivity : AppCompatActivity(), AddEditGroupNavigator {
                         }
                     }
 
-    fun addMember() {
+    private fun addMember() {
         val intent = Intent(this, AddMemberActivity::class.java)
         startActivityForResult(intent, AddMemberActivity.REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleActivityOnResult(requestCode, resultCode, data)
     }
 

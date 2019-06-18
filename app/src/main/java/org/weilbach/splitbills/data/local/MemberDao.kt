@@ -1,27 +1,25 @@
-/*
 package org.weilbach.splitbills.data.local
 
-import androidx.room.*
-import org.weilbach.splitbills.data.MemberData
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Query
+import org.weilbach.splitbills.data.Member
 
 @Dao
-interface MemberDao {
+interface MemberDao : BaseDao<Member> {
 
     @Query("SELECT * FROM members")
-    fun getMembers(): List<MemberData>
+    fun getMembers(): LiveData<List<Member>>
 
     @Query("SELECT * FROM members WHERE email = :memberEmail")
-    fun getMemberByEmail(memberEmail: String): MemberData?
+    fun getMemberByEmail(memberEmail: String): LiveData<Member>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMember(memberData: MemberData)
-
-    @Update
-    fun updateMember(memberData: MemberData): Int
+    @Query("SELECT * FROM members WHERE email = :memberEmail")
+    fun getMemberByEmailSync(memberEmail: String): Member?
 
     @Query("DELETE FROM members WHERE email = :memberEmail")
     fun deleteMemberByEmail(memberEmail: String): Int
 
     @Query("DELETE FROM members")
     fun deleteMembers()
-}*/
+}

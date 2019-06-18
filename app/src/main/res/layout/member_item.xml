@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="org.weilbach.splitbills.data2.Member" />
+            type="org.weilbach.splitbills.data.Member" />
 
         <variable
             name="navigator"

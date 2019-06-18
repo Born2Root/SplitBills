@@ -7,7 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity
-import org.weilbach.splitbills.data2.Member
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.group.GroupActivity
 import org.weilbach.splitbills.util.setCurrency
 import org.weilbach.splitbills.util.setFirstStart
@@ -31,6 +31,7 @@ class FirstStartActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             Activity.RESULT_OK -> {
                 val name = data?.getStringExtra(AddMemberActivity.RESULT_MEMBER_NAME)

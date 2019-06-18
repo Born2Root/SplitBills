@@ -10,10 +10,6 @@ import org.weilbach.splitbills.util.setupActionBar
 
 class BalancesActivity : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-
-    private lateinit var viewModel: BalancesViewModel
-
     private var groupName: String? = null
 
     override fun onSupportNavigateUp(): Boolean {

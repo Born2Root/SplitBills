@@ -23,31 +23,15 @@ class AddEditGroupFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setUpMemberListAdapter()
-        // setupSaveButton()
         setupAddMemberButton()
         viewDataBinding.viewmodel?.let {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
         setupActionBar()
-        loadData()
     }
-
-    /*override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        activity?.let {
-            val inflater = it.menuInflater
-            inflater.inflate(R.menu.menu_member_item, menu)
-        }
-        menu.setHeaderTitle("MemberData")
-    }*/
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return viewDataBinding.viewmodel?.onContextItemSelected(item) ?: false
-    }
-
-    private fun loadData() {
-        // Add or edit an existing task?
-        //viewDataBinding.viewmodel?.start(arguments?.getString(ARGUMENT_EDIT_GROUP_NAME))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -63,10 +47,6 @@ class AddEditGroupFragment : Fragment() {
         return viewDataBinding.root
     }
 
-    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_addeditgroup, menu)
-    }*/
-
     private fun setUpMemberListAdapter() {
         viewDataBinding.viewmodel?.let {
             memberListAdapter = MemberAdapter(it, ArrayList(0), this)
@@ -75,12 +55,6 @@ class AddEditGroupFragment : Fragment() {
         }
         Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
     }
-
-    /*private fun setupSaveButton() {
-        activity?.findViewById<Button>(R.id.frag_add_edit_group_button_save)?.let {
-            it.setOnClickListener { viewDataBinding.viewmodel?.saveGroup() }
-        }
-    }*/
 
     private fun setupAddMemberButton() {
         activity?.findViewById<Button>(R.id.frag_add_edit_group_button_add_member)?.let {

@@ -49,16 +49,6 @@ class GroupFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewDataBinding.viewmodel?.start()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                else -> false
-            }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.groups_fragment_menu, menu)
 
@@ -92,18 +82,8 @@ class GroupFragment : Fragment() {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
-        setupFab()
         setupListAdapter()
         setupRefreshLayout()
-    }
-
-    private fun setupFab() {
-        /*activity?.findViewById<FloatingActionButton>(R.id.fab_add_task)?.let {
-            it.setImageResource(R.drawable.ic_add)
-            it.setOnClickListener {
-                viewDataBinding.viewmodel?.addNewTask()
-            }
-        }*/
     }
 
     private fun setupListAdapter() {
@@ -127,7 +107,6 @@ class GroupFragment : Fragment() {
                     ContextCompat.getColor(requireActivity(), R.color.colorAccent),
                     ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
             )
-            // Set the scrolling view in the custom SwipeRefreshLayout.
             scrollUpChild = viewDataBinding.fragGroupGroupsList
         }
     }

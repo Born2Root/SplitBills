@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data2.Member
+import org.weilbach.splitbills.data.Member
 
 class AddMemberViewModel : ViewModel() {
 

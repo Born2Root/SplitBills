@@ -12,11 +12,11 @@ import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.MemberItemNavigator
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity
-import org.weilbach.splitbills.data2.Group
-import org.weilbach.splitbills.data2.Member
-import org.weilbach.splitbills.data2.source.GroupMemberRepository
-import org.weilbach.splitbills.data2.source.GroupRepository
-import org.weilbach.splitbills.data2.source.MemberRepository
+import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.source.GroupMemberRepository
+import org.weilbach.splitbills.data.source.GroupRepository
+import org.weilbach.splitbills.data.source.MemberRepository
 import org.weilbach.splitbills.util.AppExecutors
 import org.weilbach.splitbills.util.getUser
 
@@ -28,7 +28,7 @@ class AddEditGroupViewModel(
         private val appContext: Context
 ) : ViewModel(), MemberItemNavigator {
 
-    val memberContainer = HashMap<String, Member>()
+    private val memberContainer = HashMap<String, Member>()
 
     val name = MutableLiveData<String>()
 
@@ -48,10 +48,6 @@ class AddEditGroupViewModel(
     val addMember: LiveData<Event<Unit>>
         get() = _addMember
 
-    private val _memberUpdated = MutableLiveData<Event<Member>>()
-    val memberDataUpdatedEvent: LiveData<Event<Member>>
-        get() = _memberUpdated
-
     private val _memberItems = MutableLiveData<ArrayList<Member>>().apply {
         val user = getUser(appContext)
         value = arrayListOf(user)
@@ -59,36 +55,9 @@ class AddEditGroupViewModel(
     val memberItems: LiveData<ArrayList<Member>>
         get() = _memberItems
 
-    private var groupName: String? = null
-
-    private var isNewGroup = false
-
-    private var isDataLoaded = false
-
     fun addMember() {
         _addMember.value = Event(Unit)
     }
-
-    /*fun start() {
-        _dataLoading.value?.let { isLoading ->
-            // Already loading, ignore.
-            if (isLoading) return
-        }
-        this.groupName = groupName
-        if (groupName == null) {
-            // No need to populate, it's a new group
-            isNewGroup = true
-            return
-        }
-        if (isDataLoaded) {
-            // No need to populate, already have data.
-            return
-        }
-        isNewGroup = false
-        _dataLoading.value = true
-
-        groupRepository.getGroup(groupName, this)
-    }*/
 
     private fun memberAdded(name: String, email: String) {
         val newMember = Member(name, email)
@@ -134,40 +103,6 @@ class AddEditGroupViewModel(
         groupsMembersRepository.createNewGroup(group, memberContainer.values.toList())
         _groupUpdated.value = Event(Unit)
     }
-
-    /*private fun createGroup(group: Group) {
-        *//*appExecutors.diskIO.execute {
-            groupRepository.saveGroupSync(group)
-
-            memberContainer.forEach { member ->
-                membersRepository.saveMemberSync(MemberData(member.name, member.email))
-                appExecutors.mainThread.execute {
-                    _memberUpdated.value = Event(member)
-                }
-            }
-
-            memberContainer.forEach { member ->
-                groupsMembersRepository.saveGroupMemberSync(GroupMemberData(group.name, member.email))
-            }
-
-            appExecutors.mainThread.execute {
-                _groupUpdated.value = Event(Unit)
-            }
-        }*//*
-    }*/
-
-    /*private fun createMembers(memberContainer: HashMap<String, Member>) {
-        *//*memberContainer.forEach { member ->
-            memberRepository.saveMember(member)
-            _memberUpdated.value = Event(member)
-        }*//*
-    }
-
-    private fun addMembersToGroup(groupName: String, memberContainer: HashMap<String, Member>) {
-        *//*memberContainer.forEach { member ->
-            groupMemberRepository.saveGroupMember(GroupMemberData(groupName, member.email))
-        }*//*
-    }*/
 
     fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

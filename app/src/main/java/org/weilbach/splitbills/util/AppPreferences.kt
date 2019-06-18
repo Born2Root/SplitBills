@@ -3,7 +3,7 @@ package org.weilbach.splitbills.util
 import android.content.Context
 import androidx.preference.PreferenceManager
 import android.util.Log
-import org.weilbach.splitbills.data2.Member
+import org.weilbach.splitbills.data.Member
 import java.util.*
 
 private const val TAG = "AppPreferences"

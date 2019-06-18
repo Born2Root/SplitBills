@@ -1,4 +1,3 @@
-/*
 package org.weilbach.splitbills.data.local
 
 import android.content.Context
@@ -10,38 +9,25 @@ import org.weilbach.splitbills.data.*
 @Database(
         version = 1,
         entities = [
-            GroupData::class,
-            MemberData::class,
-            GroupMemberData::class,
-            BillData::class,
-            DebtorData::class,
-            */
-/*AmountData::class,*//*
-
-            LastSendData::class,
-            LastReceivedData::class
+            Group::class,
+            Member::class,
+            GroupMember::class,
+            Bill::class,
+            Debtor::class
         ],
         exportSchema = false
 )
 abstract class SplitBillsDatabase : RoomDatabase() {
 
-    abstract fun groupsDao(): GroupsDao
+    abstract fun groupDao(): GroupDao
 
     abstract fun memberDao(): MemberDao
 
-    abstract fun groupsMembersDao(): GroupsMembersDao
+    abstract fun groupMemberDao(): GroupMemberDao
 
     abstract fun billDao(): BillDao
 
-    abstract fun debtorsDao(): DebtorsDao
-
-    */
-/*abstract fun amountsDao(): AmountsDao*//*
-
-
-    abstract fun lastSendDao(): LastSendDao
-
-    abstract fun lastReceivedDao(): LastReceivedDao
+    abstract fun debtorDao(): DebtorDao
 
     companion object {
         private var INSTANCE: SplitBillsDatabase? = null
@@ -59,4 +45,4 @@ abstract class SplitBillsDatabase : RoomDatabase() {
             }
         }
     }
-}*/
+}

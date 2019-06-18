@@ -1,82 +1,66 @@
 package org.weilbach.splitbills.bills
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data2.Bill
-import org.weilbach.splitbills.data2.Group
 import org.weilbach.splitbills.databinding.BillItemBinding
-import org.weilbach.splitbills.util.AppExecutors
-import java.lang.IllegalStateException
 
 class BillsAdapter(
-        private var bills: List<Bill>,
         private val billsViewModel: BillsViewModel,
-        private val group: Group,
         private val parent: Fragment
-) : BaseAdapter() {
+) : ListAdapter<BillItemViewModel, BillsAdapter.ViewHolder>(BillItemViewModelDiffCallback()) {
 
-    override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
-        val binding: BillItemBinding
-        binding = if (view == null) {
-            val inflater = LayoutInflater.from(viewGroup.context)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(BillItemBinding.inflate(
+                LayoutInflater.from(viewGroup.context), viewGroup, false), parent)
+    }
 
-            BillItemBinding.inflate(inflater, viewGroup, false)
-        } else {
-            DataBindingUtil.getBinding(view) ?: throw IllegalStateException()
-        }
-
-        val userActionsListener = object : BillItemUserActionsListener {
-            override fun  onBillClicked(bill: Bill) {
-                billsViewModel.openBill(bill.id)
-            }
-        }
-
-        with(binding) {
-            parent.context?.let { context ->
-                viewmodel = BillItemViewModel(
-                        bills[position],
-                        group,
-                        billsViewModel,
-                        context,
-                        AppExecutors(),
-                        parent.viewLifecycleOwner
-                )
-                root.setOnCreateContextMenuListener { menu, _, _ ->
-                    menu?.add(0, 0, position, context.getString(R.string.remove))
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val billItemViewModel = getItem(position)
+        holder.apply {
+            bind(billItemViewModel, object : BillItemUserActionsListener {
+                override fun onBillClicked(billItemViewModel: BillItemViewModel) {
+                    billsViewModel.openBill(billItemViewModel.bill.id)
                 }
-            }
-            bills[position] // ?
-            listener = userActionsListener
-            lifecycleOwner = parent.viewLifecycleOwner
-            executePendingBindings()
+            })
+            itemView.tag = billItemViewModel
         }
-
-        return binding.root
     }
 
-    override fun getItem(position: Int): Any {
-        return bills[position]
+    class ViewHolder(
+            private val binding: BillItemBinding,
+            private val parent: Fragment
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: BillItemViewModel, userActionsListener: BillItemUserActionsListener) {
+            binding.apply {
+                parent.context?.let { context ->
+                    root.setOnCreateContextMenuListener { menu, _, _ ->
+                        menu?.add(0, 0, position, context.getString(R.string.remove))
+                    }
+                }
+                listener = userActionsListener
+                viewmodel = item
+                lifecycleOwner = parent.viewLifecycleOwner
+                executePendingBindings()
+            }
+        }
+    }
+}
+
+private class BillItemViewModelDiffCallback : DiffUtil.ItemCallback<BillItemViewModel>() {
+
+    override fun areItemsTheSame(oldItem: BillItemViewModel, newItem: BillItemViewModel): Boolean {
+        return oldItem.bill.id == newItem.bill.id
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+    override fun areContentsTheSame(oldItem: BillItemViewModel, newItem: BillItemViewModel): Boolean {
+        // FIXME: This may lead to errors
+        return oldItem.bill.id == newItem.bill.id
     }
 
-    override fun getCount(): Int {
-        return bills.size
-    }
-
-    fun replaceData(billData: List<Bill>) {
-        setList(billData)
-    }
-
-    private fun setList(billData: List<Bill>) {
-        this.bills = billData
-        notifyDataSetChanged()
-    }
 }

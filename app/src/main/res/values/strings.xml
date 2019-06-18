@@ -99,4 +99,9 @@
     <string name="no">No</string>
     <string name="really_remove_bill">Are you sure, that you want to remove this bill?</string>
     <string name="remove_bill">Remove bill</string>
+    <string name="paid_by_on">Paid by %s on %s</string>
+    <string name="split_details">Split details</string>
+    <string name="creditor_paid"><![CDATA[<b>%s</b> paid <b>%s %s</b>]]></string>
+    <string name="member_borrowed"><![CDATA[<b>%s</b> borrowed <b>%s %s</b>]]></string>
+    <string name="share_group_intent">Share group</string>
 </resources>

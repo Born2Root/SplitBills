@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data2.Member
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
 import org.weilbach.splitbills.util.setupActionBar

@@ -14,13 +14,12 @@ import org.weilbach.splitbills.util.setupActionBar
 import androidx.lifecycle.Observer
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.balances.BalancesActivity
+import org.weilbach.splitbills.billdetail.BillDetailActivity
 import org.weilbach.splitbills.util.replaceFragmentInActivity
 import java.io.File
 import java.io.FileWriter
 
 class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
-
-    private lateinit var drawerLayout: DrawerLayout
 
     private lateinit var viewModel: BillsViewModel
 
@@ -52,7 +51,6 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
 
                 }
             })
-            // Subscribe to "new bill" event
             newBillEvent.observe(this@BillsActivity, Observer<Event<Unit>> { event ->
                 event.getContentIfNotHandled()?.let {
                     this@BillsActivity.addNewBill()
@@ -103,10 +101,8 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
         return  obtainViewModel().onContextItemSelected(item)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) =
-            super.onOptionsItemSelected(item)
-
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleActivityResult(requestCode, resultCode)
     }
 
@@ -132,20 +128,21 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
                     file)
             val emailIntent = Intent(Intent.ACTION_SEND)
             emailIntent.setDataAndType(apkUri, mimeType)
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, "feweilbach@gmail.com")
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
             emailIntent.putExtra(Intent.EXTRA_TEXT, content)
             emailIntent.putExtra(Intent.EXTRA_EMAIL, emails)
             emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            // emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
             emailIntent.putExtra(Intent.EXTRA_STREAM, apkUri)
 
-            startActivity(Intent.createChooser(emailIntent, "Share group"))
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.share_group_intent)))
         }
     }
 
     override fun openBillDetails(billId: String) {
-
+        val intent = Intent(this, BillDetailActivity::class.java).apply {
+            putExtra(BillDetailActivity.EXTRA_BILL_ID, billId)
+        }
+        startActivity(intent)
     }
 
     private fun openBalancesDetails(groupName: String) {

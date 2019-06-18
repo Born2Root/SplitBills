@@ -6,16 +6,18 @@ import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.google.android.material.snackbar.Snackbar
-import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data.Bill
+import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.FragmentBillsBinding
-import org.weilbach.splitbills.util.ToolbarActionItemTarget
-import org.weilbach.splitbills.util.getShowShareGroupHint
-import org.weilbach.splitbills.util.setShowShareGroupHint
-import org.weilbach.splitbills.util.setupSnackbar
+import org.weilbach.splitbills.util.*
 import android.view.LayoutInflater as LayoutInflater1
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import org.weilbach.splitbills.R
+
 
 class BillsFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentBillsBinding
@@ -55,10 +57,6 @@ class BillsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val groupName = activity?.intent?.getStringExtra(BillsActivity.EXTRA_GROUP_NAME)
-        /*if (groupName.isNullOrBlank()) {
-            viewDataBinding.viewmodel?.start()
-            return
-        }*/
         groupName?.let {
             viewDataBinding.viewmodel?.start(groupName)
             this.groupName = groupName
@@ -93,12 +91,32 @@ class BillsFragment : Fragment() {
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
-            listAdapter = BillsAdapter(
-                    ArrayList(0),
-                    viewModel,
-                    Group(groupName),
-                    this)
-            viewDataBinding.fragBillBillsList.adapter = listAdapter
+            listAdapter = BillsAdapter(viewModel, this)
+
+            with(viewDataBinding.fragBillBillsList) {
+                val decoration = DividerItemDecoration(
+                        context,
+                        (layoutManager as LinearLayoutManager).orientation)
+
+                adapter = listAdapter
+                addItemDecoration(decoration)
+            }
+
+            viewModel.items.observe(this, Observer<List<Bill>> { items ->
+                activity?.applicationContext?.let { context ->
+                    val list = items.map { item ->
+                        BillItemViewModel(
+                                item,
+                                Group(groupName),
+                                viewModel,
+                                context,
+                                AppExecutors(),
+                                viewLifecycleOwner)
+                    }
+                    listAdapter.submitList(list)
+                }
+            })
+
         } else {
             Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
         }
@@ -111,7 +129,6 @@ class BillsFragment : Fragment() {
                     ContextCompat.getColor(requireActivity(), R.color.colorAccent),
                     ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
             )
-            // Set the scrolling view in the custom SwipeRefreshLayout.
             scrollUpChild = viewDataBinding.fragBillBillsList
         }
     }

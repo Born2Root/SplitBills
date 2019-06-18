@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditgroup.GroupSpinnerAdapter
 import org.weilbach.splitbills.addeditgroup.MemberAdapter
-import org.weilbach.splitbills.data2.Group
+import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.FragmentAddeditbillBinding
 import org.weilbach.splitbills.util.CurrencyAdapter
 import org.weilbach.splitbills.util.setupSnackbar
@@ -27,7 +27,6 @@ class AddEditBillFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //setUpGroupArrayAdapter()
         setUpGroupSpinnerAdapter()
         setUpDebtorListAdapter()
         setUpCurrencyAdapter()
@@ -35,12 +34,6 @@ class AddEditBillFragment : Fragment() {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
         setupActionBar()
-        loadData()
-    }
-
-    private fun loadData() {
-        // Add or edit an existing task?
-        viewDataBinding.viewmodel?.start()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
