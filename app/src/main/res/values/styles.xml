@@ -36,4 +36,10 @@
     <style name="CustomText2" parent="TextAppearance.ShowcaseView.Detail.Light">
         <item name="android:textColor">#8affffff</item>
     </style>
+    
+    <style name="SeparatorTextView">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:padding">8dp</item>
+    </style>
 </resources>

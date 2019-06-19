@@ -29,7 +29,7 @@ class AddEditBillFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setUpGroupSpinnerAdapter()
         setUpDebtorListAdapter()
-        setUpCurrencyAdapter()
+        // setUpCurrencyAdapter()
         viewDataBinding.viewmodel?.let {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
@@ -48,12 +48,12 @@ class AddEditBillFragment : Fragment() {
         return viewDataBinding.root
     }
 
-    private fun setUpCurrencyAdapter() {
+    /*private fun setUpCurrencyAdapter() {
         viewDataBinding.viewmodel?.let {
             currencyAdapter = CurrencyAdapter(ArrayList(0))
             viewDataBinding.fragAddEditBillSpinnerCurrency.adapter = currencyAdapter
         }
-    }
+    }*/
 
     private fun setUpGroupSpinnerAdapter() {
         viewDataBinding.viewmodel?.let {
@@ -75,7 +75,8 @@ class AddEditBillFragment : Fragment() {
     private fun setUpDebtorListAdapter() {
         viewDataBinding.viewmodel?.let {
             debtorsListAdapter = MemberAdapter(it, ArrayList(0), this)
-            viewDataBinding.fragAddEditBillListViewDebtors.adapter = debtorsListAdapter
+            // viewDataBinding.fragAddEditBillListViewDebtors.adapter = debtorsListAdapter
+            viewDataBinding.fragAddEditBillAdapterLinearLayoutMembers.adapter = debtorsListAdapter
             return
         }
         Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")

@@ -21,7 +21,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:theme="@style/Toolbar">
 
@@ -52,13 +52,11 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
+            style="@style/SeparatorTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:text="@string/split_details"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+            android:textAllCaps="true" />
 
         <TextView
             android:layout_width="match_parent"

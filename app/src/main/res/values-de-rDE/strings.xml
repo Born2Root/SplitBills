@@ -34,7 +34,7 @@
     <string name="frag_add_edit_group_edit_group">Gruppe editieren</string>
     <string name="frag_add_member_add_member">Füge Person hinzu</string>
     <string name="frag_add_member_create_profile">Erstelle ein Profil</string>
-    <string name="group_members">Gruppenmitglied</string>
+    <string name="group_members">Gruppenmitglieder</string>
     <string name="group_name">Gruppenname</string>
     <string name="import_group">Importiere</string>
     <string name="import_group_hint">Wenn du eine Datei mit der Endung .sbgrb von einem Freund bekommst, dann kannst du diesen Button drücken und dann die Datei importieren. Der Inhalt der Datei wird dann mit deinen Gruppen zusammengeführt.</string>
@@ -81,7 +81,7 @@
     <string name="total_balance">Gesamtbilanz</string>
     <string name="trying_to_merge">Versuche Gruppe zu importieren</string>
     <string name="view_balances">Bilanz</string>
-    <string name="welcome_text">Bevor du loslegen kannst, musst du dich noch selbst as Benutzer hinzufügen. Dein Name und E-Mail Adresse werden nur auf deinem Gerät gespeichert.</string>
+    <string name="welcome_text">Bevor du loslegen kannst, musst du dich noch selbst als Benutzer hinzufügen. Dein Name und E-Mail Adresse werden nur auf deinem Gerät gespeichert.</string>
     <string name="welcome_to_splitbills">Willkommen bei SplitBills</string>
     <string name="who_owes">Wer hat Geld geliehen</string>
     <string name="who_paid">Wer hat gezahlt</string>

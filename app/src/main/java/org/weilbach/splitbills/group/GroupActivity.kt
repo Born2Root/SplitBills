@@ -18,6 +18,7 @@ import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity
 import org.weilbach.splitbills.bills.BillsActivity
 import org.weilbach.splitbills.firststart.FirstStartActivity
+import org.weilbach.splitbills.intro.IntroActivity
 import org.weilbach.splitbills.settings.SettingsActivity
 import org.weilbach.splitbills.util.getFirstStart
 import org.weilbach.splitbills.util.obtainViewModel

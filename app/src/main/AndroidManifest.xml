@@ -60,6 +60,7 @@
         <activity android:name=".balances.BalancesActivity" />
         <activity android:name=".firststart.FirstStartActivity" />
         <activity android:name=".billdetail.BillDetailActivity" />
+        <activity android:name=".intro.IntroActivity" />
     </application>
 
 </manifest>

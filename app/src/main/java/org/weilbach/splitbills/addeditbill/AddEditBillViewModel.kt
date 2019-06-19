@@ -50,7 +50,7 @@ class AddEditBillViewModel(
         }
     }
 
-    val currency: LiveData<Currency> = Transformations.switchMap(posCurrencySpinner) { pos ->
+    val currency: LiveData<Currency> = Transformations.map(posCurrencySpinner) { pos ->
         var currency = Currency.getInstance("EUR")
 
         currencyItems.value?.let { currencies ->
@@ -58,22 +58,22 @@ class AddEditBillViewModel(
                 currency = currencies[pos]
             }
         }
+        currency
+    }
 
-        MutableLiveData<Currency>().apply {
-            value = currency
-        }
+    val currencySymbol: LiveData<String> = Transformations.map(currency) { currency ->
+        currency.symbol
     }
 
     val posGroupSpinner = MutableLiveData<Int>()
 
-    val group: LiveData<Group> = Transformations.switchMap(posGroupSpinner) { pos ->
+    val group: LiveData<Group> = Transformations.map(posGroupSpinner) { pos ->
         var group = Group("")
         groupItems.value?.let { groups ->
+            debtorContainer.clear()
             group = groups[pos]
         }
-        MutableLiveData<Group>().apply {
-            value = group
-        }
+        group
     }
 
     private val _snackbarText = MutableLiveData<Event<Int>>()

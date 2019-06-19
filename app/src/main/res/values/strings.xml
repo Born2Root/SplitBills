@@ -9,7 +9,7 @@
 
     <string name="group_name">Group name</string>
     <string name="enter_group_name_hint">Enter a group name</string>
-    <string name="group_members">Group member</string>
+    <string name="group_members">Group members</string>
     <string name="add_group_member">+ Add person to group</string>
     <string name="save">Save</string>
 

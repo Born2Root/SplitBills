@@ -50,6 +50,7 @@ class AddEditGroupViewModel(
 
     private val _memberItems = MutableLiveData<ArrayList<Member>>().apply {
         val user = getUser(appContext)
+        memberContainer[user.email] = user
         value = arrayListOf(user)
     }
     val memberItems: LiveData<ArrayList<Member>>
