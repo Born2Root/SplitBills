@@ -7,7 +7,6 @@ import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.GroupSpinnerItemBinding
-import java.lang.IllegalStateException
 
 class GroupSpinnerAdapter(
         private var groups: List<Group>

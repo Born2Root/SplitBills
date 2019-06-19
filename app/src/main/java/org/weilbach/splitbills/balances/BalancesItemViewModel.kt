@@ -190,7 +190,7 @@ class BalancesItemViewModel(
     val memberOwesMembersVisible: LiveData<Int>
         get() = _memberOwesMembersVisible
 
-    private fun findMemberIndex(memberEmail: String, members: List<Member>) :Int {
+    private fun findMemberIndex(memberEmail: String, members: List<Member>): Int {
         var res = -1
         var i = 0
         members.forEach { member ->

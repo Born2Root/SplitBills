@@ -7,16 +7,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.google.android.material.snackbar.Snackbar
+import org.weilbach.splitbills.R
 import org.weilbach.splitbills.data.Bill
 import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.FragmentBillsBinding
 import org.weilbach.splitbills.util.*
 import android.view.LayoutInflater as LayoutInflater1
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import org.weilbach.splitbills.R
 
 
 class BillsFragment : Fragment() {
@@ -65,7 +65,7 @@ class BillsFragment : Fragment() {
         Log.w(TAG, "no group name set, can not start bills view model")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem):Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return viewDataBinding.viewmodel?.onOptionsItemSelected(item) ?: false
     }
 
@@ -113,6 +113,7 @@ class BillsFragment : Fragment() {
                                 AppExecutors(),
                                 viewLifecycleOwner)
                     }
+                    listAdapter.submitList(null)
                     listAdapter.submitList(list)
                 }
             })

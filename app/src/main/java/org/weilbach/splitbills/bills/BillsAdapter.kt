@@ -3,8 +3,8 @@ package org.weilbach.splitbills.bills
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.databinding.BillItemBinding

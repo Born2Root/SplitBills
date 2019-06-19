@@ -53,7 +53,7 @@ class GroupLocalDataSource private constructor(
         appExecutors.diskIO.execute { groupDao.deleteGroups() }
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: GroupLocalDataSource? = null

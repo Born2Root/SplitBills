@@ -12,6 +12,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "0.1"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -91,6 +92,7 @@ dependencies {
     implementation "androidx.preference:preference:$androidXPreference"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
+    implementation 'com.github.ibrahimsn98:live-preferences:1.1'
 
     implementation "androidx.legacy:legacy-support-v4:$androidXLegacySupport"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"

@@ -15,150 +15,151 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/frag_add_edit_bill_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <!--android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"-->
-
-        <TextView
-            style="@style/SeparatorTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:text="@string/add_bill_to"
-            android:textAllCaps="true" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/frag_add_edit_bill_spinner_groups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:selection="@={viewmodel.posGroupSpinner}"
-            app:items="@{viewmodel.groupItems}">
-
-        </androidx.appcompat.widget.AppCompatSpinner>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:hint="@string/enter_a_description"
-            android:inputType="textCapWords"
-            android:text="@={viewmodel.description}" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/frag_add_edit_bill_linear_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/empty_amount"
-                android:inputType="numberDecimal"
-                android:text="@={viewmodel.amount}"
-                android:textSize="32sp" />
+            android:orientation="vertical">
+            <!--android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"-->
 
             <TextView
-                android:layout_margin="8dp"
-                android:textSize="32sp"
-                android:layout_width="wrap_content"
+                style="@style/SeparatorTextView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewmodel.currencySymbol}"/>
+                android:layout_margin="0dp"
+                android:text="@string/add_bill_to"
+                android:textAllCaps="true" />
 
-            <!--<androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/frag_add_edit_bill_spinner_currency"
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/frag_add_edit_bill_spinner_groups"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:selection="@={viewmodel.posCurrencySpinner}"
-                app:items="@{viewmodel.currencyItems}">
+                android:layout_marginTop="8dp"
+                android:selection="@={viewmodel.posGroupSpinner}"
+                app:items="@{viewmodel.groupItems}">
 
-            </androidx.appcompat.widget.AppCompatSpinner>-->
+            </androidx.appcompat.widget.AppCompatSpinner>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:hint="@string/enter_a_description"
+                android:inputType="textCapWords"
+                android:text="@={viewmodel.description}" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/empty_amount"
+                    android:inputType="numberDecimal"
+                    android:text="@={viewmodel.amount}"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@{viewmodel.currencySymbol}"
+                    android:textSize="32sp" />
+
+                <!--<androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/frag_add_edit_bill_spinner_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:selection="@={viewmodel.posCurrencySpinner}"
+                    app:items="@{viewmodel.currencyItems}">
+
+                </androidx.appcompat.widget.AppCompatSpinner>-->
+            </LinearLayout>
+
+            <TextView
+                style="@style/SeparatorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="4dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="4dp"
+                android:text="@string/who_paid"
+                android:textAllCaps="true" />
+
+            <include
+                android:id="@+id/frag_add_edit_bill_creditor_item"
+                layout="@layout/member_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:navigator="@{viewmodel}"
+                bind:viewmodel="@={viewmodel.creditor}" />
+
+            <TextView
+                style="@style/SeparatorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="4dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="4dp"
+                android:text="@string/who_owes"
+                android:textAllCaps="true" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="@{() -> viewmodel.addDebtor()}"
+                android:text="@string/add_member" />
+
+            <org.weilbach.splitbills.util.AdapterLinearLayout
+                android:id="@+id/frag_add_edit_bill_adapter_linear_layout_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:items="@{viewmodel.debtorItems}" />
+
+            <!--<ListView
+                android:id="@+id/frag_add_edit_bill_list_view_debtors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isScrollContainer="false"
+                app:items="@{viewmodel.debtorItems}" />-->
+            <!--android:isScrollContainer="true"-->
+            <!--android:layout_height="0dp"
+            android:layout_weight="1"-->
+
+            <Button
+                android:id="@+id/frag_add_edit_bill_button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:onClick="@{() -> viewmodel.saveBill()}"
+                android:text="@string/save" />
         </LinearLayout>
-
-        <TextView
-            style="@style/SeparatorTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingStart="8dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="4dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="4dp"
-            android:text="@string/who_paid"
-            android:textAllCaps="true" />
-
-        <include
-            android:id="@+id/frag_add_edit_bill_creditor_item"
-            layout="@layout/member_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            bind:navigator="@{viewmodel}"
-            bind:viewmodel="@={viewmodel.creditor}" />
-
-        <TextView
-            style="@style/SeparatorTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingStart="8dp"
-            android:paddingLeft="8dp"
-            android:paddingTop="4dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="4dp"
-            android:text="@string/who_owes"
-            android:textAllCaps="true" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:onClick="@{() -> viewmodel.addDebtor()}"
-            android:text="@string/add_member" />
-
-        <org.weilbach.splitbills.util.AdapterLinearLayout
-            android:id="@+id/frag_add_edit_bill_adapter_linear_layout_members"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:items="@{viewmodel.debtorItems}"/>
-
-        <!--<ListView
-            android:id="@+id/frag_add_edit_bill_list_view_debtors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isScrollContainer="false"
-            app:items="@{viewmodel.debtorItems}" />-->
-        <!--android:isScrollContainer="true"-->
-        <!--android:layout_height="0dp"
-        android:layout_weight="1"-->
-
-        <Button
-            android:id="@+id/frag_add_edit_bill_button_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:onClick="@{() -> viewmodel.saveBill()}"
-            android:text="@string/save" />
-    </LinearLayout>
     </ScrollView>
 </layout>

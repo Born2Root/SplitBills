@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
 import org.weilbach.splitbills.databinding.CurrencyItemBinding
-import java.lang.IllegalStateException
 import java.util.*
 
 class CurrencyAdapter(
@@ -27,7 +26,7 @@ class CurrencyAdapter(
             executePendingBindings()
         }
 
-        return  binding.root
+        return binding.root
     }
 
     override fun getItem(position: Int): Any {

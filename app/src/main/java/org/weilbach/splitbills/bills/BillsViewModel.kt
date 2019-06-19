@@ -62,10 +62,6 @@ class BillsViewModel(
     val shareGroupEvent: LiveData<Event<GroupShare>>
         get() = _shareGroupEvent
 
-    val empty: LiveData<Boolean> = Transformations.map(items) {
-        it.isEmpty()
-    }
-
     fun openBalances() {
         group.value?.let { _openBalancesEvent.value = Event(it.name) }
     }
@@ -78,7 +74,7 @@ class BillsViewModel(
         _dataLoading.value = false
     }
 
-    fun handleActivityResult(requestCode: Int, resultCode: Int) { }
+    fun handleActivityResult(requestCode: Int, resultCode: Int) {}
 
     fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -143,7 +139,7 @@ class BillsViewModel(
                                   private val groupRepository: GroupRepository,
                                   private val groupsMembersRepository: GroupMemberRepository,
                                   private val shareGroupEvent: MutableLiveData<Event<GroupShare>>,
-                                  // FIXME: May lead to memory leaks
+            // FIXME: May lead to memory leaks
                                   private val appContext: Context,
                                   private val exportingGroup: MutableLiveData<Boolean>
     ) : AsyncTask<String, Int, GroupShare?>() {

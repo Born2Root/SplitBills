@@ -10,7 +10,7 @@ import org.weilbach.splitbills.util.AppExecutors
 class BillLocalDataSource private constructor(
         private val appExecutors: AppExecutors,
         private val billDao: BillDao
-): BillDataSource {
+) : BillDataSource {
 
     override fun getBillWithDebtorsById(billId: String): LiveData<BillDebtors> {
         return billDao.getBillWithDebtorsById(billId)
@@ -60,7 +60,7 @@ class BillLocalDataSource private constructor(
         appExecutors.diskIO.execute { billDao.deleteBills() }
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: BillLocalDataSource? = null

@@ -45,7 +45,7 @@ class DebtorLocalDataSource private constructor(
         appExecutors.diskIO.execute { debtorDao.deleteDebtors() }
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: DebtorLocalDataSource? = null

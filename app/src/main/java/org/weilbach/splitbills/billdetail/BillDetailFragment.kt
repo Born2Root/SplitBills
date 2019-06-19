@@ -11,7 +11,6 @@ import org.weilbach.splitbills.databinding.FragmentBilldetailBinding
 import org.weilbach.splitbills.util.setupActionBar
 
 
-
 class BillDetailFragment : Fragment() {
 
     private lateinit var viewDataBinding: FragmentBilldetailBinding

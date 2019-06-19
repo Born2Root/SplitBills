@@ -10,15 +10,19 @@ import androidx.lifecycle.*
 import org.weilbach.splitbills.*
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
-import org.weilbach.splitbills.data.*
+import org.weilbach.splitbills.data.Bill
+import org.weilbach.splitbills.data.GroupMember
+import org.weilbach.splitbills.data.GroupMembersBillsDebtors
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.util.ADD_EDIT_RESULT_OK
 import org.weilbach.splitbills.util.AppExecutors
-import org.weilbach.splitbills.util.getCurrency
-import org.weilbach.splitbills.util.getUser
+import org.weilbach.splitbills.util.getCurrencyLive
+import org.weilbach.splitbills.util.getUserLive
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.math.BigDecimal
+import java.util.*
 
 class GroupViewModel(val groupRepository: GroupRepository,
                      val memberRepository: MemberRepository,
@@ -32,10 +36,10 @@ class GroupViewModel(val groupRepository: GroupRepository,
         value = false
     }
     val groupMerging: LiveData<Boolean>
-    get() = _groupMerging
+        get() = _groupMerging
 
-    private val user = getUser(appContext)
-    private val currency = getCurrency(appContext)
+    private val user = getUserLive(appContext)
+    private val currency = getCurrencyLive(appContext)
 
     val items = groupRepository.getAll()
 
@@ -73,64 +77,92 @@ class GroupViewModel(val groupRepository: GroupRepository,
 
     private val groupsWithMembersAndBillsDebtors = groupRepository.getGroupsWithMembersAndBillsWithDebtors()
 
-    private val totalOwe: LiveData<BigDecimal> = Transformations.map(groupsWithMembersAndBillsDebtors) { groupsWithMembersAndBillsDebtors ->
+    private val totalOwe: LiveData<BigDecimal> = MediatorLiveData<BigDecimal>().apply {
+        addSource(groupsWithMembersAndBillsDebtors) { groupsWithMembersAndBillsDebtors ->
+            user.value?.let { user ->
+                value = calcTotalOwe(user, groupsWithMembersAndBillsDebtors)
+            }
+        }
+        addSource(user) { user ->
+            groupsWithMembersAndBillsDebtors.value?.let { groupsWithMembersAndBillsDebtors ->
+                value = calcTotalOwe(user, groupsWithMembersAndBillsDebtors)
+            }
+        }
+    }
+
+    private fun calcTotalOwe(user: Member, groupsWithMembersAndBillsDebtors: List<GroupMembersBillsDebtors>): BigDecimal {
         var res = BigDecimal.ZERO
         groupsWithMembersAndBillsDebtors.forEach { groupWithMembersAndBillsDebtors ->
             res = res.add(memberOwesGroupTotal(user, groupWithMembersAndBillsDebtors))
         }
-        res
+        return res
     }
 
-    private val totalGet: LiveData<BigDecimal> = Transformations.map(groupsWithMembersAndBillsDebtors) { groupsWithMembersAndBillsDebtors ->
+    private val totalGet: LiveData<BigDecimal> = MediatorLiveData<BigDecimal>().apply {
+        addSource(groupsWithMembersAndBillsDebtors) { groupsWithMembersAndBillsDebtors ->
+            user.value?.let { user ->
+                value = calcTotalGet(user, groupsWithMembersAndBillsDebtors)
+            }
+        }
+        addSource(user) { user ->
+            groupsWithMembersAndBillsDebtors.value?.let { groupsWithMembersAndBillsDebtors ->
+                value = calcTotalGet(user, groupsWithMembersAndBillsDebtors)
+            }
+        }
+    }
+
+    private fun calcTotalGet(user: Member, groupsWithMembersAndBillsDebtors: List<GroupMembersBillsDebtors>): BigDecimal {
         var res = BigDecimal.ZERO
         groupsWithMembersAndBillsDebtors.forEach { groupWithMembersAndBillsDebtors ->
             res = res.add(memberGetsFromGroupTotal(user, groupWithMembersAndBillsDebtors))
         }
-        res
+        return res
     }
 
     private val _oweGetTotal = MediatorLiveData<String>().apply {
         addSource(totalOwe) { owe ->
-            totalGet.value?.let { get ->
-                val res = get.subtract(owe)
-                when (res.compareTo(BigDecimal.ZERO)) {
-                    0 -> {
-                        _totalBalanceColor.value = R.color.colorGet
-                        value = appContext.getString(R.string.you_are_settled_up)
-                    }
-                    1 -> {
-                        _totalBalanceColor.value = R.color.colorGet
-                        value = appContext.getString(R.string.you_get, prettyPrintNum(res), currency.symbol)
-                    }
-                    -1 -> {
-                        _totalBalanceColor.value = R.color.colorOwe
-                        value = appContext.getString(R.string.you_owe, prettyPrintNum(res.abs()), currency.symbol)
-                    }
-                }
+            val get = totalGet.value
+            val curr = currency.value
+            if (curr != null && get != null) {
+                value = calcOweGetTotal(owe, get, Currency.getInstance(curr))
             }
         }
         addSource(totalGet) { get ->
-            totalOwe.value?.let { owe ->
-                val res = get.subtract(owe)
-                when (res.compareTo(BigDecimal.ZERO)) {
-                    0 -> {
-                        _totalBalanceColor.value = R.color.colorGet
-                        value = appContext.getString(R.string.you_are_settled_up)
-                    }
-                    1 -> {
-                        _totalBalanceColor.value = R.color.colorGet
-                        value = appContext.getString(R.string.you_get, prettyPrintNum(res), currency.symbol)
-                    }
-                    -1 -> {
-                        _totalBalanceColor.value = R.color.colorOwe
-                        value = appContext.getString(R.string.you_owe, prettyPrintNum(res.abs()), currency.symbol)
-                    }
-                }
+            val owe = totalOwe.value
+            val curr = currency.value
+            if (curr != null && owe != null) {
+                value = calcOweGetTotal(owe, get, Currency.getInstance(curr))
+            }
+        }
+        addSource(currency) { curr ->
+            val owe = totalOwe.value
+            val get = totalGet.value
+            if (get != null && owe != null) {
+                value = calcOweGetTotal(owe, get, Currency.getInstance(curr))
             }
         }
     }
     val oweGetTotal: LiveData<String>
         get() = _oweGetTotal
+
+    private fun calcOweGetTotal(owe: BigDecimal, get: BigDecimal, currency: Currency): String {
+        val res = get.subtract(owe)
+
+        return when (res.compareTo(BigDecimal.ZERO)) {
+            1 -> {
+                _totalBalanceColor.value = R.color.colorGet
+                appContext.getString(R.string.you_get, prettyPrintNum(res), currency.symbol)
+            }
+            -1 -> {
+                _totalBalanceColor.value = R.color.colorOwe
+                appContext.getString(R.string.you_owe, prettyPrintNum(res.abs()), currency.symbol)
+            }
+            else -> {
+                _totalBalanceColor.value = R.color.colorGet
+                appContext.getString(R.string.you_are_settled_up)
+            }
+        }
+    }
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarMessage: LiveData<Event<Int>>
@@ -206,6 +238,8 @@ class GroupViewModel(val groupRepository: GroupRepository,
                 }
             }
         }
+        // Not handle intent twice, may not be optimal solution
+        intent.action = null
     }
 
     private fun importGroup(uri: Uri) {

@@ -3,14 +3,14 @@ package org.weilbach.splitbills.billdetail
 import android.content.Context
 import android.text.Spanned
 import androidx.lifecycle.*
-import org.weilbach.splitbills.data.source.BillRepository
-import org.weilbach.splitbills.prettyPrintNum
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.data.BillDebtors
 import org.weilbach.splitbills.data.Debtor
 import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.source.BillRepository
 import org.weilbach.splitbills.data.source.GroupMemberRepository
 import org.weilbach.splitbills.data.source.MemberRepository
+import org.weilbach.splitbills.prettyPrintNum
 import org.weilbach.splitbills.util.fromHtml
 import java.math.BigDecimal
 import java.text.SimpleDateFormat

@@ -1,17 +1,17 @@
 package org.weilbach.splitbills.data.source.local
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.jraska.livedata.test
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.weilbach.splitbills.data.local.SplitBillsDatabase
-import org.junit.Rule
-import com.jraska.livedata.test
 import org.weilbach.splitbills.data.*
+import org.weilbach.splitbills.data.local.SplitBillsDatabase
 
 @RunWith(AndroidJUnit4::class)
 class GroupDaoTest {

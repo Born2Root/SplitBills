@@ -35,7 +35,7 @@ class MemberRepository private constructor(
         memberLocalDataSource.deleteAll()
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: MemberRepository? = null

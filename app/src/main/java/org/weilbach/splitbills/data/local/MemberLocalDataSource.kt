@@ -39,7 +39,7 @@ class MemberLocalDataSource private constructor(
         appExecutors.diskIO.execute { memberDao.deleteMembers() }
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: MemberLocalDataSource? = null

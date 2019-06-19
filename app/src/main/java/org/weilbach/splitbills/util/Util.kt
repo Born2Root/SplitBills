@@ -1,7 +1,7 @@
 package org.weilbach.splitbills.util
 
-import android.text.Html
 import android.os.Build
+import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
 

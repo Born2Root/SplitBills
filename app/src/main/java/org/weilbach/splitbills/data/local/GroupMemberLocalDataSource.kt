@@ -49,7 +49,7 @@ class GroupMemberLocalDataSource private constructor(
         appExecutors.diskIO.execute { groupMemberDao.deleteAllGroupsMembers() }
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: GroupMemberLocalDataSource? = null

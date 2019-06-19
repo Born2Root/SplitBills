@@ -6,16 +6,15 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.util.obtainViewModel
-import org.weilbach.splitbills.util.setupActionBar
-import androidx.lifecycle.Observer
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.balances.BalancesActivity
 import org.weilbach.splitbills.billdetail.BillDetailActivity
+import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
+import org.weilbach.splitbills.util.setupActionBar
 import java.io.File
 import java.io.FileWriter
 
@@ -98,7 +97,7 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
                 return false
             }
         }
-        return  obtainViewModel().onContextItemSelected(item)
+        return obtainViewModel().onContextItemSelected(item)
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -109,6 +108,7 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
     private fun groupNameToFileName(groupName: String): String {
         return groupName.replace(" ", "_")
     }
+
     private fun getGroupFile(groupName: String): File {
         val filename = groupNameToFileName(groupName)
         return File(filesDir, "$filename.sbgrp")

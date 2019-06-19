@@ -2,13 +2,11 @@ package org.weilbach.splitbills
 
 import android.util.Xml
 import org.weilbach.splitbills.data.*
-import org.weilbach.splitbills.data.Bill
-import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.data.local.Converter
 import org.xmlpull.v1.XmlPullParser
-import java.io.InputStream
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
+import java.io.InputStream
 import java.math.BigDecimal
 import java.util.*
 

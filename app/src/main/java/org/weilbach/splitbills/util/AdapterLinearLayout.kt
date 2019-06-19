@@ -1,12 +1,12 @@
 package org.weilbach.splitbills.util
 
-import android.widget.LinearLayout
-import android.os.Build
 import android.annotation.TargetApi
 import android.content.Context
 import android.database.DataSetObserver
+import android.os.Build
 import android.util.AttributeSet
 import android.widget.Adapter
+import android.widget.LinearLayout
 
 
 /**
@@ -22,13 +22,13 @@ import android.widget.Adapter
 class AdapterLinearLayout : LinearLayout {
 
     var adapter: Adapter? = null
-    set(value) {
-        value?.let {
-            field = it
-            it.registerDataSetObserver(dataSetObserver)
-            reloadChildViews()
+        set(value) {
+            value?.let {
+                field = it
+                it.registerDataSetObserver(dataSetObserver)
+                reloadChildViews()
+            }
         }
-    }
 
     private val dataSetObserver = object : DataSetObserver() {
         override fun onChanged() {

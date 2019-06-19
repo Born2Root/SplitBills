@@ -5,12 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_group.*
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
@@ -18,7 +14,6 @@ import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity
 import org.weilbach.splitbills.bills.BillsActivity
 import org.weilbach.splitbills.firststart.FirstStartActivity
-import org.weilbach.splitbills.intro.IntroActivity
 import org.weilbach.splitbills.settings.SettingsActivity
 import org.weilbach.splitbills.util.getFirstStart
 import org.weilbach.splitbills.util.obtainViewModel
@@ -67,11 +62,12 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
             })
         }
 
-        /* FIXME: This should be handled in onResume but then we need to check if the intent was
-           handled before */
-        obtainViewModel().handleIntent(intent)
-
         handleFirstStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        obtainViewModel().handleIntent(intent)
     }
 
     private fun handleFirstStart() {

@@ -7,7 +7,6 @@ import org.weilbach.splitbills.data.Member
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
-import kotlin.collections.HashMap
 
 private const val SCALE = 2
 private val ROUNDING_MODE = RoundingMode.UP
@@ -29,13 +28,13 @@ fun memberGetsFromGroup(member: Member, group: GroupMembersBillsDebtors): HashMa
         billDebtors.bill.creditorEmail == member.email && billDebtors.bill.valid
     }.forEach { billDebtors ->
         val debtors = billDebtors.debtors
-            debtors.filter { debtor -> debtor.memberEmail != member.email }.forEach { debtor ->
-                if (balanceMap.containsKey(debtor.memberEmail)) {
-                    balanceMap[debtor.memberEmail] = balanceMap[debtor.memberEmail]!!.add(debtor.amount)
-                } else {
-                    balanceMap[debtor.memberEmail] = debtor.amount
-                }
+        debtors.filter { debtor -> debtor.memberEmail != member.email }.forEach { debtor ->
+            if (balanceMap.containsKey(debtor.memberEmail)) {
+                balanceMap[debtor.memberEmail] = balanceMap[debtor.memberEmail]!!.add(debtor.amount)
+            } else {
+                balanceMap[debtor.memberEmail] = debtor.amount
             }
+        }
     }
     return balanceMap
 }
@@ -95,7 +94,7 @@ fun memberOwesGroupTotal(member: Member, group: GroupMembersBillsDebtors): BigDe
     var total = BigDecimal.ZERO
     val owes = memberOwesGroup(member, group)
 
-    owes.forEach {owe ->
+    owes.forEach { owe ->
         total = total.add(owe.value)
     }
 

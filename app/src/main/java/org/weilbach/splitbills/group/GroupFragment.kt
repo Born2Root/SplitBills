@@ -8,11 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.github.amlcurran.showcaseview.ShowcaseView
-import com.github.amlcurran.showcaseview.targets.ViewTarget
 import com.google.android.material.snackbar.Snackbar
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
-
 import org.weilbach.splitbills.databinding.FragmentGroupBinding
 import org.weilbach.splitbills.util.*
 

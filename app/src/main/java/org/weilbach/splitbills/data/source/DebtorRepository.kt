@@ -41,7 +41,7 @@ class DebtorRepository private constructor(
         debtorLocalDataSource.deleteAll()
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: DebtorRepository? = null

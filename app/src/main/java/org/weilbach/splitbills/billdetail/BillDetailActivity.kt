@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
-import org.weilbach.splitbills.util.setupActionBar
 
 class BillDetailActivity : AppCompatActivity() {
 

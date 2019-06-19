@@ -49,7 +49,7 @@ class GroupRepository private constructor(
         groupLocalDataSource.deleteAll()
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
 

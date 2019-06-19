@@ -56,7 +56,7 @@ class BillRepository private constructor(
         billLocalDataSource.deleteAll()
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: BillRepository? = null

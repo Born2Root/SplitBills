@@ -22,7 +22,7 @@ class FirstStartActivity : AppCompatActivity() {
     }
 
     fun onClick(view: View) {
-        when(view.id) {
+        when (view.id) {
             R.id.act_firststart_button_start -> {
                 val intent = Intent(this, AddMemberActivity::class.java)
                 startActivityForResult(intent, AddMemberActivity.REQUEST_CODE)

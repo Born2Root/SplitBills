@@ -14,81 +14,82 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/frag_add_edit_group_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <!--android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"-->
-        <!--android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}">-->
-
-        <TextView
-            style="@style/SeparatorTextView"
+        <LinearLayout
+            android:id="@+id/frag_add_edit_group_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/group_name"
-            android:textAllCaps="true" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/frag_add_edit_group_edit_text_group_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="@string/enter_group_name_hint"
-            android:inputType="textCapWords"
-            android:text="@={viewmodel.name}" />
+            <!--android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"-->
+            <!--android:visibility="@{viewmodel.dataLoading ? View.GONE : View.VISIBLE}">-->
 
-        <TextView
-            style="@style/SeparatorTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/group_members"
-            android:textAllCaps="true" />
+            <TextView
+                style="@style/SeparatorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/group_name"
+                android:textAllCaps="true" />
 
-        <Button
-            android:id="@+id/frag_add_edit_group_button_add_member"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:onClick="@{() -> viewmodel.addMember()}"
-            android:text="@string/add_group_member" />
+            <EditText
+                android:id="@+id/frag_add_edit_group_edit_text_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/enter_group_name_hint"
+                android:inputType="textCapWords"
+                android:text="@={viewmodel.name}" />
 
-        <!--<ListView
-            android:id="@+id/members_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:layout_weight="1"
-            app:items="@{viewmodel.memberItems}">
+            <TextView
+                style="@style/SeparatorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/group_members"
+                android:textAllCaps="true" />
 
-        </ListView>-->
-        <org.weilbach.splitbills.util.AdapterLinearLayout
-            android:id="@+id/members_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:items="@{viewmodel.memberItems}">
+            <Button
+                android:id="@+id/frag_add_edit_group_button_add_member"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:onClick="@{() -> viewmodel.addMember()}"
+                android:text="@string/add_group_member" />
 
-        </org.weilbach.splitbills.util.AdapterLinearLayout>
+            <!--<ListView
+                android:id="@+id/members_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="top"
+                android:layout_weight="1"
+                app:items="@{viewmodel.memberItems}">
 
-        <Button
-            android:id="@+id/frag_add_edit_group_button_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:onClick="@{() -> viewmodel.saveGroup()}"
-            android:text="@string/save" />
-    </LinearLayout>
+            </ListView>-->
+            <org.weilbach.splitbills.util.AdapterLinearLayout
+                android:id="@+id/members_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:items="@{viewmodel.memberItems}">
+
+            </org.weilbach.splitbills.util.AdapterLinearLayout>
+
+            <Button
+                android:id="@+id/frag_add_edit_group_button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:onClick="@{() -> viewmodel.saveGroup()}"
+                android:text="@string/save" />
+        </LinearLayout>
     </ScrollView>
 </layout>

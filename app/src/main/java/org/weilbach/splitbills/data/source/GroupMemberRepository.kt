@@ -45,7 +45,7 @@ class GroupMemberRepository private constructor(
         groupMemberLocalDataSource.deleteAll()
     }
 
-    override fun refresh() { }
+    override fun refresh() {}
 
     companion object {
         private var INSTANCE: GroupMemberRepository? = null
