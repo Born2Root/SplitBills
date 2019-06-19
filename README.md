@@ -1,4 +1,4 @@
-OB# SplitBills
+# SplitBills
 
 ## About
 
