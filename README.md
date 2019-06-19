@@ -2,7 +2,7 @@
 
 ## About
 
-SplitBills helps you and your friends to split your collective expenses.
+SplitBills is a Android app, that helps you and your friends to split your collective expenses.
 
 
 Use SplitBills to split bills with your friends or other people. You can create groups with people, add bills to the group and view your balances. SplitBills works without any server or registration and is free software. Your expenses belong to you!
