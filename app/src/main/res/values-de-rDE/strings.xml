@@ -5,7 +5,7 @@
     <string name="add_bill_to">Ausgabe hinzufügen zu</string>
     <string name="add_group">+ Erstelle eine neue Gruppe</string>
     <string name="add_group_member">+ Person zu Gruppe hinzufügen</string>
-    <string name="add_member">+ Person hinzufügen</string>
+    <string name="add_member">+ Person aus Gruppe hinzufügen</string>
     <string name="added_group">Neue Gruppe hinzugefügt</string>
     <string name="alert_dialog_creditor_title">Wer hat gezahlt?</string>
     <string name="alert_dialog_debtor_title">Wer hat geliehen?</string>

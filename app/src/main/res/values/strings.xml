@@ -41,7 +41,7 @@
     <string name="empty_amount">0.00</string>
     <string name="who_paid">Who paid</string>
     <string name="who_owes">Who owes</string>
-    <string name="add_member">+ Add member</string>
+    <string name="add_member">+ Add member from group</string>
     <string name="no_bills_all">No bill added</string>
     <string name="debtor_already_added">Member already added</string>
     <string name="no_bill_description_message">Enter a description</string>
