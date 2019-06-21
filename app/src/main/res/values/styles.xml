@@ -7,17 +7,25 @@
 
     <style name="AppTheme.OverlapSystemBar" parent="Base.AppTheme" />
 
-    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!--<style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>-->
+
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!--<item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>-->
     </style>
+
 
     <!--<style name="Base.AppTheme" parent="Theme.AppCompat.NoActionBar" />-->
 
     <!--    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar" />-->
 
-    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--<style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+    <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <!--<style name="Toolbar" parent="ThemeOverlay.AppCompat.ActionBar" />-->
 
@@ -37,8 +45,14 @@
         <item name="android:textColor">#8affffff</item>
     </style>
 
-    <style name="SeparatorTextView">
+<!--    <style name="SeparatorTextView">
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:padding">8dp</item>
+    </style>-->
+
+    <style name="SeparatorTextView">
+        <item name="android:background">#b0bec5</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:padding">8dp</item>
     </style>
