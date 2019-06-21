@@ -109,6 +109,23 @@ class AddEditBillViewModel(
         }
     }
 
+    val allGroupMembersAdded: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        addSource(availableMembers) { members ->
+            debtorItems.value?.let { debtors ->
+                value = calcAllGroupMembersAdded(members, debtors)
+            }
+        }
+        addSource(debtorItems) { debtors ->
+            availableMembers.value?.let { members ->
+                value = calcAllGroupMembersAdded(members, debtors)
+            }
+        }
+    }
+
+    private fun calcAllGroupMembersAdded(members: List<Member>, debtors: List<Member>): Boolean {
+        return members.size == debtors.size
+    }
+
     val creditor = MediatorLiveData<Member>().apply {
         addSource(availableMembers) { members ->
             var userInGroup = false
