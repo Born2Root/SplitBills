@@ -119,6 +119,16 @@ class AddEditGroupViewModel(
         return false
     }
 
+    fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.action_save_group -> {
+                saveGroup()
+                false
+            }
+            else -> return false
+        }
+    }
+
     override fun onClick(view: View) {
     }
 

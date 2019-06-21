@@ -2,9 +2,7 @@ package org.weilbach.splitbills.addeditbill
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -46,6 +44,14 @@ class AddEditBillFragment : Fragment() {
         setHasOptionsMenu(true)
         retainInstance = false
         return viewDataBinding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_addeditbill, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return (activity as AddEditBillActivity).obtainViewModel().onOptionsItemSelected(item)
     }
 
     /*private fun setUpCurrencyAdapter() {

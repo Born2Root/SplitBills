@@ -2,10 +2,7 @@ package org.weilbach.splitbills.addeditgroup
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -45,6 +42,14 @@ class AddEditGroupFragment : Fragment() {
         retainInstance = false
 
         return viewDataBinding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_addeditgroup, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return (activity as AddEditGroupActivity).obtainViewModel().onOptionsItemSelected(item)
     }
 
     private fun setUpMemberListAdapter() {

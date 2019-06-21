@@ -20,11 +20,8 @@
             android:id="@+id/frag_add_edit_bill_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!--android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"-->
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <TextView
                 style="@style/SeparatorTextView"
@@ -150,7 +147,7 @@
             <!--android:layout_height="0dp"
             android:layout_weight="1"-->
 
-            <Button
+            <!--<Button
                 android:id="@+id/frag_add_edit_bill_button_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -160,7 +157,7 @@
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="0dp"
                 android:onClick="@{() -> viewmodel.saveBill()}"
-                android:text="@string/save" />
+                android:text="@string/save" />-->
         </LinearLayout>
     </ScrollView>
 </layout>

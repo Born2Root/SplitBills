@@ -44,13 +44,18 @@
                     <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:layout_gravity="center" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:text="@string/exporting_group"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
                 </LinearLayout>
@@ -59,12 +64,8 @@
                     android:id="@+id/act_bill_button_view_balances"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:onClick="@{() -> viewmodel.openBalances()}"
                     android:text="@string/view_balances" />
 

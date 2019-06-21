@@ -52,8 +52,9 @@
     </style>-->
 
     <style name="SeparatorTextView">
-        <item name="android:background">#b0bec5</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingStart">8dp</item>
     </style>
 </resources>

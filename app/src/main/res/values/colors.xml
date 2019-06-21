@@ -7,4 +7,6 @@
     <color name="colorOwe">#e64a19</color>
     <color name="colorGet">#66bb6a</color>
     <drawable name="touchFeedback">#CFD8DC</drawable>
+
+    <color name="on_background">#000000</color>
 </resources>

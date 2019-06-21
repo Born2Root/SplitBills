@@ -229,6 +229,16 @@ class AddEditBillViewModel(
         _billUpdated.value = Event(Unit)
     }
 
+    fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_save_bill -> {
+                saveBill()
+                false
+            }
+            else -> false
+        }
+    }
+
     private fun changeCreditor() {
         _changeCreditor.value = Event(Unit)
     }
