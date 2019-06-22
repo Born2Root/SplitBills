@@ -83,8 +83,8 @@
     <string name="view_balances">Bilanz</string>
     <string name="welcome_text">Bevor du loslegen kannst, musst du dich noch selbst als Benutzer hinzufügen. Dein Name und E-Mail Adresse werden nur auf deinem Gerät gespeichert.</string>
     <string name="welcome_to_splitbills">Willkommen bei SplitBills</string>
-    <string name="who_owes">Wer hat Geld geliehen</string>
-    <string name="who_paid">Wer hat gezahlt</string>
+    <string name="who_owes">Ausgabe teilen zwischen</string>
+    <string name="who_paid">Wer hat die Ausgabe gezahlt</string>
     <string name="yes">Ja</string>
     <string name="you_are_settled_up">Du hast alles beglichen</string>
     <string name="you_are_settled_up_strike_through"><strike>Du hast alles beglichen</strike></string>
