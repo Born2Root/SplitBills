@@ -14,10 +14,12 @@ private const val TAG = "AppPreferences"
 private const val KEY_USER_NAME = "user_name"
 private const val KEY_USER_EMAIL = "user_email"
 private const val KEY_CURRENCY = "currency_code"
+private const val KEY_THEME = "theme"
 
 private const val DEFAULT_USER_NAME = "no name set"
 private const val DEFAULT_USER_EMAIL = "no email set"
 private const val DEFAULT_CURRENCY = "EUR"
+private const val DEFAULT_THEME = "day_night"
 
 fun getUser(context: Context?): Member {
     if (context == null) {
@@ -110,4 +112,14 @@ fun getFirstStart(context: Context?): Boolean {
 fun setFirstStart(context: Context?, value: Boolean) {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     prefs.edit().putBoolean("first_start", value).apply()
+}
+
+fun setTheme(context: Context?, value: String) {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    prefs.edit().putString(KEY_THEME, value).apply()
+}
+
+fun getTheme(context: Context?): String? {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    return prefs.getString(KEY_THEME, DEFAULT_THEME)
 }

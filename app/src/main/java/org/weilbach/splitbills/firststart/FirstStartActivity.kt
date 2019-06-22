@@ -9,6 +9,7 @@ import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity
 import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.group.GroupActivity
+import org.weilbach.splitbills.util.ThemeUtil
 import org.weilbach.splitbills.util.setCurrency
 import org.weilbach.splitbills.util.setFirstStart
 import org.weilbach.splitbills.util.setUser
@@ -16,9 +17,17 @@ import java.util.*
 
 class FirstStartActivity : AppCompatActivity() {
 
+    private val themeUtil = ThemeUtil()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeUtil.onCreate(this)
         setContentView(R.layout.activity_firststart)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        themeUtil.onResume(this)
     }
 
     fun onClick(view: View) {

@@ -1,18 +1,25 @@
 package org.weilbach.splitbills.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.weilbach.splitbills.R
+import org.weilbach.splitbills.util.ThemeUtil
+import org.weilbach.splitbills.util.setTheme
 import java.util.*
 
 class SettingsActivity : AppCompatActivity(),
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
+    private val themeUtil = ThemeUtil()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeUtil.onCreate(this)
         setContentView(R.layout.activity_settings)
         if (savedInstanceState == null) {
             supportFragmentManager
@@ -27,6 +34,11 @@ class SettingsActivity : AppCompatActivity(),
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        themeUtil.onResume(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -80,6 +92,20 @@ class SettingsActivity : AppCompatActivity(),
             }
             currencyPref?.entries = currencySymbolList.toTypedArray()
             currencyPref?.entryValues = currencyCodeList.toTypedArray()
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+
+            val themeStyles = findPreference<ListPreference>("theme")
+            themeStyles?.setOnPreferenceChangeListener { preference, newValue ->
+                setTheme(context, newValue.toString())
+                activity?.let {
+                    it.supportFragmentManager.popBackStack()
+                    it.recreate()
+                }
+                true
+            }
         }
     }
 }

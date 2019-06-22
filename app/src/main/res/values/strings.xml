@@ -107,4 +107,8 @@
     <string name="user_name">Your name</string>
     <string name="user_email">Your email</string>
     <string name="default_currency">Default currency</string>
+    <string name="pref_ui_theme_light">Light</string>
+    <string name="pref_ui_theme_dark">Dark</string>
+    <string name="pref_ui_theme_day_night">System</string>
+    <string name="pref_ui_theme_title">Theme</string>
 </resources>

@@ -19,4 +19,12 @@
         app:summary="@string/default_currency_to_use"
         app:title="@string/default_currency" />
 
+    <ListPreference
+        app:defaultValue="day_night"
+        app:entries="@array/pref_themes"
+        app:entryValues="@array/pref_themes_values"
+        app:key="theme"
+        app:title="@string/pref_ui_theme_title"
+        app:useSimpleSummaryProvider="true" />
+
 </androidx.preference.PreferenceScreen>

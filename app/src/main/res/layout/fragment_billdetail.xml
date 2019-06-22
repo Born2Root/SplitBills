@@ -21,16 +21,13 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Toolbar">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/frag_bill_detail_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:theme="@style/Toolbar"
-                app:layout_collapseMode="pin"
                 app:title="@{viewmodel.description}" />
 
             <TextView
@@ -71,8 +68,7 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginBottom="8dp"
             android:text="@{viewmodel.creditorPaid}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/colorGet" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -84,8 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{viewmodel.membersOwe}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/colorOwe" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
         </ScrollView>
     </LinearLayout>
 </layout>

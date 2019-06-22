@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_themes">
+        <item>@string/pref_ui_theme_light</item>
+        <item>@string/pref_ui_theme_dark</item>
+        <item>@string/pref_ui_theme_day_night</item>
+    </string-array>
+
+    <string-array name="pref_themes_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>day_night</item>
+    </string-array>
+</resources>

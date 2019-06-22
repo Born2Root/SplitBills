@@ -7,12 +7,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.util.ADD_EDIT_RESULT_OK
-import org.weilbach.splitbills.util.obtainViewModel
-import org.weilbach.splitbills.util.replaceFragmentInActivity
-import org.weilbach.splitbills.util.setupActionBar
+import org.weilbach.splitbills.util.*
 
 class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
+
+    private val themeUtil = ThemeUtil()
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -26,6 +25,7 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeUtil.onCreate(this)
         setContentView(R.layout.activity_addeditbill)
 
         setupActionBar(R.id.act_add_edit_bill_toolbar) {
@@ -37,6 +37,11 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
         subscribeToNavigationChanges()
         subscribeToCreditorChanges()
         subscribeToAddDebtorChanges()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        themeUtil.onResume(this)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {

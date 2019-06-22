@@ -7,14 +7,13 @@ import androidx.lifecycle.Observer
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity
-import org.weilbach.splitbills.util.ADD_EDIT_RESULT_OK
-import org.weilbach.splitbills.util.obtainViewModel
-import org.weilbach.splitbills.util.replaceFragmentInActivity
-import org.weilbach.splitbills.util.setupActionBar
+import org.weilbach.splitbills.util.*
 
 class AddEditGroupActivity : AppCompatActivity(), AddEditGroupNavigator {
 
     private lateinit var viewModel: AddEditGroupViewModel
+
+    private val themeUtil = ThemeUtil()
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -28,6 +27,7 @@ class AddEditGroupActivity : AppCompatActivity(), AddEditGroupNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeUtil.onCreate(this)
         setContentView(R.layout.activity_addeditgroup)
 
         setupActionBar(R.id.act_add_edit_group_toolbar) {
@@ -45,6 +45,11 @@ class AddEditGroupActivity : AppCompatActivity(), AddEditGroupNavigator {
                 }
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        themeUtil.onResume(this)
     }
 
     private fun subscribeToNavigationChanges() {

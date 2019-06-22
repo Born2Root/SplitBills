@@ -12,6 +12,7 @@ import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.balances.BalancesActivity
 import org.weilbach.splitbills.billdetail.BillDetailActivity
+import org.weilbach.splitbills.util.ThemeUtil
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
 import org.weilbach.splitbills.util.setupActionBar
@@ -23,6 +24,7 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
     private lateinit var viewModel: BillsViewModel
 
     private var groupName: String? = null
+    private val themeUtil = ThemeUtil()
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -31,6 +33,7 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeUtil.onCreate(this)
         setContentView(R.layout.activity_bills)
 
         groupName = intent.getStringExtra(EXTRA_GROUP_NAME)
@@ -70,6 +73,11 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
                 }
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        themeUtil.onCreate(this)
     }
 
     private fun setupViewFragment() {

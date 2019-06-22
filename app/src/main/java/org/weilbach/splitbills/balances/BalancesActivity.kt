@@ -3,6 +3,7 @@ package org.weilbach.splitbills.balances
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import org.weilbach.splitbills.R
+import org.weilbach.splitbills.util.ThemeUtil
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
 import org.weilbach.splitbills.util.setupActionBar
@@ -11,6 +12,8 @@ class BalancesActivity : AppCompatActivity() {
 
     private var groupName: String? = null
 
+    private val themeUtil = ThemeUtil()
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -18,6 +21,7 @@ class BalancesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeUtil.onCreate(this)
         setContentView(R.layout.activity_balances)
 
         groupName = intent.getStringExtra(EXTRA_GROUP_NAME)
@@ -29,6 +33,11 @@ class BalancesActivity : AppCompatActivity() {
         }
 
         setupViewFragment()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        themeUtil.onResume(this)
     }
 
     private fun setupViewFragment() {

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_group.*
@@ -15,18 +17,18 @@ import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity
 import org.weilbach.splitbills.bills.BillsActivity
 import org.weilbach.splitbills.firststart.FirstStartActivity
 import org.weilbach.splitbills.settings.SettingsActivity
-import org.weilbach.splitbills.util.getFirstStart
-import org.weilbach.splitbills.util.obtainViewModel
-import org.weilbach.splitbills.util.replaceFragmentInActivity
-import org.weilbach.splitbills.util.setupActionBar
+import org.weilbach.splitbills.util.*
 
 class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
 
     private lateinit var viewModel: GroupViewModel
 
+    private val themeUtil = ThemeUtil()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
+        themeUtil.onCreate(this)
 
         setupActionBar(R.id.act_group_toolbar) { }
 
@@ -67,6 +69,7 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
 
     override fun onResume() {
         super.onResume()
+        themeUtil.onResume(this)
         obtainViewModel().handleIntent(intent)
     }
 

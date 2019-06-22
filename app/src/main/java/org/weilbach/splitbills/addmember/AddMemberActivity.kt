@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.util.ThemeUtil
 import org.weilbach.splitbills.util.obtainViewModel
 import org.weilbach.splitbills.util.replaceFragmentInActivity
 import org.weilbach.splitbills.util.setupActionBar
@@ -16,6 +17,8 @@ class AddMemberActivity : AppCompatActivity() {
 
     private lateinit var viewModel: AddMemberViewModel
 
+    private val themeUtil = ThemeUtil()
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -23,6 +26,7 @@ class AddMemberActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeUtil.onCreate(this)
         setContentView(R.layout.activity_addmember)
 
         setupActionBar(R.id.act_add_member_toolbar) {
@@ -39,6 +43,11 @@ class AddMemberActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        themeUtil.onResume(this)
     }
 
     private fun saveMember(memberData: Member) {
