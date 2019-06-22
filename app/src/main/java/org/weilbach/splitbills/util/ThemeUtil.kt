@@ -17,13 +17,13 @@ class ThemeUtil {
     }
 
     fun onResume(activity: AppCompatActivity) {
-        if (currentTheme != getSelectedTheme(activity)) {
+        /*if (currentTheme != getSelectedTheme(activity)) {
             val intent = activity.intent
             activity.finish()
             OverridePendingTransition.invoke(activity)
             activity.startActivity(intent)
             OverridePendingTransition.invoke(activity)
-        }
+        }*/
     }
 
     private fun getSelectedTheme(context: Context): Int {

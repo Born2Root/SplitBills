@@ -37,6 +37,9 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
         subscribeToNavigationChanges()
         subscribeToCreditorChanges()
         subscribeToAddDebtorChanges()
+
+        // Needed since LiveData will otherwise not return value
+        obtainViewModel().availableDebtors.observe(this, Observer{ })
     }
 
     override fun onResume() {
@@ -62,33 +65,37 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
 
     private fun showChooseCreditorDialog() {
         val memberItems = ArrayList<String>()
-        obtainViewModel().availableMembers.value!!.forEach {
-            memberItems.add(it.name)
-        }
+        obtainViewModel().availableMembers.value?.let { members ->
 
-        AlertDialog.Builder(this)
-                .setTitle(getString(R.string.alert_dialog_creditor_title))
-                .setItems(memberItems.toTypedArray()) { dialog, which ->
-                    obtainViewModel().creditor.value = obtainViewModel().availableMembers.value!![which]
-                }
-                .create()
-                .show()
+            members.forEach {
+                memberItems.add(it.name)
+            }
+
+            AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.alert_dialog_creditor_title))
+                    .setItems(memberItems.toTypedArray()) { _, which ->
+                        obtainViewModel().creditor.value = members[which]
+                    }
+                    .create()
+                    .show()
+        }
     }
 
     private fun showAddDebtorDialog() {
         val memberItems = ArrayList<String>()
-        obtainViewModel().availableMembers.value!!.forEach {
-            memberItems.add(it.name)
-        }
-        Log.d(TAG, "memberDataItems: $memberItems")
+        obtainViewModel().availableDebtors.value?.let { debtors ->
+            debtors.forEach { debtor ->
+                memberItems.add(debtor.name)
+            }
 
-        AlertDialog.Builder(this)
-                .setTitle(getString(R.string.alert_dialog_debtor_title))
-                .setItems(memberItems.toTypedArray()) { _, which ->
-                    obtainViewModel().debtorAdded(obtainViewModel().availableMembers.value!![which])
-                }
-                .create()
-                .show()
+            AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.alert_dialog_debtor_title))
+                    .setItems(memberItems.toTypedArray()) { _, which ->
+                        obtainViewModel().debtorAdded(debtors[which])
+                    }
+                    .create()
+                    .show()
+        }
     }
 
     private fun subscribeToNavigationChanges() {

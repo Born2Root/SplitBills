@@ -109,6 +109,22 @@ class AddEditBillViewModel(
         }
     }
 
+    private val _availableDebtors = MediatorLiveData<List<Member>>().apply {
+        addSource(availableMembers) { members ->
+            debtorItems.value?.let { debtors ->
+                value = calcAvailableDebtors(members, debtors)
+            }
+        }
+        addSource(debtorItems) { debtors ->
+            availableMembers.value?.let { members ->
+                value = calcAvailableDebtors(members, debtors)
+            }
+        }
+    }
+    val availableDebtors: LiveData<List<Member>>
+        get() = _availableDebtors
+
+
     val allGroupMembersAdded: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
         addSource(availableMembers) { members ->
             debtorItems.value?.let { debtors ->
@@ -145,6 +161,16 @@ class AddEditBillViewModel(
 
     val groupItems = groupsRepository.getAll()
 
+    private fun calcAvailableDebtors(availableMembers: List<Member>, debtors: List<Member>): List<Member> {
+        val members: ArrayList<Member> = ArrayList()
+        availableMembers.forEach { availableMember ->
+            if (!debtors.contains(availableMember)) {
+                members.add(availableMember)
+            }
+        }
+        return members
+    }
+
     fun addDebtor() {
         _addDebtor.value = Event(Unit)
     }
@@ -171,12 +197,10 @@ class AddEditBillViewModel(
 
     fun debtorAdded(member: Member) {
         if (debtorContainer.contains(member.email)) {
-            _snackbarText.value = Event(R.string.debtor_already_added)
             return
         }
         debtorContainer[member.email] = member
         updateDebtorItems()
-        _snackbarText.value = Event(R.string.member_successful_added)
     }
 
     private fun updateDebtorItems() {
