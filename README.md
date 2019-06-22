@@ -25,18 +25,10 @@ If you have any problems with the app please contact me or open a issue here, ra
 
 ### Phone
 
-<img src="screenshots/phone/phone1.png" alt="drawing" width="200"/>
-<img src="screenshots/phone/phone2.png" alt="drawing" width="200"/>
-<img src="screenshots/phone/phone3.png" alt="drawing" width="200"/>
-<img src="screenshots/phone/phone4.png" alt="drawing" width="200"/>
-<img src="screenshots/phone/phone5.png" alt="drawing" width="200"/>
-<img src="screenshots/phone/phone6.png" alt="drawing" width="200"/>
-
-### Tablet
-
-<img src="screenshots/tablet/tablet1.png" alt="drawing" width="200"/>
-<img src="screenshots/tablet/tablet2.png" alt="drawing" width="200"/>
-<img src="screenshots/tablet/tablet3.png" alt="drawing" width="200"/>
-<img src="screenshots/tablet/tablet4.png" alt="drawing" width="200"/>
-<img src="screenshots/tablet/tablet5.png" alt="drawing" width="200"/>
-<img src="screenshots/tablet/tablet6.png" alt="drawing" width="200"/>
+<img src="screenshots/phone/phone_light_groups_english.png" alt="drawing" width="200"/>
+<img src="screenshots/phone/phone_dark_groups_english.png" alt="drawing" width="200"/>
+<img src="screenshots/phone/phone_light_bills_english.png" alt="drawing" width="200"/>
+<img src="screenshots/phone/phone_dark_bills_english.png" alt="drawing" width="200"/>
+<img src="screenshots/phone/phone_dark_bill_detail_english.png" alt="drawing" width="200"/>
+<img src="screenshots/phone/phone_dark_balance_english.png" alt="drawing" width="200"/>
+<img src="screenshots/phone/phone_dark_add_bill_english.png" alt="drawing" width="200"/>
