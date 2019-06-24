@@ -29,11 +29,7 @@ fun memberGetsFromGroup(member: Member, group: GroupMembersBillsDebtors): HashMa
     }.forEach { billDebtors ->
         val debtors = billDebtors.debtors
         debtors.filter { debtor -> debtor.memberEmail != member.email }.forEach { debtor ->
-            if (balanceMap.containsKey(debtor.memberEmail)) {
-                balanceMap[debtor.memberEmail] = balanceMap[debtor.memberEmail]!!.add(debtor.amount)
-            } else {
-                balanceMap[debtor.memberEmail] = debtor.amount
-            }
+            balanceMap[debtor.memberEmail] = balanceMap[debtor.memberEmail]?.add(debtor.amount) ?: debtor.amount
         }
     }
     return balanceMap
@@ -79,12 +75,7 @@ fun memberOwesGroup(member: Member, group: GroupMembersBillsDebtors): HashMap<St
         val debtor = findDebtorByEmail(member.email, debtors)
 
         if (debtor != null) {
-
-            if (balanceMap.containsKey(billDebtors.bill.creditorEmail)) {
-                balanceMap[billDebtors.bill.creditorEmail] = balanceMap[billDebtors.bill.creditorEmail]!!.add(debtor.amount)
-            } else {
-                balanceMap[billDebtors.bill.creditorEmail] = debtor.amount
-            }
+            balanceMap[billDebtors.bill.creditorEmail] = balanceMap[billDebtors.bill.creditorEmail]?.add(debtor.amount) ?: debtor.amount
         }
     }
     return balanceMap

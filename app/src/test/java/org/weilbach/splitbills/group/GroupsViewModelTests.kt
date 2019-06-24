@@ -15,7 +15,7 @@ class GroupsViewModelTests {
     @Captor
     private lateinit var loadGroupsCallbackCaptor: ArgumentCaptor<GetGroupsCallback>
     private lateinit var groupsViewModel: GroupViewModel
-    private lateinit var group: List<GroupData>
+    private lateinit var GROUP_MEMBERS_BILLS_DEBTORS: List<GroupData>
 
     @Before
     fun setupTasksViewModel() {
@@ -28,12 +28,12 @@ class GroupsViewModelTests {
         // Get a reference to the class under test
         groupsViewModel = GroupViewModel(groupRepository)
 
-        // We initialise the group to 3, with one active and two completed
+        // We initialise the GROUP_MEMBERS_BILLS_DEBTORS to 3, with one active and two completed
         val group1 = GroupData("Title1")
         val group2 = GroupData("Title2")
         val group3 = GroupData("Title3")
 
-        group = Lists.newArrayList(group1, group2, group3)
+        GROUP_MEMBERS_BILLS_DEBTORS = Lists.newArrayList(group1, group2, group3)
 
     }
 
@@ -51,16 +51,16 @@ class GroupsViewModelTests {
 
     @Test
     fun loadAllGroupsFromRepository_dataLoaded() {
-        // Given an initialized TasksViewModel with initialized group
+        // Given an initialized TasksViewModel with initialized GROUP_MEMBERS_BILLS_DEBTORS
         // When loading of Tasks is requested
         groupsViewModel.loadGroups(true)
 
-        // Callback is captured and invoked with stubbed group
+        // Callback is captured and invoked with stubbed GROUP_MEMBERS_BILLS_DEBTORS
         verify<GroupsRepository>(groupRepository).getGroups(capture(loadGroupsCallbackCaptor))
 
         // Then progress indicator is shown
         assertTrue(LiveDataTestUtil.getValue(groupsViewModel.dataLoading))
-        loadGroupsCallbackCaptor.value.onGroupsLoaded(group)
+        loadGroupsCallbackCaptor.value.onGroupsLoaded(GROUP_MEMBERS_BILLS_DEBTORS)
 
         // Then progress indicator is hidden
         assertFalse(LiveDataTestUtil.getValue(groupsViewModel.dataLoading))
