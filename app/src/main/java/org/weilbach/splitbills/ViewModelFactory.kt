@@ -85,7 +85,7 @@ class ViewModelFactory private constructor(
                                 appContext)
 
                     isAssignableFrom(AddMemberViewModel::class.java) ->
-                        AddMemberViewModel()
+                        AddMemberViewModel(appContext)
 
                     isAssignableFrom(AddEditGroupViewModel::class.java) ->
                         AddEditGroupViewModel(

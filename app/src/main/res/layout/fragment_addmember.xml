@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -32,6 +33,7 @@
             android:ems="10"
             android:hint="@string/enter_name"
             android:inputType="textCapWords"
+            app:error="@{viewmodel.nameError}"
             android:text="@={viewmodel.name}" />
 
         <TextView
@@ -51,6 +53,7 @@
             android:ems="10"
             android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
+            app:error="@{viewmodel.emailError}"
             android:text="@={viewmodel.email}" />
 
         <Button

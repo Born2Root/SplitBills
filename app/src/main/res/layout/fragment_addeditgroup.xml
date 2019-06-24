@@ -36,6 +36,7 @@
                 android:layout_margin="8dp"
                 android:hint="@string/enter_group_name_hint"
                 android:inputType="textCapWords"
+                app:error="@{viewmodel.nameError}"
                 android:text="@={viewmodel.name}" />
 
             <TextView

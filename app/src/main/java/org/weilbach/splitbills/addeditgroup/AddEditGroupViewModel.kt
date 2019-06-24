@@ -32,6 +32,10 @@ class AddEditGroupViewModel(
 
     val name = MutableLiveData<String>()
 
+    private val _nameError = MutableLiveData<String>()
+    val nameError: LiveData<String>
+        get() = _nameError
+
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean>
         get() = _dataLoading
@@ -68,7 +72,6 @@ class AddEditGroupViewModel(
         }
         memberContainer[newMember.email] = newMember
         addMemberToList(newMember)
-        _snackbarText.value = Event(R.string.member_successful_added)
     }
 
     fun handleActivityOnResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,9 +93,10 @@ class AddEditGroupViewModel(
         _memberItems.value = _memberItems.value
     }
 
-    fun saveGroup() {
+    private fun saveGroup() {
         val currentName = name.value
         if (currentName == null) {
+            _nameError.value = appContext.getString(R.string.no_group_name_message)
             _snackbarText.value = Event(R.string.no_group_name_message)
             return
         }

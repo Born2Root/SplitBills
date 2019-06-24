@@ -1,5 +1,6 @@
 package org.weilbach.splitbills.addmember
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,11 +8,21 @@ import org.weilbach.splitbills.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.data.Member
 
-class AddMemberViewModel : ViewModel() {
+class AddMemberViewModel(
+        private val appContext: Context
+) : ViewModel() {
 
     val name = MutableLiveData<String>()
 
+    private val _nameError = MutableLiveData<String>()
+    val nameError: LiveData<String>
+        get() = _nameError
+
     val email = MutableLiveData<String>()
+
+    private val _emailError = MutableLiveData<String>()
+    val emailError: LiveData<String>
+        get() = _emailError
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarMessage: LiveData<Event<Int>>
@@ -24,12 +35,12 @@ class AddMemberViewModel : ViewModel() {
     fun saveMember() {
         val currentName = name.value
         if (currentName == null) {
-            _snackbarText.value = Event(R.string.no_name_given)
+            _nameError.value = appContext.getString(R.string.enter_name)
             return
         }
         val currentEmail = email.value
         if (currentEmail == null) {
-            _snackbarText.value = Event(R.string.no_email_given)
+            _emailError.value = appContext.getString(R.string.enter_email)
             return
         }
         createMember(Member(currentName, currentEmail))

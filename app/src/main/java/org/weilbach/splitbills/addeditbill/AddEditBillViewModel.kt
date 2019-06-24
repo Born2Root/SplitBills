@@ -41,7 +41,15 @@ class AddEditBillViewModel(
 
     val description = MutableLiveData<String>()
 
+    private val _descriptionError = MutableLiveData<String>()
+    val descriptionError: LiveData<String>
+        get() = _descriptionError
+
     val amount = MutableLiveData<String>()
+
+    private val _amountError = MutableLiveData<String>()
+    val amountError: LiveData<String>
+    get() = _amountError
 
     val posCurrencySpinner = MutableLiveData<Int>().apply {
         val currency = getCurrency(appContext)
@@ -207,7 +215,7 @@ class AddEditBillViewModel(
         debtorItems.value = ArrayList(debtorContainer.values)
     }
 
-    fun saveBill() {
+    private fun saveBill() {
         val currentCreditor = creditor.value
         val currentGroup = group.value
         val currentDescription = description.value
@@ -215,12 +223,17 @@ class AddEditBillViewModel(
         val currentDate = Date()
         val currentCurrency = currency.value ?: Currency.getInstance("EUR")
 
+        if (currentCreditor == null || currentGroup == null) {
+            // This case should never happen
+            return
+        }
+
         if (currentDescription == null) {
-            _snackbarText.value = Event(R.string.no_bill_description_message)
+            _descriptionError.value = appContext.getString(R.string.enter_a_description)
             return
         }
         if (currentAmountString == null) {
-            _snackbarText.value = Event(R.string.no_bill_amount_message)
+            _amountError.value = appContext.getString(R.string.no_bill_amount_message)
             return
         }
         val currentAmount = converter.stringToBigDecimal(currentAmountString)
@@ -230,13 +243,12 @@ class AddEditBillViewModel(
             return
         }
 
-        // TODO: Fix !!
         val bill = Bill(currentDate,
                 currentDescription,
                 currentAmount,
                 currentCurrency.currencyCode,
-                currentCreditor!!.email,
-                currentGroup!!.name,
+                currentCreditor.email,
+                currentGroup.name,
                 true)
 
         val debtorAmount = currentAmount.divide(BigDecimal(debtorContainer.size), MATH_CONTEXT)

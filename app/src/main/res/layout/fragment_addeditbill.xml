@@ -52,6 +52,7 @@
                 android:layout_marginRight="8dp"
                 android:hint="@string/enter_a_description"
                 android:inputType="textCapWords"
+                app:error="@{viewmodel.descriptionError}"
                 android:text="@={viewmodel.description}" />
 
             <LinearLayout
@@ -68,6 +69,7 @@
                     android:hint="@string/empty_amount"
                     android:inputType="numberDecimal"
                     android:text="@={viewmodel.amount}"
+                    app:error="@{viewmodel.amountError}"
                     android:textSize="32sp" />
 
                 <TextView
