@@ -14,7 +14,10 @@ Use SplitBills to split bills with your friends or other people. You can create 
 If you have any problems with the app please contact me or open a issue here, rather than leave a one-star review: https://gitlab.com/flexw/splitbills/issues
 
 
-[Privacy policy](PRIVACY_POLICY.md) [Licence](LICENCE)
+[Privacy policy](PRIVACY_POLICY.md)
+
+
+[License](LICENSE)
 
 ## Features
 
