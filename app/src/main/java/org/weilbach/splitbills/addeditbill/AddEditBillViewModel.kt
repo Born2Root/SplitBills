@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.*
-import org.weilbach.splitbills.Event
+import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.MATH_CONTEXT
 import org.weilbach.splitbills.MemberItemNavigator
 import org.weilbach.splitbills.R

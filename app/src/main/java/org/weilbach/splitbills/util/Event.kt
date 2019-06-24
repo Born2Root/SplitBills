@@ -1,4 +1,4 @@
-package org.weilbach.splitbills
+package org.weilbach.splitbills.util
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

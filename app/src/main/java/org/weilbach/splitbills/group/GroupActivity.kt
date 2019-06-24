@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_group.*
-import org.weilbach.splitbills.Event
+import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity

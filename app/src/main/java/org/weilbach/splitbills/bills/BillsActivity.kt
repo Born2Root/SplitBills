@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
-import org.weilbach.splitbills.Event
+import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.balances.BalancesActivity

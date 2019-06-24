@@ -28,7 +28,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import org.weilbach.splitbills.ViewModelFactory
 
 
 const val ADD_EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 1

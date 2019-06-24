@@ -14,7 +14,7 @@
 
     </data>
 
-    <org.weilbach.splitbills.ScrollChildSwipeRefreshLayout
+    <org.weilbach.splitbills.util.ScrollChildSwipeRefreshLayout
         android:id="@+id/frag_bills_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -74,5 +74,5 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
         </RelativeLayout>
-    </org.weilbach.splitbills.ScrollChildSwipeRefreshLayout>
+    </org.weilbach.splitbills.util.ScrollChildSwipeRefreshLayout>
 </layout>

@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.weilbach.splitbills
+package org.weilbach.splitbills.util
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -21,6 +21,7 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import org.weilbach.splitbills.Injection
 import org.weilbach.splitbills.addeditbill.AddEditBillViewModel
 import org.weilbach.splitbills.addeditgroup.AddEditGroupViewModel
 import org.weilbach.splitbills.addmember.AddMemberViewModel
@@ -29,7 +30,6 @@ import org.weilbach.splitbills.billdetail.BillDetailViewModel
 import org.weilbach.splitbills.bills.BillsViewModel
 import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.group.GroupViewModel
-import org.weilbach.splitbills.util.AppExecutors
 
 
 /**
@@ -116,14 +116,16 @@ class ViewModelFactory private constructor(
         private var INSTANCE: ViewModelFactory? = null
 
         fun getInstance(application: Application) =
-                INSTANCE ?: synchronized(ViewModelFactory::class.java) {
-                    INSTANCE ?: ViewModelFactory(
-                            Injection.provideGroupRepository(application.applicationContext),
-                            Injection.provideBillRepository(application.applicationContext),
-                            Injection.provideMemberRepository(application.applicationContext),
-                            Injection.provideGroupMemberRepository(application.applicationContext),
-                            Injection.provideDebtorRepository(application.applicationContext),
-                            application.applicationContext)
+                INSTANCE
+                        ?: synchronized(ViewModelFactory::class.java) {
+                    INSTANCE
+                            ?: ViewModelFactory(
+                                    Injection.provideGroupRepository(application.applicationContext),
+                                    Injection.provideBillRepository(application.applicationContext),
+                                    Injection.provideMemberRepository(application.applicationContext),
+                                    Injection.provideGroupMemberRepository(application.applicationContext),
+                                    Injection.provideDebtorRepository(application.applicationContext),
+                                    application.applicationContext)
                             .also { INSTANCE = it }
                 }
 

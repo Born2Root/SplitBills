@@ -8,7 +8,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.weilbach.splitbills.Event
+import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.MemberItemNavigator
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity

@@ -9,7 +9,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.weilbach.splitbills.Injection
-import org.weilbach.splitbills.ViewModelFactory
+import org.weilbach.splitbills.util.ViewModelFactory
 import org.weilbach.splitbills.data.source.GroupsDataSource
 
 @RunWith(AndroidJUnit4::class)

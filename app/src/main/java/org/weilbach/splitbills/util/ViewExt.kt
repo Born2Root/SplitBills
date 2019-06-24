@@ -27,8 +27,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
-import org.weilbach.splitbills.Event
-import org.weilbach.splitbills.ScrollChildSwipeRefreshLayout
 import org.weilbach.splitbills.balances.BalancesViewModel
 import org.weilbach.splitbills.bills.BillsViewModel
 import org.weilbach.splitbills.group.GroupViewModel
