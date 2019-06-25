@@ -28,7 +28,7 @@ class GroupsViewModelTests {
         // Get a reference to the class under test
         groupsViewModel = GroupViewModel(groupRepository)
 
-        // We initialise the GROUP_MEMBERS_BILLS_DEBTORS to 3, with one active and two completed
+        // We initialise the GROUP_MEMBERS_BILLS_DEBTORS to 3
         val group1 = GroupData("Title1")
         val group2 = GroupData("Title2")
         val group3 = GroupData("Title3")

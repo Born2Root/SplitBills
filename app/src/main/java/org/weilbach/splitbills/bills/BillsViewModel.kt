@@ -135,13 +135,14 @@ class BillsViewModel(
         private const val TAG = "BillsViewModel"
     }
 
-    private class ExportGroupTask(private val groupName: String,
-                                  private val groupRepository: GroupRepository,
-                                  private val groupsMembersRepository: GroupMemberRepository,
-                                  private val shareGroupEvent: MutableLiveData<Event<GroupShare>>,
+    private class ExportGroupTask(
+            private val groupName: String,
+            private val groupRepository: GroupRepository,
+            private val groupsMembersRepository: GroupMemberRepository,
+            private val shareGroupEvent: MutableLiveData<Event<GroupShare>>,
             // FIXME: May lead to memory leaks
-                                  private val appContext: Context,
-                                  private val exportingGroup: MutableLiveData<Boolean>
+            private val appContext: Context,
+            private val exportingGroup: MutableLiveData<Boolean>
     ) : AsyncTask<String, Int, GroupShare?>() {
 
         override fun doInBackground(vararg params: String): GroupShare? {

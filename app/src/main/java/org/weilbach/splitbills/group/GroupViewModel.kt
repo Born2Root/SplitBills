@@ -18,6 +18,7 @@ import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.util.*
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
+import java.io.InputStream
 import java.math.BigDecimal
 import java.util.*
 
@@ -240,47 +241,93 @@ class GroupViewModel(val groupRepository: GroupRepository,
     }
 
     private fun importGroup(uri: Uri) {
+        _snackbarText.value = Event(R.string.trying_to_merge)
         _groupMerging.value = true
         _groupMergeStartedEvent.value = Event(Unit)
         val inputStream = appContext.contentResolver.openInputStream(uri)
-        inputStream?.let {
-            _snackbarText.value = Event(R.string.trying_to_merge)
-            var res: Triple<GroupMembersBillsDebtors, List<Member>, String>? = null
 
-            try {
-                res = readGroupFromXml(it)
-            } catch (e: IOException) {
-                _groupMerging.value = false
-                appExecutors.mainThread.execute {
-                    _snackbarText.value = Event(R.string.could_not_merge_group_io_error)
-                }
-                _groupMergeFailed.value = Event(Unit)
-                return
-            } catch (e: XmlPullParserException) {
-                _groupMerging.value = false
-                appExecutors.mainThread.execute {
-                    _snackbarText.value = Event(R.string.could_not_merge_no_group)
-                }
-                return
-            }
-
-            MergeGroupTask(
-                    res.first,
-                    res.second,
-                    groupRepository,
-                    billRepository,
-                    debtorRepository,
-                    memberRepository,
-                    groupMemberRepository,
-                    _snackbarText,
-                    _groupMergedEvent,
-                    _groupAddedEvent,
-                    _groupMerging).execute()
-        }
+        ReadGroupTask(
+                inputStream,
+                _groupMerging,
+                _groupMergeFailed,
+                _groupMergedEvent,
+                _groupAddedEvent,
+                _snackbarText,
+                groupRepository,
+                billRepository,
+                debtorRepository,
+                memberRepository,
+                groupMemberRepository).execute()
     }
 
     internal fun openGroup(groupName: String) {
         _openGroupEvent.value = Event(groupName)
+    }
+
+    class ReadGroupTask(
+            private val inputStream: InputStream?,
+            private val groupMerging: MutableLiveData<Boolean>,
+            private val groupMergeFailed: MutableLiveData<Event<Unit>>,
+            private val groupMergedEvent: MutableLiveData<Event<Unit>>,
+            private val groupAddedEvent: MutableLiveData<Event<Unit>>,
+            private val snackbarText: MutableLiveData<Event<Int>>,
+            private val groupRepository: GroupRepository,
+            private val billRepository: BillRepository,
+            private val debtorRepository: DebtorRepository,
+            private val memberRepository: MemberRepository,
+            private val groupMemberRepository: GroupMemberRepository
+    ) : AsyncTask<Unit, Unit, Pair<Int, Triple<GroupMembersBillsDebtors, List<Member>, String>?>>() {
+
+        override fun doInBackground(vararg params: Unit?): Pair<Int, Triple<GroupMembersBillsDebtors, List<Member>, String>?> {
+            if (inputStream != null) {
+                var res: Triple<GroupMembersBillsDebtors, List<Member>, String>? = null
+
+                try {
+                    res = readGroupFromXml(inputStream)
+                } catch (e: IOException) {
+                    return Pair(IO_ERROR, null)
+                } catch (e: XmlPullParserException) {
+                    return Pair(NO_VALID_XML_FILE, null)
+                }
+                return Pair(SUCCESS, res)
+            }
+            return Pair(IO_ERROR, null)
+        }
+
+        override fun onPostExecute(result: Pair<Int, Triple<GroupMembersBillsDebtors, List<Member>, String>?>) {
+
+            when (result.first) {
+                NO_VALID_XML_FILE -> {
+                    snackbarText.value = Event(R.string.could_not_merge_no_group)
+                    groupMerging.value = false
+                    groupMergeFailed.value = Event(Unit)
+                }
+                IO_ERROR -> {
+                    snackbarText.value = Event(R.string.could_not_merge_group_io_error)
+                    groupMerging.value = false
+                    groupMergeFailed.value = Event(Unit)
+                }
+                SUCCESS -> {
+                    MergeGroupTask(
+                            result.second!!.first, // Will never be null
+                            result.second!!.second, // Will never be null
+                            groupRepository,
+                            billRepository,
+                            debtorRepository,
+                            memberRepository,
+                            groupMemberRepository,
+                            snackbarText,
+                            groupMergedEvent,
+                            groupAddedEvent,
+                            groupMerging).execute()
+                }
+            }
+        }
+        companion object {
+            private const val NO_VALID_XML_FILE = 1
+            private const val IO_ERROR = 2
+            private const val SUCCESS = 3
+        }
     }
 
     class MergeGroupTask(
