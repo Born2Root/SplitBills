@@ -35,7 +35,7 @@ private const val XML_TAG_DB_VERSION = "dbVersion"
 private val converter = Converter()
 
 @Throws(XmlPullParserException::class, IOException::class)
-fun importGroupFromXml(inputStream: InputStream): Triple<GroupMembersBillsDebtors, List<Member>, String> {
+fun readGroupFromXml(inputStream: InputStream): Triple<GroupMembersBillsDebtors, List<Member>, String> {
     return parseXml(inputStream)
 }
 

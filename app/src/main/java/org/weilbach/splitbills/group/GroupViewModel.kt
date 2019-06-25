@@ -248,7 +248,7 @@ class GroupViewModel(val groupRepository: GroupRepository,
             var res: Triple<GroupMembersBillsDebtors, List<Member>, String>? = null
 
             try {
-                res = importGroupFromXml(it)
+                res = readGroupFromXml(it)
             } catch (e: IOException) {
                 _groupMerging.value = false
                 appExecutors.mainThread.execute {

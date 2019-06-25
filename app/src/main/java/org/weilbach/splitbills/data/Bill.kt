@@ -48,11 +48,4 @@ data class Bill constructor(
     @PrimaryKey
     @ColumnInfo(name = "id")
     var id = dateTime.time.toString() + description + groupName
-
-    companion object {
-        /*const val DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS zzz"
-        val formatter = SimpleDateFormat(DATE_TIME_FORMAT).apply {
-            timeZone = TimeZone.getTimeZone("UTC")
-        }*/
-    }
 }
