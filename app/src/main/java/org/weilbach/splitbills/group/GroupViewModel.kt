@@ -250,14 +250,21 @@ class GroupViewModel(val groupRepository: GroupRepository,
                 inputStream,
                 _groupMerging,
                 _groupMergeFailed,
-                _groupMergedEvent,
-                _groupAddedEvent,
-                _snackbarText,
-                groupRepository,
-                billRepository,
-                debtorRepository,
-                memberRepository,
-                groupMemberRepository).execute()
+                _snackbarText) { res ->
+            MergeGroupTask(
+                    res.first,
+                    res.second,
+                    groupRepository,
+                    billRepository,
+                    debtorRepository,
+                    memberRepository,
+                    groupMemberRepository,
+                    _snackbarText,
+                    _groupMergedEvent,
+                    _groupAddedEvent,
+                    _groupMerging).execute()
+
+        }.execute()
     }
 
     internal fun openGroup(groupName: String) {
@@ -268,14 +275,8 @@ class GroupViewModel(val groupRepository: GroupRepository,
             private val inputStream: InputStream?,
             private val groupMerging: MutableLiveData<Boolean>,
             private val groupMergeFailed: MutableLiveData<Event<Unit>>,
-            private val groupMergedEvent: MutableLiveData<Event<Unit>>,
-            private val groupAddedEvent: MutableLiveData<Event<Unit>>,
             private val snackbarText: MutableLiveData<Event<Int>>,
-            private val groupRepository: GroupRepository,
-            private val billRepository: BillRepository,
-            private val debtorRepository: DebtorRepository,
-            private val memberRepository: MemberRepository,
-            private val groupMemberRepository: GroupMemberRepository
+            private val success: (Triple<GroupMembersBillsDebtors, List<Member>, String>) -> Unit
     ) : AsyncTask<Unit, Unit, Pair<Int, Triple<GroupMembersBillsDebtors, List<Member>, String>?>>() {
 
         override fun doInBackground(vararg params: Unit?): Pair<Int, Triple<GroupMembersBillsDebtors, List<Member>, String>?> {
@@ -308,18 +309,10 @@ class GroupViewModel(val groupRepository: GroupRepository,
                     groupMergeFailed.value = Event(Unit)
                 }
                 SUCCESS -> {
-                    MergeGroupTask(
-                            result.second!!.first, // Will never be null
-                            result.second!!.second, // Will never be null
-                            groupRepository,
-                            billRepository,
-                            debtorRepository,
-                            memberRepository,
-                            groupMemberRepository,
-                            snackbarText,
-                            groupMergedEvent,
-                            groupAddedEvent,
-                            groupMerging).execute()
+                    // Should never be null
+                    result.second?.let {
+                        success(it)
+                    }
                 }
             }
         }
