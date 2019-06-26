@@ -246,11 +246,7 @@ class GroupViewModel(val groupRepository: GroupRepository,
         _groupMergeStartedEvent.value = Event(Unit)
         val inputStream = appContext.contentResolver.openInputStream(uri)
 
-        ReadGroupTask(
-                inputStream,
-                _groupMerging,
-                _groupMergeFailed,
-                _snackbarText) { res ->
+        ReadGroupTask(inputStream, _groupMerging, _groupMergeFailed, _snackbarText) { res ->
             MergeGroupTask(
                     res.first,
                     res.second,
