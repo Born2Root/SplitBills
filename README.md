@@ -1,24 +1,25 @@
+<p align='center'>
 <img src='app/src/main/ic_launcher-web.png' height='150'></img>
+</p>
 
+<h2 align='center'>SplitBills</h2>
+<h4 align='center'>A Android app, that helps you and your friends to split your collective expenses.</h4>
 
-<img src='https://www.gnu.org/graphics/gplv3-88x31.png'></img>
-
-# SplitBills
-
-<div style='display: flex;'>
+<p align='center'>
 <a href='https://f-droid.org/en/packages/org.weilbach.splitbills/'>
-<img src='https://f-droid.org/badge/get-it-on.png' height='75'>
+<img alt='Get it on F-Droid' src='https://f-droid.org/badge/get-it-on.png' height='75'>
 </a>
 
 <a href='https://play.google.com/store/apps/details?id=org.weilbach.splitbills&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
 <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='75'/>
 </a>
-</div>
+</p>
+
+<p align='center'>
+<a href="https://www.gnu.org/licenses/gpl-3.0" alt="License: GPLv3"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg"></a>
+</p>
 
 ## About
-
-SplitBills is a Android app, that helps you and your friends to split your collective expenses.
-
 
 Use SplitBills to split bills with your friends or other people. You can create groups with people, add bills to the group and view your balances. SplitBills works without any server or registration and is free software. Your expenses belong to you!
 
