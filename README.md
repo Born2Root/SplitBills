@@ -1,3 +1,6 @@
+<img src='app/src/main/ic_launcher-web.png'></img>
+<img src='https://www.gnu.org/graphics/gplv3-88x31.png'></img>
+
 # SplitBills
 
 <div style='display: flex;'>
