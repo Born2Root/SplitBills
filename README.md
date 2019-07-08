@@ -2,7 +2,7 @@
 <img src='app/src/main/ic_launcher-web.png' height='150'></img>
 </p>
 
-<h2 align='center'>SplitBills</h2>
+<h1 align='center'>SplitBills</h1>
 <h4 align='center'>A Android app, that helps you and your friends to split your collective expenses.</h4>
 
 <p align='center'>
@@ -18,6 +18,7 @@
 <p align='center'>
 <a href="https://www.gnu.org/licenses/gpl-3.0" alt="License: GPLv3"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg"></a>
 </p>
+<hr>
 
 ## About
 
