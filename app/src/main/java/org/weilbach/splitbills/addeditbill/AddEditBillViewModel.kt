@@ -228,11 +228,11 @@ class AddEditBillViewModel(
             return
         }
 
-        if (currentDescription == null) {
+        if (currentDescription.isNullOrBlank()) {
             _descriptionError.value = appContext.getString(R.string.enter_a_description)
             return
         }
-        if (currentAmountString == null) {
+        if (currentAmountString.isNullOrBlank()) {
             _amountError.value = appContext.getString(R.string.no_bill_amount_message)
             return
         }

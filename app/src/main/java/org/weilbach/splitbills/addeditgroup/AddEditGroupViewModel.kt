@@ -95,7 +95,7 @@ class AddEditGroupViewModel(
 
     private fun saveGroup() {
         val currentName = name.value
-        if (currentName == null) {
+        if (currentName.isNullOrBlank()) {
             _nameError.value = appContext.getString(R.string.no_group_name_message)
             _snackbarText.value = Event(R.string.no_group_name_message)
             return

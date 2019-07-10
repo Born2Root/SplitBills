@@ -34,12 +34,12 @@ class AddMemberViewModel(
 
     fun saveMember() {
         val currentName = name.value
-        if (currentName == null) {
+        if (currentName.isNullOrBlank()) {
             _nameError.value = appContext.getString(R.string.enter_name)
             return
         }
         val currentEmail = email.value
-        if (currentEmail == null) {
+        if (currentEmail.isNullOrBlank()) {
             _emailError.value = appContext.getString(R.string.enter_email)
             return
         }
