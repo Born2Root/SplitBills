@@ -1,0 +1,9 @@
+# Changelog
+
+## [0.2.4] - 2019-08-25
+### Changed
+- Made sure that it is not possible anymore to make empty description, amounts
+  and names.
+- Moved drawables from drawable-v24 to drawable directory.
+- Changed context.getColor calls to to ContextComapt.getColor calls to prevent
+  an api issue.
