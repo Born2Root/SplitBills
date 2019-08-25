@@ -6,6 +6,8 @@
 
         <import type="android.view.View" />
 
+        <import type="androidx.core.content.ContextCompat" />
+
         <import type="android.view.View.OnClickListener" />
 
         <variable
@@ -28,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@{context.getColor(viewmodel.memberTotalColor)}"
+            android:textColor="@{ContextCompat.getColor(context, viewmodel.memberTotalColor)}"
             app:text="@{viewmodel.memberTotal}" />
 
         <TextView

@@ -20,6 +20,8 @@
 
         <import type="android.view.View" />
 
+        <import type="androidx.core.content.ContextCompat" />
+
         <import type="android.view.View.OnClickListener" />
 
         <variable
@@ -54,7 +56,7 @@
             android:id="@+id/item_group_owe_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@{context.getColor(viewmodel.userOwesOrGetsTotalColor)}"
+            android:textColor="@{ContextCompat.getColor(context, viewmodel.userOwesOrGetsTotalColor)}"
             app:text="@{viewmodel.userOwesOrGetsTotal}" />
     </LinearLayout>
 </layout>
