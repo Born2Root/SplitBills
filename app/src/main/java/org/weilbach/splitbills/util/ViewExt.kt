@@ -19,6 +19,7 @@ package org.weilbach.splitbills.util
  * Extension functions for View and subclasses of View.
  */
 
+import android.text.Spanned
 import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
@@ -34,7 +35,7 @@ import org.weilbach.splitbills.group.GroupViewModel
 /**
  * Transforms static java function Snackbar.make() to an extension function on View.
  */
-fun View.showSnackbar(snackbarText: String, timeLength: Int) {
+fun View.showSnackbar(snackbarText: Spanned, timeLength: Int) {
     Snackbar.make(this, snackbarText, timeLength).run {
         addCallback(object : Snackbar.Callback() {
             override fun onShown(sb: Snackbar?) {
@@ -64,7 +65,20 @@ fun View.setupSnackbar(
 
     snackbarEvent.observe(lifecycleOwner, Observer { event ->
         event.getContentIfNotHandled()?.let {
-            showSnackbar(context.getString(it), timeLength)
+            showSnackbar(fromHtml(context.getString(it)), timeLength)
+        }
+    })
+}
+
+fun View.setupSnackbarSpanned(
+        lifecycleOwner: LifecycleOwner,
+        snackbarEvent: LiveData<Event<Spanned>>,
+        timeLength: Int
+) {
+
+    snackbarEvent.observe(lifecycleOwner, Observer { event ->
+        event.getContentIfNotHandled()?.let {
+            showSnackbar(it, timeLength)
         }
     })
 }

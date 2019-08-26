@@ -8,8 +8,8 @@ import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
 
-private const val SCALE = 2
-private val ROUNDING_MODE = RoundingMode.UP
+const val SCALE = 2
+val ROUNDING_MODE = RoundingMode.UP
 private const val PRECISION = 34
 val MATH_CONTEXT = MathContext(PRECISION, ROUNDING_MODE)
 

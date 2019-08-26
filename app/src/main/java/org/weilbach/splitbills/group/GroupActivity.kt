@@ -25,8 +25,8 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_group)
         themeUtil.onCreate(this)
+        setContentView(R.layout.activity_group)
 
         setupActionBar(R.id.act_group_toolbar) { }
 

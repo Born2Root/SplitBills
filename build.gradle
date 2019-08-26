@@ -8,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
 
@@ -39,14 +39,14 @@ ext {
 
     // App dependencies
     androidXVersion = '1.0.0'
-    androidXPreference = '1.1.0-beta01'
+    androidXPreference = '1.1.0-rc01'
     androidXTestVersion = '1.3.0-alpha01'
     androidXAnnotations = '1.1.0'
     androidXLegacySupport = '1.0.0'
-    materialVersion = '1.1.0-alpha07'
+    materialVersion = '1.1.0-alpha09'
     cardVersion = '1.0.0'
-    recyclerViewVersion = '1.1.0-alpha06'
-    appCompatVersion = '1.1.0-beta01'
+    recyclerViewVersion = '1.1.0-beta03'
+    appCompatVersion = '1.1.0-rc01'
     constraintLayoutVersion = '2.0.0-beta2'
     livedataTesting = '1.1.0'
 
@@ -84,4 +84,3 @@ ext {
         }
     }
 }*/
-

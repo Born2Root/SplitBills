@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
+            android:focusable="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -74,7 +75,7 @@
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:text="@{viewmodel.oweGetTotal}"
-                    android:textColor="@{context.getColor(viewmodel.totalBalanceColor)}" />
+                    android:textColor="@{ContextCompat.getColor(context, viewmodel.totalBalanceColor)}" />
 
                 <Button
                     android:id="@+id/act_group_button_add_group"

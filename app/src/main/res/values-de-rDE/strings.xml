@@ -104,4 +104,11 @@
     <string name="pref_ui_theme_light">Hell</string>
     <string name="pref_ui_theme_title">Theme</string>
     <string name="pref_ui_theme_day_night">System</string>
+    <string name="debtors_amount_error">Betrag der Schuldner passt nicht zum Betrag der Rechnung</string>
+    <string name="balance_debtors"><![CDATA[Es muss noch <b>%s %s</b> über alle Schuldner aufgeteilt werden]]></string>
+    <string name="percentage">Prozentual</string>
+    <string name="absolute">Absolut</string>
+    <string name="amount_can_not_empty">Betrag kann nicht leer sein</string>
+    <string name="change_amount">Betrag ändern</string>
+    <string name="done">Fertig</string>
 </resources>
