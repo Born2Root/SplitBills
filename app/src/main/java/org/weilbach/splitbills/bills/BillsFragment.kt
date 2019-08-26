@@ -18,15 +18,17 @@ import org.weilbach.splitbills.databinding.FragmentBillsBinding
 import org.weilbach.splitbills.util.*
 import android.view.LayoutInflater as LayoutInflater1
 
-
 class BillsFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentBillsBinding
     private lateinit var listAdapter: BillsAdapter
 
     private var groupName = ""
 
-    override fun onCreateView(inflater: LayoutInflater1, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater1,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewDataBinding =
                 FragmentBillsBinding.inflate(inflater, container, false).apply {
                     viewmodel = (activity as BillsActivity).obtainViewModel()
@@ -79,13 +81,8 @@ class BillsFragment : Fragment() {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
-        setupFab()
         setupListAdapter()
         setupRefreshLayout()
-    }
-
-    private fun setupFab() {
-
     }
 
     private fun setupListAdapter() {

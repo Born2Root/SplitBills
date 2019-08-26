@@ -1,6 +1,8 @@
 package org.weilbach.splitbills.data.local
 
 import androidx.room.TypeConverter
+import org.weilbach.splitbills.ROUNDING_MODE
+import org.weilbach.splitbills.SCALE
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -19,16 +21,13 @@ class Converter {
 
     @TypeConverter
     fun stringToBigDecimal(value: String): BigDecimal {
-        return BigDecimal(value)
+        val v = BigDecimal(value)
+        v.setScale(SCALE, ROUNDING_MODE)
+        return v
     }
 
     @TypeConverter
     fun bigDecimalToString(value: BigDecimal): String {
         return value.setScale(SCALE, ROUNDING_MODE).toString()
-    }
-
-    companion object {
-        private const val SCALE = 2
-        private val ROUNDING_MODE = RoundingMode.UP
     }
 }

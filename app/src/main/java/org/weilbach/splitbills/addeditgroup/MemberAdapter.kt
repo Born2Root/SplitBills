@@ -16,8 +16,8 @@ class MemberAdapter(
         private var members: List<Member>,
         private val parent: Fragment) : BaseAdapter() {
 
-    fun replaceData(memberData: List<Member>) {
-        setList(memberData)
+    fun replaceData(members: List<Member>) {
+        setList(members)
     }
 
     override fun getItem(position: Int): Any {
@@ -55,8 +55,8 @@ class MemberAdapter(
         return binding.root
     }
 
-    private fun setList(member: List<Member>) {
-        this.members = member
+    private fun setList(members: List<Member>) {
+        this.members = members
         notifyDataSetChanged()
     }
 }

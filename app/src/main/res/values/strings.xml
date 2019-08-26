@@ -111,4 +111,11 @@
     <string name="pref_ui_theme_dark">Dark</string>
     <string name="pref_ui_theme_day_night">System</string>
     <string name="pref_ui_theme_title">Theme</string>
+    <string name="debtors_amount_error">Amount of debtors does not match amount of bill</string>
+    <string name="absolute">Absolute</string>
+    <string name="percentage">Percentage</string>
+    <string name="balance_debtors"><![CDATA[There needs to be <b>%s %s</b> balanced over all debtors]]></string>
+    <string name="change_amount">Change amount</string>
+    <string name="done">Done</string>
+    <string name="amount_can_not_empty">Amount can not be empty</string>
 </resources>
