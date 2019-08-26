@@ -1,6 +1,10 @@
 # Changelog
 
-## [0.2.4] - 2019-08-25
+## [0.2.6] - 2019-08-26
+### Added
+- Custom split (absolute) feature
+
+## [0.2.5] - 2019-08-25
 ### Changed
 - Made sure that it is not possible anymore to make empty description, amounts
   and names.
