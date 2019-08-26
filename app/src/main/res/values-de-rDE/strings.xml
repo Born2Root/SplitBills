@@ -111,4 +111,5 @@
     <string name="amount_can_not_empty">Betrag kann nicht leer sein</string>
     <string name="change_amount">Betrag ändern</string>
     <string name="done">Fertig</string>
+    <string name="fill_up">Auffüllen</string>
 </resources>
