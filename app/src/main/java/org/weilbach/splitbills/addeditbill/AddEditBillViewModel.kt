@@ -365,7 +365,12 @@ class AddEditBillViewModel(
             _amountError.value = appContext.getString(R.string.no_bill_amount_message)
             return
         }
+
         val currentAmount = converter.stringToBigDecimal(currentAmountString)
+        if (currentAmount.compareTo(BigDecimal.ZERO) == 0) {
+            _amountError.value = appContext.getString(R.string.no_bill_amount_message)
+            return
+        }
 
         if (currentDebtors.isNullOrEmpty()) {
             _snackbarText.value = Event(R.string.one_debtor_should_be_added)
