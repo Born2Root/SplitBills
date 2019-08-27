@@ -39,6 +39,7 @@ If you have any problems with the app please contact me or open a issue here, ra
 * View balances
 * No registration needed
 * Dezentral
+* Custom split
 
 ## Screenshots
 
