@@ -7,15 +7,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
-import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.balances.BalancesActivity
 import org.weilbach.splitbills.billdetail.BillDetailActivity
-import org.weilbach.splitbills.util.ThemeUtil
-import org.weilbach.splitbills.util.obtainViewModel
-import org.weilbach.splitbills.util.replaceFragmentInActivity
-import org.weilbach.splitbills.util.setupActionBar
+import org.weilbach.splitbills.util.*
 import java.io.File
 import java.io.FileWriter
 
@@ -69,7 +65,13 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
 
             shareGroupEvent.observe(this@BillsActivity, Observer { event ->
                 event.getContentIfNotHandled()?.let {
-                    startMailActivity(it.appendix, it.content, it.subject, it.emails)
+                    startMailActivity(
+                            this@BillsActivity,
+                            it.groupName,
+                            it.appendix,
+                            it.content,
+                            it.subject,
+                            it.emails)
                 }
             })
         }
@@ -111,39 +113,6 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleActivityResult(requestCode, resultCode)
-    }
-
-    private fun groupNameToFileName(groupName: String): String {
-        return groupName.replace(" ", "_")
-    }
-
-    private fun getGroupFile(groupName: String): File {
-        val filename = groupNameToFileName(groupName)
-        return File(filesDir, "$filename.sbgrp")
-    }
-
-    private fun startMailActivity(appendix: String, content: String, subject: String, emails: Array<String>) {
-        groupName?.let {
-            val file = getGroupFile(it)
-            val writer = FileWriter(file)
-            writer.append(appendix)
-            writer.flush()
-            writer.close()
-            val mimeType = "text/plain"
-            val apkUri = FileProvider.getUriForFile(
-                    this,
-                    "org.weilbach.splitbills.fileprovider",
-                    file)
-            val emailIntent = Intent(Intent.ACTION_SEND)
-            emailIntent.setDataAndType(apkUri, mimeType)
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-            emailIntent.putExtra(Intent.EXTRA_TEXT, content)
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, emails)
-            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            emailIntent.putExtra(Intent.EXTRA_STREAM, apkUri)
-
-            startActivity(Intent.createChooser(emailIntent, getString(R.string.share_group_intent)))
-        }
     }
 
     override fun openBillDetails(billId: String) {

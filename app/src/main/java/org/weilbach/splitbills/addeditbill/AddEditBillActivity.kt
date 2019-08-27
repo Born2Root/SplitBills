@@ -1,5 +1,6 @@
 package org.weilbach.splitbills.addeditbill
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import org.weilbach.splitbills.R
+import org.weilbach.splitbills.data.Bill
 import org.weilbach.splitbills.util.*
 
 class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
@@ -18,8 +20,11 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
         return true
     }
 
-    override fun onBillSaved() {
-        setResult(ADD_EDIT_RESULT_OK)
+    override fun onBillSaved(bill: Bill) {
+        val intent = Intent()
+        intent.putExtra(EXTRA_GROUP_NAME, bill.groupName)
+        intent.putExtra(EXTRA_BILL_ID, bill.id)
+        setResult(ADD_EDIT_RESULT_OK, intent)
         finish()
     }
 
@@ -99,8 +104,10 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
     }
 
     private fun subscribeToNavigationChanges() {
-        obtainViewModel().billUpdatedEvent.observe(this, Observer {
-            this@AddEditBillActivity.onBillSaved()
+        obtainViewModel().billUpdatedEvent.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                this@AddEditBillActivity.onBillSaved(it)
+            }
         })
     }
 
@@ -118,5 +125,7 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
     companion object {
         private const val TAG = "AddEditBillActivity"
         const val REQUEST_CODE = 2
+        const val EXTRA_GROUP_NAME = "EXTRA_GROUP_NAME"
+        const val EXTRA_BILL_ID = "EXTRA_BILL_ID"
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import org.weilbach.splitbills.ExportGroupTask
 import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.data.Bill
@@ -105,15 +106,15 @@ class BillsViewModel(
     }
 
     private fun shareGroupViaMail() {
-        group.value?.let {
+        group.value?.let { group ->
             _exportingGroup.value = true
-            ExportGroupTask(it.name,
-                    groupRepository,
-                    groupsMembersRepository,
-                    _shareGroupEvent,
-                    appContext,
-                    _exportingGroup)
-                    .execute()
+
+            ExportGroupTask(group.name, groupRepository, groupsMembersRepository, appContext) { result ->
+                _exportingGroup.value = false
+                result?.let { groupShare ->
+                    _shareGroupEvent.value = Event(groupShare)
+                }
+            }.execute()
         }
     }
 
@@ -133,36 +134,5 @@ class BillsViewModel(
 
     companion object {
         private const val TAG = "BillsViewModel"
-    }
-
-    private class ExportGroupTask(
-            private val groupName: String,
-            private val groupRepository: GroupRepository,
-            private val groupsMembersRepository: GroupMemberRepository,
-            private val shareGroupEvent: MutableLiveData<Event<GroupShare>>,
-            // FIXME: May lead to memory leaks
-            private val appContext: Context,
-            private val exportingGroup: MutableLiveData<Boolean>
-    ) : AsyncTask<String, Int, GroupShare?>() {
-
-        override fun doInBackground(vararg params: String): GroupShare? {
-            val user = getUser(appContext)
-            val group = groupRepository.getGroupWithMembersAndBillsWithDebtorsByNameSync(groupName)
-            val members = groupsMembersRepository.getGroupMembersMembersByGroupNameSync(groupName)
-            val xml = writeGroupToXml(group, members)
-            val subject = appContext.getString(R.string.email_subject, groupName)
-            val content = appContext.getString(R.string.email_content, groupName)
-
-            val addresses = members.filter { it.email != user.email }.map { member -> member.email }
-            return GroupShare(subject, content, xml, addresses.toTypedArray())
-        }
-
-        override fun onPostExecute(result: GroupShare?) {
-            exportingGroup.value = false
-            result?.let {
-                shareGroupEvent.value = Event(it)
-            }
-        }
-
     }
 }

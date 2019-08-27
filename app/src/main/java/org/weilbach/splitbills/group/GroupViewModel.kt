@@ -10,6 +10,7 @@ import androidx.lifecycle.*
 import org.weilbach.splitbills.*
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
+import org.weilbach.splitbills.bills.GroupShare
 import org.weilbach.splitbills.data.Bill
 import org.weilbach.splitbills.data.GroupMember
 import org.weilbach.splitbills.data.GroupMembersBillsDebtors
@@ -72,6 +73,14 @@ class GroupViewModel(val groupRepository: GroupRepository,
     private val _dataLoading = MutableLiveData<Boolean>().apply { value = false }
     val dataLoading: LiveData<Boolean>
         get() = _dataLoading
+
+    private val _shareGroupEvent = MutableLiveData<Event<GroupShare>>()
+    val shareGroupEvent: LiveData<Event<GroupShare>>
+        get() = _shareGroupEvent
+
+    private val _isGroupExporting = MutableLiveData<Boolean>().apply { value = false }
+    val isGroupExporting: LiveData<Boolean>
+        get() = _isGroupExporting
 
     private val groupsWithMembersAndBillsDebtors = groupRepository.getGroupsWithMembersAndBillsWithDebtors()
 
@@ -182,6 +191,17 @@ class GroupViewModel(val groupRepository: GroupRepository,
 
     fun addNewGroup() {
         _newGroupEvent.value = Event(Unit)
+    }
+
+    fun shareGroup(groupName: String) {
+        _isGroupExporting.value = true
+
+        ExportGroupTask(groupName, groupRepository, groupMemberRepository, appContext) { result ->
+            _isGroupExporting.value = false
+            result?.let { groupShare ->
+                _shareGroupEvent.value = Event(groupShare)
+            }
+        }.execute()
     }
 
     fun handleActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {

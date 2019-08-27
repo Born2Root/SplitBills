@@ -171,7 +171,7 @@ class MemberWithAmountAdapter(
         val alert = AlertDialog.Builder(parent.context)
         alert.setTitle(viewmodel.appContext.getString(R.string.change_amount))
         alert.setView(alertLayout)
-        alert.setPositiveButton(viewmodel.appContext.getString(R.string.done)) { _, _ ->
+        alert.setPositiveButton(R.string.done) { _, _ ->
             // Do nothing here, since overwrite
         }
         val dialog = alert.create()

@@ -112,4 +112,5 @@
     <string name="change_amount">Betrag ändern</string>
     <string name="done">Fertig</string>
     <string name="fill_up">Auffüllen</string>
+    <string name="you_added_new_bill">Du hast eine neue Ausgabe hinzugefügt. Möchtest du diese mit den anderen Gruppenmitgliedern teilen?</string>
 </resources>

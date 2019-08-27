@@ -123,8 +123,8 @@ class AddEditBillViewModel(
     val snackbarMessageSpanned: LiveData<Event<Spanned>>
         get() = _snackbarTextSpanned
 
-    private val _billUpdated = MutableLiveData<Event<Unit>>()
-    val billUpdatedEvent: LiveData<Event<Unit>>
+    private val _billUpdated = MutableLiveData<Event<Bill>>()
+    val billUpdatedEvent: LiveData<Event<Bill>>
         get() = _billUpdated
 
     private val _addDebtor = MutableLiveData<Event<Unit>>()
@@ -400,7 +400,7 @@ class AddEditBillViewModel(
         billDebtors.debtors = debtors
 
         debtorsRepository.createNewBill(billDebtors)
-        _billUpdated.value = Event(Unit)
+        _billUpdated.value = Event(bill)
     }
 
     fun onOptionsItemSelected(item: MenuItem): Boolean {

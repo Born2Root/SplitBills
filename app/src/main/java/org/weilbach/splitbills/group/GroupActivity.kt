@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_group.*
@@ -13,9 +14,12 @@ import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.addeditgroup.AddEditGroupActivity
 import org.weilbach.splitbills.bills.BillsActivity
+import org.weilbach.splitbills.bills.GroupShare
 import org.weilbach.splitbills.firststart.FirstStartActivity
 import org.weilbach.splitbills.settings.SettingsActivity
 import org.weilbach.splitbills.util.*
+import java.io.File
+import java.io.FileWriter
 
 class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
 
@@ -59,6 +63,19 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
                 } else {
                     act_group_fab_add_bill.show()
                 }
+            })
+
+            shareGroupEvent.observe(this@GroupActivity, Observer { event ->
+                event.getContentIfNotHandled()?.let { content ->
+                    startMailActivity(
+                            this@GroupActivity,
+                            content.groupName,
+                            content.appendix,
+                            content.content,
+                            content.subject,
+                            content.emails)
+                }
+
             })
         }
 
@@ -131,6 +148,27 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         viewModel.handleActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AddEditBillActivity.REQUEST_CODE -> {
+                if (resultCode == ADD_EDIT_RESULT_OK) {
+                    data?.getStringExtra(AddEditBillActivity.EXTRA_GROUP_NAME)?.let {
+                        showShareGroupDialog(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showShareGroupDialog(groupName: String) {
+        val alertLayout = layoutInflater.inflate(R.layout.dialog_share_group, null)
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle(R.string.share_group)
+        alert.setView(alertLayout)
+        alert.setPositiveButton(R.string.yes) { _, _ ->
+            viewModel.shareGroup(groupName)
+        }
+        alert.setNegativeButton(R.string.no) { _, _ -> }
+        alert.create().show()
     }
 
     private fun startImportGroupActivity() {
