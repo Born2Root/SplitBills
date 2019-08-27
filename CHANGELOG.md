@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.7] - 2019-08-27
+### Added
+- Dialog for sharing group if new bill was added.
+
+### Changed
+- Fixed translations.
+- A bill with an amount of zero is not saveable anymore.
+- CHANGELOG renamed to CHANGELOG.md
+
 ## [0.2.6] - 2019-08-26
 ### Added
 - Custom split (absolute) feature
