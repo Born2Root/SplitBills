@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.8] - 2019-09-13
+### Added
+- Custom percentual split feature
+
+### Changed
+- Made sure it is not possible to create a group with a group name that 
+  already exists. 
+
 ## [0.2.7] - 2019-08-27
 ### Added
 - Dialog for sharing group if new bill was added.
