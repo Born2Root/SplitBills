@@ -5,18 +5,18 @@ import android.text.Spanned
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.*
-import com.google.common.collect.Range.range
-import org.weilbach.splitbills.*
+import org.weilbach.splitbills.MemberItemNavigator
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data.*
+import org.weilbach.splitbills.data.Bill
+import org.weilbach.splitbills.data.BillDebtors
+import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.data.local.Converter
 import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.util.*
 import java.math.BigDecimal
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-
 
 
 class AddEditBillViewModel(
@@ -27,7 +27,7 @@ class AddEditBillViewModel(
         private val groupsMembersRepository: GroupMemberRepository,
         private val appExecutors: AppExecutors,
         val appContext: Context
-) : ViewModel(), MemberItemNavigator {
+) : ViewModel(), MemberItemNavigator, DebtorItemContainerListener {
 
     private val converter = Converter()
 
@@ -40,47 +40,6 @@ class AddEditBillViewModel(
     }
     val currencyItems: LiveData<List<Currency>>
         get() = _currencyItems
-
-    val description = MutableLiveData<String>()
-
-    val amountToBalance = MutableLiveData<Spanned>()
-
-    val isAmountToBalance = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-
-    private val _splitMode = MutableLiveData<SplitMode>().apply {
-        value = SplitMode.ABSOLUTE
-    }
-    val splitMode: LiveData<SplitMode>
-        get() = _splitMode
-
-    private val _splitModeString = Transformations.map(splitMode) { splitMode ->
-        when (splitMode) {
-            SplitMode.ABSOLUTE -> {
-                R.string.absolute
-            }
-            SplitMode.PERCENTAGE -> {
-                R.string.percentage
-            }
-            else -> {
-                R.string.percentage
-            }
-        }
-    }
-    val splitModeString: LiveData<Int>
-        get() = _splitModeString
-
-
-    private val _descriptionError = MutableLiveData<String>()
-    val descriptionError: LiveData<String>
-        get() = _descriptionError
-
-    val amount = MutableLiveData<String>()
-
-    private val _amountError = MutableLiveData<String>()
-    val amountError: LiveData<String>
-        get() = _amountError
 
     val posCurrencySpinner = MutableLiveData<Int>().apply {
         val currency = getCurrency(appContext)
@@ -97,6 +56,7 @@ class AddEditBillViewModel(
                 currency = currencies[pos]
             }
         }
+        debtorItemContainer.currency = currency
         currency
     }
 
@@ -104,12 +64,86 @@ class AddEditBillViewModel(
         currency.symbol
     }
 
+    val splitMode = MutableLiveData<SplitMode>().apply {
+        value = SplitMode.ABSOLUTE
+    }
+
+    val description = MutableLiveData<String>()
+
+    val amountToBalance = MutableLiveData<BigDecimal>()
+
+    val isAmountToBalance = Transformations.map(amountToBalance) { amountToBalance ->
+        amountToBalance.compareTo(BigDecimal.ZERO) != 0
+    }
+
+    val amountToBalancePretty = MediatorLiveData<Spanned>().apply {
+        addSource(amountToBalance) { amountToBalance ->
+            when (splitMode.value) {
+                SplitMode.ABSOLUTE -> {
+                    val currencySymbol = currency.value?.symbol ?: return@addSource
+                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, currencySymbol))
+                }
+
+                SplitMode.PERCENTAGE -> {
+                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, "%"))
+                }
+            }
+        }
+
+        addSource(currency) { currency ->
+            if (splitMode.value == SplitMode.ABSOLUTE) {
+                val amountToBalance = amountToBalance.value ?: return@addSource
+                val currencySymbol = currency.symbol
+                value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, currencySymbol))
+            }
+        }
+
+        addSource(splitMode) { splitMode ->
+            when (splitMode) {
+                SplitMode.ABSOLUTE -> {
+                    val currencySymbol = currency.value?.symbol ?: return@addSource
+                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, currencySymbol))
+                }
+
+                SplitMode.PERCENTAGE -> {
+                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, "%"))
+                }
+            }
+        }
+    }
+
+    private val _splitModePretty = Transformations.map(splitMode) { splitMode ->
+        when (splitMode) {
+            SplitMode.ABSOLUTE -> {
+                R.string.absolute
+            }
+            SplitMode.PERCENTAGE -> {
+                R.string.percentage
+            }
+            else -> {
+                R.string.percentage
+            }
+        }
+    }
+    val splitModePretty: LiveData<Int>
+        get() = _splitModePretty
+
+
+    private val _descriptionError = MutableLiveData<String>()
+    val descriptionError: LiveData<String>
+        get() = _descriptionError
+
+    val amount = MutableLiveData<String>()
+
+    private val _amountError = MutableLiveData<String>()
+    val amountError: LiveData<String>
+        get() = _amountError
+
     val posGroupSpinner = MutableLiveData<Int>()
 
     val group: LiveData<Group> = Transformations.map(posGroupSpinner) { pos ->
         var group = Group("")
         groupItems.value?.let { groups ->
-            debtorItems.value?.clear()
             group = groups[pos]
         }
         group
@@ -141,84 +175,59 @@ class AddEditBillViewModel(
     val availableMembers: LiveData<List<Member>>
         get() = _availableMembers
 
-    val debtorItems = MediatorLiveData<LinkedHashMap<String, MemberWithAmount>>().apply {
+    private val debtorItemContainer = DebtorItemContainer(
+            this,
+            currency.value ?: Currency.getInstance("EUR"),
+            splitMode.value ?: SplitMode.ABSOLUTE)
+
+    val debtorItems = MediatorLiveData<List<DebtorItemViewModel>>().apply {
+        addSource(group) {
+            // Maybe unnecessary since it gets cleared on change of availableMembers
+            debtorItemContainer.clear()
+        }
+
         addSource(availableMembers) {
-            availableMembers.value?.let { members ->
-                val debtors = LinkedHashMap<String, MemberWithAmount>()
-                members.forEach { member ->
-                    debtors[member.email] = MemberWithAmount(
-                            member.name,
-                            member.email,
-                            this@AddEditBillViewModel)
-                }
-                value = debtors
+            val availableMembers = availableMembers.value
+            val splitMode = splitMode.value
+            val currency = currency.value
+
+            if (availableMembers == null || splitMode == null || currency == null) {
+                return@addSource
             }
+
+            debtorItemContainer.clear()
+            debtorItemContainer.add(availableMembers)
         }
 
         addSource(amount) { amount ->
-            value?.let { debtors ->
-                var amountString = amount
-                if (amountString.isBlank()) {
-                    amountString = "0"
-                    // FIXME: Workaround since live data not working as expected
-                    debtors.forEach {
-                        it.value.amountButtonValid.value = false
-                    }
-                } else {
-                    debtors.forEach {
-                        it.value.amountButtonValid.value = true
-                    }
-                }
-                val amount = converter.stringToBigDecimal(amountString)
-                if (debtors.size == 0) {
-                    return@let
-                }
-                val debtorsSize = BigDecimal(debtors.size)
-                val debtorAmount = amount.divide(debtorsSize, MATH_CONTEXT)
-                        .setScale(SCALE, ROUNDING_MODE)
-                val step = BigDecimal("0.01").setScale(SCALE)
-
-                debtors.forEach { debtor ->
-                    debtor.value.amount = debtorAmount
-                }
-
-                val random = Random()
-                while (true) {
-                    var debtorAmountSum = BigDecimal.ZERO
-                    debtors.forEach { debtor ->
-                        debtorAmountSum = debtorAmountSum.add(debtor.value.amount)
-                    }
-                    debtorAmountSum.setScale(SCALE, ROUNDING_MODE)
-
-                    val debtorsList = debtors.values.toList()
-                    val index = random.nextInt(debtorsList.size)
-                    if (debtorAmountSum.compareTo(amount) == 1) {
-                        val debtor = debtors[debtorsList[index].email]
-                        // Should always be non null
-                        debtor!!.amount = debtor.amount.subtract(step)
-                    } else if (debtorAmountSum.compareTo(amount) == -1) {
-                        val debtor = debtors[debtorsList[index].email]
-                        // Should always be non null
-                        debtor!!.amount = debtor.amount.add(step)
-                    } else {
-                        break
-                    }
-                }
-                value = value
-                setBalanceAmountDebtors()
+            if (!amount.isNullOrBlank()) {
+                debtorItemContainer.isAmountValid = true
+                debtorItemContainer.amount = BigDecimal(amount)
+            } else {
+                debtorItemContainer.amount = BigDecimal.ZERO
+                debtorItemContainer.isAmountValid = false
             }
+        }
+
+        addSource(currency) { currency ->
+            debtorItemContainer.currency = currency
+        }
+
+        addSource(splitMode) { splitMode ->
+            debtorItemContainer.splitMode = splitMode
         }
     }
 
     private val _availableDebtors = MediatorLiveData<List<Member>>().apply {
         addSource(availableMembers) { members ->
-            debtorItems.value?.let { debtors ->
-                value = calcAvailableDebtors(members, debtors)
+            debtorItems.value?.let {
+                value = calcAvailableDebtors(members)
             }
         }
-        addSource(debtorItems) { debtors ->
+
+        addSource(debtorItems) {
             availableMembers.value?.let { members ->
-                value = calcAvailableDebtors(members, debtors)
+                value = calcAvailableDebtors(members)
             }
         }
     }
@@ -232,6 +241,7 @@ class AddEditBillViewModel(
                 value = calcAllGroupMembersAdded(members, debtors)
             }
         }
+
         addSource(debtorItems) { debtors ->
             availableMembers.value?.let { members ->
                 value = calcAllGroupMembersAdded(members, debtors)
@@ -240,7 +250,7 @@ class AddEditBillViewModel(
     }
 
     private fun calcAllGroupMembersAdded(members: List<Member>,
-                                         debtors: HashMap<String, MemberWithAmount>): Boolean {
+                                         debtors: List<DebtorItemViewModel>): Boolean {
         return members.size == debtors.size
     }
 
@@ -263,11 +273,10 @@ class AddEditBillViewModel(
 
     val groupItems = groupsRepository.getAll()
 
-    private fun calcAvailableDebtors(availableMembers: List<Member>,
-                                     debtors: HashMap<String, MemberWithAmount>): List<Member> {
+    private fun calcAvailableDebtors(availableMembers: List<Member>): List<Member> {
         val members: ArrayList<Member> = ArrayList()
         availableMembers.forEach { availableMember ->
-            if (!debtors.contains(availableMember.email)) {
+            if (!debtorItemContainer.contains(availableMember.email)) {
                 members.add(availableMember)
             }
         }
@@ -287,60 +296,19 @@ class AddEditBillViewModel(
     fun onContextItemSelected(item: MenuItem) = false
 
     fun removeDebtor(email: String) {
-        debtorItems.value?.remove(email)
-        debtorItems.value = debtorItems.value
-        val amount = amount.value
-        if (amount.isNullOrBlank()) {
-            return
-        }
-
-        setBalanceAmountDebtors()
+        debtorItemContainer.remove(email)
     }
 
-    private fun setBalanceAmountDebtors() {
-        setBalanceAmountDebtors { _, _ -> }
+    override fun onDebtorItemsChanged(debtorItems: List<DebtorItemViewModel>) {
+        this.debtorItems.value = debtorItems
     }
 
-    fun setBalanceAmountDebtors(after: (BigDecimal, String) -> Unit) {
-        val amount = amount.value
-        if (amount.isNullOrBlank()) {
-            return
-        }
-        var amountSum = BigDecimal.ZERO
-        debtorItems.value?.forEach { entry ->
-            amountSum = amountSum.add(entry.value.amount)
-        }
-
-        val currencySymbol = currencySymbol.value ?: ""
-        val balance = BigDecimal(amount)
-                .subtract(amountSum)
-                .setScale(SCALE, ROUNDING_MODE)
-        isAmountToBalance.value = balance.compareTo(BigDecimal.ZERO) != 0
-        amountToBalance.value =
-                fromHtml(appContext.getString(R.string.balance_debtors, balance, currencySymbol))
-
-        after(balance, currencySymbol)
+    override fun onAmountToBalanceChanged(amountToBalance: BigDecimal) {
+        this.amountToBalance.value = amountToBalance
     }
 
     fun debtorAdded(member: Member) {
-        debtorItems.value?.let { debtors ->
-            if (debtors.contains(member.email)) {
-                return
-            }
-            val newDebtor = MemberWithAmount(member.name, member.email, this)
-            debtors[member.email] = newDebtor
-            val amount = amount.value
-            if (!amount.isNullOrBlank()) {
-                newDebtor.amount = BigDecimal.ZERO
-                // FIXME: Workaround since live data is not working as expected
-                newDebtor.amountButtonValid.value = true
-            }
-            updateDebtorItems()
-        }
-    }
-
-    private fun updateDebtorItems() {
-        debtorItems.value = debtorItems.value // ArrayList(debtorContainer.values)
+        debtorItemContainer.add(member)
     }
 
     private fun saveBill() {
@@ -372,7 +340,7 @@ class AddEditBillViewModel(
             return
         }
 
-        if (currentDebtors.isNullOrEmpty()) {
+        if (currentDebtors == null || currentDebtors.isEmpty()) {
             _snackbarText.value = Event(R.string.one_debtor_should_be_added)
             return
         }
@@ -385,17 +353,18 @@ class AddEditBillViewModel(
                 currentGroup.name,
                 true)
 
+        // FIXME: This is not multithread save
+        val debtors = debtorItemContainer.debtorItemsToDebtors(bill.id)
+
         var debtorsAmount = BigDecimal.ZERO
-        val debtors = currentDebtors.filter { entry ->
-            entry.value.amount.compareTo(BigDecimal.ZERO) != 0 }.map { entry ->
-            val debtorAmount = entry.value.amount
-            debtorsAmount = debtorsAmount.add(debtorAmount)
-            Debtor(bill.id, entry.value.email, debtorAmount)
+        debtors.forEach { debtor ->
+            debtorsAmount = debtorsAmount.add(debtor.amount)
         }
 
         if (debtorsAmount.compareTo(currentAmount) != 0) {
-            setBalanceAmountDebtors { balance, currencySymbol ->
-                _snackbarTextSpanned.value = Event(fromHtml(appContext.getString(R.string.balance_debtors, balance, currencySymbol)))
+            // Should be always non null
+            amountToBalancePretty.value?.let {
+                _snackbarTextSpanned.value = Event(it)
             }
             return
         }
@@ -422,9 +391,9 @@ class AddEditBillViewModel(
         _changeCreditor.value = Event(Unit)
     }
 
-    fun onChangeSplitModeButtonClicked() {
-        splitMode.value?.let {
-            _changeSplitModeEvent.value = Event(it)
+    fun changeSplitMode() {
+        splitMode.value?.let { splitMode ->
+            _changeSplitModeEvent.value = Event(splitMode)
         }
     }
 

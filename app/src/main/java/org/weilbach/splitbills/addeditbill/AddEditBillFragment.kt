@@ -6,11 +6,9 @@ import android.view.*
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditgroup.GroupSpinnerAdapter
-import org.weilbach.splitbills.addeditgroup.MemberAdapter
 import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.FragmentAddeditbillBinding
 import org.weilbach.splitbills.util.CurrencyAdapter
@@ -22,7 +20,7 @@ class AddEditBillFragment : Fragment() {
     private lateinit var viewDataBinding: FragmentAddeditbillBinding
     private lateinit var groupSpinnerAdapter: GroupSpinnerAdapter
     private lateinit var groupArrayAdapter: ArrayAdapter<Group>
-    private lateinit var debtorsListAdapter: MemberWithAmountAdapter
+    private lateinit var debtorsListAdapter: DebtorItemViewModelAdapter
     private lateinit var currencyAdapter: CurrencyAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -33,10 +31,6 @@ class AddEditBillFragment : Fragment() {
         viewDataBinding.viewmodel?.let {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
             view?.setupSnackbarSpanned(this, it.snackbarMessageSpanned, Snackbar.LENGTH_LONG)
-            /*it.changeSplitModeEvent.observe(this, Observer { event ->
-                // TODO: implement dialog
-                Log.d("AddEditBillFragment", "change split mode")
-            })*/
         }
         setupActionBar()
     }
@@ -75,19 +69,9 @@ class AddEditBillFragment : Fragment() {
         }
     }
 
-    private fun setUpGroupArrayAdapter() {
-        val viewModel = viewDataBinding.viewmodel
-        if (viewModel != null) {
-            groupArrayAdapter = ArrayAdapter(context!!, android.R.layout.simple_spinner_item)
-            viewDataBinding.fragAddEditBillSpinnerGroups.adapter = groupArrayAdapter
-        } else {
-            Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
-        }
-    }
-
     private fun setUpDebtorListAdapter() {
         viewDataBinding.viewmodel?.let {
-            debtorsListAdapter = MemberWithAmountAdapter(it, LinkedHashMap(), this)
+            debtorsListAdapter = DebtorItemViewModelAdapter(emptyList(), this)
             // viewDataBinding.fragAddEditBillListViewDebtors.adapter = debtorsListAdapter
             viewDataBinding.fragAddEditBillAdapterLinearLayoutMembers.adapter = debtorsListAdapter
             return

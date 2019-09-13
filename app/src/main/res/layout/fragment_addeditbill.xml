@@ -112,28 +112,32 @@
                 bind:navigator="@{viewmodel}"
                 bind:viewmodel="@={viewmodel.creditor}" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
             <TextView
                 style="@style/SeparatorTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:paddingStart="8dp"
-                android:paddingLeft="8dp"
-                android:paddingTop="4dp"
-                android:paddingRight="8dp"
+                android:paddingEnd="8dp"
                 android:paddingBottom="4dp"
                 android:text="@string/who_owes"
                 android:textAllCaps="true" />
 
-                <!-- <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewmodel.onChangeSplitModeButtonClicked()}"
-                    android:text="@{viewmodel.splitModeString}"/> -->
-            </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:onClick="@{() -> viewmodel.changeSplitMode()}"
+                android:text="@{viewmodel.splitModePretty}" />
+
+            <TextView
+                style="@style/SeparatorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="@string/between"
+                android:textAllCaps="true" />
 
             <Button
                 android:layout_width="match_parent"
@@ -152,7 +156,7 @@
                 android:paddingRight="8dp"
                 android:paddingBottom="4dp"
                 android:visibility="@{viewmodel.isAmountToBalance ? View.VISIBLE : View.GONE}"
-                android:text="@{viewmodel.amountToBalance}"/>
+                android:text="@{viewmodel.amountToBalancePretty}" />
 
             <org.weilbach.splitbills.util.AdapterLinearLayout
                 android:id="@+id/frag_add_edit_bill_adapter_linear_layout_members"
@@ -160,27 +164,6 @@
                 android:layout_height="wrap_content"
                 app:items="@{viewmodel.debtorItems}" />
 
-            <!--<ListView
-                android:id="@+id/frag_add_edit_bill_list_view_debtors"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isScrollContainer="false"
-                app:items="@{viewmodel.debtorItems}" />-->
-            <!--android:isScrollContainer="true"-->
-            <!--android:layout_height="0dp"
-            android:layout_weight="1"-->
-
-            <!--<Button
-                android:id="@+id/frag_add_edit_bill_button_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginRight="0dp"
-                android:onClick="@{() -> viewmodel.saveBill()}"
-                android:text="@string/save" />-->
         </LinearLayout>
     </ScrollView>
 </layout>

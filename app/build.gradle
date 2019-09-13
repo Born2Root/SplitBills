@@ -106,7 +106,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
 
     implementation 'com.github.amlcurran.showcaseview:library:5.4.3' // Used for introducing the app
-    implementation 'com.github.ibrahimsn98:live-preferences:1.1' // Used for observing preference changes
+    implementation 'com.github.ibrahimsn98:live-preferences:1.1'
+    // Used for observing preference changes
 
     implementation "androidx.legacy:legacy-support-v4:$androidXLegacySupport"
     implementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"

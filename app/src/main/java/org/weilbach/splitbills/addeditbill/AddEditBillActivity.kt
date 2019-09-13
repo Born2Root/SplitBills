@@ -42,6 +42,7 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
         subscribeToNavigationChanges()
         subscribeToCreditorChanges()
         subscribeToAddDebtorChanges()
+        subscribeToSplitModeChanges()
 
         // Needed since LiveData will otherwise not return value
         obtainViewModel().availableDebtors.observe(this, Observer{ })
@@ -58,14 +59,33 @@ class AddEditBillActivity : AppCompatActivity(), AddEditBillNavigator {
 
     private fun subscribeToCreditorChanges() {
         obtainViewModel().changeCreditor.observe(this, Observer {
-            showChooseCreditorDialog()
+            it.getContentIfNotHandled()?.let {
+                showChooseCreditorDialog()
+            }
         })
     }
 
     private fun subscribeToAddDebtorChanges() {
         obtainViewModel().addDebtor.observe(this, Observer {
-            showAddDebtorDialog()
+            it.getContentIfNotHandled()?.let {
+                showAddDebtorDialog()
+            }
         })
+    }
+
+    private fun subscribeToSplitModeChanges() {
+        obtainViewModel().changeSplitModeEvent.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { splitMode ->
+                changeSplitMode(splitMode)
+            }
+        })
+    }
+
+    private fun changeSplitMode(currentSplitMode: AddEditBillViewModel.SplitMode) {
+        when (currentSplitMode) {
+            AddEditBillViewModel.SplitMode.ABSOLUTE -> obtainViewModel().splitMode.value = AddEditBillViewModel.SplitMode.PERCENTAGE
+            AddEditBillViewModel.SplitMode.PERCENTAGE -> obtainViewModel().splitMode.value = AddEditBillViewModel.SplitMode.ABSOLUTE
+        }
     }
 
     private fun showChooseCreditorDialog() {
