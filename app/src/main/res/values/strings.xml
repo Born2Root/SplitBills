@@ -40,7 +40,7 @@
     <string name="enter_a_description">Enter a description</string>
     <string name="empty_amount">0.00</string>
     <string name="who_paid">Who paid the bill</string>
-    <string name="who_owes">Split bill with split mode</string>
+    <string name="who_owes">Split bill between</string>
     <string name="between">between</string>
     <string name="add_member">+ Add member from group</string>
     <string name="no_bills_all">No bill added</string>
@@ -115,7 +115,10 @@
     <string name="debtors_amount_error">Amount of debtors does not match amount of bill</string>
     <string name="absolute">Absolute</string>
     <string name="percentage">Percentage</string>
-    <string name="balance_debtors"><![CDATA[There needs to be <b>%s %s</b> balanced over all debtors]]></string>
+    <string name="amount_to_balance"><![CDATA[There needs to be <b>%s %s</b> balanced over all debtors]]></string>
+    <string name="percentage_to_balance"><![CDATA[There needs to be <b>%s %%</b> balanced over all debtors]]></string>
+    <string name="amount_to_balance_with_percentage_to_balance"><![CDATA[There needs to be <b>%s %s</b> or <b>%s %%</b> balanced over all debtors]]></string>
+    <string name="nothing_to_balance"><![CDATA[There needs nothing to be balanced over all debtors]]></string>
     <string name="change_amount">Change amount</string>
     <string name="done">Done</string>
     <string name="amount_can_not_empty">Amount can not be empty</string>
@@ -123,4 +126,5 @@
     <string name="you_added_new_bill">You added a new bill. Do you want to share the new bill with other members of the group?</string>
     <string name="need_to_load_groups">Need to load groups before saving this group</string>
     <string name="group_exists_already">A Group with this name already exists</string>
+    <string name="database_error">Could not merge groups. Database version does not match. Make sure SplitBills is upgraded to to most recent version.</string>
 </resources>

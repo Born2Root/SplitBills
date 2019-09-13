@@ -306,6 +306,11 @@ class GroupViewModel(val groupRepository: GroupRepository,
                 } catch (e: XmlPullParserException) {
                     return Pair(NO_VALID_XML_FILE, null)
                 }
+
+                if (res.third != "1") {
+                    return Pair(DATABASE_VERSION_ERROR, null)
+                }
+
                 return Pair(SUCCESS, res)
             }
             return Pair(IO_ERROR, null)
@@ -324,6 +329,11 @@ class GroupViewModel(val groupRepository: GroupRepository,
                     groupMerging.value = false
                     groupMergeFailed.value = Event(Unit)
                 }
+                DATABASE_VERSION_ERROR -> {
+                    snackbarText.value = Event(R.string.database_error)
+                    groupMerging.value = false
+                    groupMergeFailed.value = Event(Unit)
+                }
                 SUCCESS -> {
                     // Should never be null
                     result.second?.let {
@@ -336,6 +346,7 @@ class GroupViewModel(val groupRepository: GroupRepository,
             private const val NO_VALID_XML_FILE = 1
             private const val IO_ERROR = 2
             private const val SUCCESS = 3
+            private const val DATABASE_VERSION_ERROR = 4
         }
     }
 
