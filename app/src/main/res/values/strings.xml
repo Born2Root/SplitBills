@@ -123,4 +123,5 @@
     <string name="you_added_new_bill">You added a new bill. Do you want to share the new bill with other members of the group?</string>
     <string name="need_to_load_groups">Need to load groups before saving this group</string>
     <string name="group_exists_already">A Group with this name already exists</string>
+    <string name="database_error">Could not merge groups. Database version does not match. Make sure SplitBills is upgraded to to most recent version.</string>
 </resources>
