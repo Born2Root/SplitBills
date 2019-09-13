@@ -114,4 +114,6 @@
     <string name="done">Fertig</string>
     <string name="fill_up">Auffüllen</string>
     <string name="you_added_new_bill">Du hast eine neue Ausgabe hinzugefügt. Möchtest du diese mit den anderen Gruppenmitgliedern teilen?</string>
+    <string name="need_to_load_groups">Es müssen erst vorhandene Gruppen geladen werden, bevor diese gespeichert werden kann</string>
+    <string name="group_exists_already">Eine Gruppe mit diesem Namen existiert bereits</string>
 </resources>

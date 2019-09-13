@@ -121,4 +121,6 @@
     <string name="amount_can_not_empty">Amount can not be empty</string>
     <string name="fill_up">Fill up</string>
     <string name="you_added_new_bill">You added a new bill. Do you want to share the new bill with other members of the group?</string>
+    <string name="need_to_load_groups">Need to load groups before saving this group</string>
+    <string name="group_exists_already">A Group with this name already exists</string>
 </resources>

@@ -60,6 +60,13 @@ class AddEditGroupViewModel(
     val memberItems: LiveData<ArrayList<Member>>
         get() = _memberItems
 
+    private val groups = groupsRepository.getAll()
+
+    init {
+        // Needed since live data while otherwise not update
+        groups.observeForever {  }
+    }
+
     fun addMember() {
         _addMember.value = Event(Unit)
     }
@@ -94,6 +101,13 @@ class AddEditGroupViewModel(
     }
 
     private fun saveGroup() {
+        val currentGroups = groups.value
+
+        if (currentGroups == null) {
+            _snackbarText.value = Event(R.string.need_to_load_groups)
+            return
+        }
+
         val currentName = name.value
         if (currentName.isNullOrBlank()) {
             _nameError.value = appContext.getString(R.string.no_group_name_message)
@@ -104,7 +118,16 @@ class AddEditGroupViewModel(
             _snackbarText.value = Event(R.string.add_at_least_one_member)
             return
         }
+
+        currentGroups.forEach { group ->
+            if (group.name == currentName) {
+                _snackbarText.value = Event(R.string.group_exists_already)
+                return
+            }
+        }
+
         val group = Group(currentName)
+
         groupsMembersRepository.createNewGroup(group, memberContainer.values.toList())
         _groupUpdated.value = Event(Unit)
     }

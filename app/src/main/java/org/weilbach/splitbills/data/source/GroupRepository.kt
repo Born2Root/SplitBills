@@ -6,7 +6,7 @@ import org.weilbach.splitbills.data.GroupBillsDebtors
 import org.weilbach.splitbills.data.GroupMembersBillsDebtors
 
 class GroupRepository private constructor(
-        val groupLocalDataSource: GroupDataSource
+        private val groupLocalDataSource: GroupDataSource
 ) : GroupDataSource {
 
     override fun saveGroupSync(group: Group) {
