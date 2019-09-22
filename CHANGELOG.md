@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0] - 2019-09-22
+### Added
+- Show what group and each member total spent in balances screen.
+- Allow adding member to group after group was created.
+
+### Changed
+- It is now possible to mix percent and absolute in custom split
+
 ## [0.2.8] - 2019-09-13
 ### Added
 - Custom percentual split feature
