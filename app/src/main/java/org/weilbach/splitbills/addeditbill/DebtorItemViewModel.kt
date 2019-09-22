@@ -13,6 +13,8 @@ class DebtorItemViewModel(
         val email: String
 ) {
 
+    var changedByUser = false
+
     val splitMode = MutableLiveData<AddEditBillViewModel.SplitMode>()
 
     val amount = MutableLiveData<BigDecimal>()

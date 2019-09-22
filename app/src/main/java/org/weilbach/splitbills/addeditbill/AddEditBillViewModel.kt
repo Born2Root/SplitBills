@@ -1,6 +1,7 @@
 package org.weilbach.splitbills.addeditbill
 
 import android.content.Context
+import android.text.SpannableString
 import android.text.Spanned
 import android.view.MenuItem
 import android.view.View
@@ -13,6 +14,7 @@ import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.data.local.Converter
 import org.weilbach.splitbills.data.source.*
+import org.weilbach.splitbills.prettyPrintNum
 import org.weilbach.splitbills.util.*
 import java.math.BigDecimal
 import java.util.*
@@ -30,10 +32,6 @@ class AddEditBillViewModel(
 ) : ViewModel(), MemberItemNavigator, DebtorItemContainerListener {
 
     private val converter = Converter()
-
-    private val _changeSplitModeEvent = MutableLiveData<Event<SplitMode>>()
-    val changeSplitModeEvent: LiveData<Event<SplitMode>>
-        get() = _changeSplitModeEvent
 
     private val _currencyItems = MutableLiveData<List<Currency>>().apply {
         value = Currency.getAvailableCurrencies().toList()
@@ -64,70 +62,107 @@ class AddEditBillViewModel(
         currency.symbol
     }
 
-    val splitMode = MutableLiveData<SplitMode>().apply {
-        value = SplitMode.ABSOLUTE
-    }
-
     val description = MutableLiveData<String>()
 
     val amountToBalance = MutableLiveData<BigDecimal>()
+
+    val percentageToBalance = MutableLiveData<BigDecimal>()
 
     val isAmountToBalance = Transformations.map(amountToBalance) { amountToBalance ->
         amountToBalance.compareTo(BigDecimal.ZERO) != 0
     }
 
+    val isPercentageToBalance = Transformations.map(percentageToBalance) { percentageToBalance ->
+        percentageToBalance.compareTo(BigDecimal.ZERO) != 0
+    }
+
+    private fun amountToBalancePretty(amountToBalance: BigDecimal,
+                              percentageToBalance: BigDecimal,
+                              isAmountToBalance: Boolean,
+                              isPercentageToBalance: Boolean): Spanned {
+        val currencySymbol = currency.value?.symbol ?: "NO CURRENCY SET"
+
+        if (isAmountToBalance && isPercentageToBalance) {
+            return fromHtml(appContext.getString(R.string.amount_to_balance_with_percentage_to_balance,
+                    prettyPrintNum(amountToBalance), currencySymbol, prettyPrintNum(percentageToBalance)))
+        }
+
+        if (isAmountToBalance && !isPercentageToBalance) {
+            return fromHtml(appContext.getString(R.string.amount_to_balance,
+                    prettyPrintNum(amountToBalance), currencySymbol))
+        }
+
+        if (isPercentageToBalance && !isAmountToBalance) {
+            return fromHtml(appContext.getString(R.string.percentage_to_balance, prettyPrintNum(percentageToBalance)))
+        }
+
+        return SpannableString(appContext.getString(R.string.nothing_to_balance))
+    }
+
     val amountToBalancePretty = MediatorLiveData<Spanned>().apply {
-        addSource(amountToBalance) { amountToBalance ->
-            when (splitMode.value) {
-                SplitMode.ABSOLUTE -> {
-                    val currencySymbol = currency.value?.symbol ?: return@addSource
-                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, currencySymbol))
-                }
+        addSource(amountToBalance) { currentAmountToBalance ->
+            val currentPercentageToBalance = percentageToBalance.value
+            val currentIsAmountToBalance = isAmountToBalance.value
+            val currentIsPercentageToBalance = isPercentageToBalance.value
 
-                SplitMode.PERCENTAGE -> {
-                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, "%"))
-                }
+            if (currentIsPercentageToBalance == null
+                    || currentIsAmountToBalance == null
+                    || currentAmountToBalance == null
+                    || currentPercentageToBalance == null) {
+                return@addSource
             }
+
+            value = amountToBalancePretty(currentAmountToBalance,
+                    currentPercentageToBalance, currentIsAmountToBalance, currentIsPercentageToBalance)
         }
 
-        addSource(currency) { currency ->
-            if (splitMode.value == SplitMode.ABSOLUTE) {
-                val amountToBalance = amountToBalance.value ?: return@addSource
-                val currencySymbol = currency.symbol
-                value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, currencySymbol))
+        addSource(percentageToBalance) {currentPercentageToBalance ->
+            val currentAmountToBalance = amountToBalance.value
+            val currentIsAmountToBalance = isAmountToBalance.value
+            val currentIsPercentageToBalance = isPercentageToBalance.value
+
+            if (currentIsPercentageToBalance == null
+                    || currentIsAmountToBalance == null
+                    || currentAmountToBalance == null
+                    || currentPercentageToBalance == null) {
+                return@addSource
             }
+            value = amountToBalancePretty(currentAmountToBalance,
+                    currentPercentageToBalance, currentIsAmountToBalance, currentIsPercentageToBalance)
         }
 
-        addSource(splitMode) { splitMode ->
-            when (splitMode) {
-                SplitMode.ABSOLUTE -> {
-                    val currencySymbol = currency.value?.symbol ?: return@addSource
-                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, currencySymbol))
-                }
+        addSource(isAmountToBalance) { currentIsAmountToBalance ->
+            val currentAmountToBalance = amountToBalance.value
+            val currentPercentageToBalance = percentageToBalance.value
+            val currentIsPercentageToBalance = isPercentageToBalance.value
 
-                SplitMode.PERCENTAGE -> {
-                    value = fromHtml(appContext.getString(R.string.balance_debtors, amountToBalance, "%"))
-                }
+            if (currentIsPercentageToBalance == null
+                    || currentIsAmountToBalance == null
+                    || currentAmountToBalance == null
+                    || currentPercentageToBalance == null) {
+                return@addSource
             }
+
+            value = amountToBalancePretty(currentAmountToBalance,
+                    currentPercentageToBalance, currentIsAmountToBalance, currentIsPercentageToBalance)
+        }
+
+        addSource(isPercentageToBalance) { currentIsPercentageToBalance ->
+            val currentAmountToBalance = amountToBalance.value
+            val currentPercentageToBalance = percentageToBalance.value
+            val currentIsAmountToBalance = isAmountToBalance.value
+
+            if (currentIsPercentageToBalance == null
+                    || currentIsAmountToBalance == null
+                    || currentAmountToBalance == null
+                    || currentPercentageToBalance == null) {
+                return@addSource
+            }
+
+            value = amountToBalancePretty(currentAmountToBalance,
+                    currentPercentageToBalance, currentIsAmountToBalance, currentIsPercentageToBalance)
         }
     }
-
-    private val _splitModePretty = Transformations.map(splitMode) { splitMode ->
-        when (splitMode) {
-            SplitMode.ABSOLUTE -> {
-                R.string.absolute
-            }
-            SplitMode.PERCENTAGE -> {
-                R.string.percentage
-            }
-            else -> {
-                R.string.percentage
-            }
-        }
-    }
-    val splitModePretty: LiveData<Int>
-        get() = _splitModePretty
-
 
     private val _descriptionError = MutableLiveData<String>()
     val descriptionError: LiveData<String>
@@ -177,8 +212,7 @@ class AddEditBillViewModel(
 
     private val debtorItemContainer = DebtorItemContainer(
             this,
-            currency.value ?: Currency.getInstance("EUR"),
-            splitMode.value ?: SplitMode.ABSOLUTE)
+            currency.value ?: Currency.getInstance("EUR"))
 
     val debtorItems = MediatorLiveData<List<DebtorItemViewModel>>().apply {
         addSource(group) {
@@ -188,10 +222,9 @@ class AddEditBillViewModel(
 
         addSource(availableMembers) {
             val availableMembers = availableMembers.value
-            val splitMode = splitMode.value
             val currency = currency.value
 
-            if (availableMembers == null || splitMode == null || currency == null) {
+            if (availableMembers == null || currency == null) {
                 return@addSource
             }
 
@@ -211,10 +244,6 @@ class AddEditBillViewModel(
 
         addSource(currency) { currency ->
             debtorItemContainer.currency = currency
-        }
-
-        addSource(splitMode) { splitMode ->
-            debtorItemContainer.splitMode = splitMode
         }
     }
 
@@ -307,11 +336,17 @@ class AddEditBillViewModel(
         this.amountToBalance.value = amountToBalance
     }
 
+    override fun onPercentageToBalanceChanged(percentageToBalance: BigDecimal) {
+        this.percentageToBalance.value = percentageToBalance
+    }
+
     fun debtorAdded(member: Member) {
         debtorItemContainer.add(member)
     }
 
     private fun saveBill() {
+        val currentIsAmountToBalance = isAmountToBalance.value ?: true
+        val currentIsPercentageToBalance = isPercentageToBalance.value ?: true
         val currentCreditor = creditor.value
         val currentGroup = group.value
         val currentDescription = description.value
@@ -345,6 +380,14 @@ class AddEditBillViewModel(
             return
         }
 
+        if (currentIsAmountToBalance || currentIsPercentageToBalance) {
+            // Should be always non null
+            amountToBalancePretty.value?.let {
+                _snackbarTextSpanned.value = Event(it)
+            }
+            return
+        }
+
         val bill = Bill(currentDate,
                 currentDescription,
                 currentAmount,
@@ -359,14 +402,6 @@ class AddEditBillViewModel(
         var debtorsAmount = BigDecimal.ZERO
         debtors.forEach { debtor ->
             debtorsAmount = debtorsAmount.add(debtor.amount)
-        }
-
-        if (debtorsAmount.compareTo(currentAmount) != 0) {
-            // Should be always non null
-            amountToBalancePretty.value?.let {
-                _snackbarTextSpanned.value = Event(it)
-            }
-            return
         }
 
         val billDebtors = BillDebtors()
@@ -391,11 +426,6 @@ class AddEditBillViewModel(
         _changeCreditor.value = Event(Unit)
     }
 
-    fun changeSplitMode() {
-        splitMode.value?.let { splitMode ->
-            _changeSplitModeEvent.value = Event(splitMode)
-        }
-    }
 
     enum class SplitMode {
         ABSOLUTE,

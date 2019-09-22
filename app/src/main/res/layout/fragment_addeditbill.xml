@@ -52,8 +52,8 @@
                 android:layout_marginRight="8dp"
                 android:hint="@string/enter_a_description"
                 android:inputType="textCapWords"
-                app:error="@{viewmodel.descriptionError}"
-                android:text="@={viewmodel.description}" />
+                android:text="@={viewmodel.description}"
+                app:error="@{viewmodel.descriptionError}" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -69,8 +69,8 @@
                     android:hint="@string/empty_amount"
                     android:inputType="numberDecimal"
                     android:text="@={viewmodel.amount}"
-                    app:error="@{viewmodel.amountError}"
-                    android:textSize="32sp" />
+                    android:textSize="32sp"
+                    app:error="@{viewmodel.amountError}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -78,17 +78,7 @@
                     android:layout_margin="8dp"
                     android:text="@{viewmodel.currencySymbol}"
                     android:textSize="32sp" />
-
-                <!--<androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/frag_add_edit_bill_spinner_currency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:selection="@={viewmodel.posCurrencySpinner}"
-                    app:items="@{viewmodel.currencyItems}">
-
-                </androidx.appcompat.widget.AppCompatSpinner>-->
+                
             </LinearLayout>
 
             <TextView
@@ -123,29 +113,12 @@
                 android:textAllCaps="true" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:onClick="@{() -> viewmodel.changeSplitMode()}"
-                android:text="@{viewmodel.splitModePretty}" />
-
-            <TextView
-                style="@style/SeparatorTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="4dp"
-                android:text="@string/between"
-                android:textAllCaps="true" />
-
-            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:visibility="@{viewmodel.allGroupMembersAdded ? View.GONE : View.VISIBLE}"
                 android:onClick="@{() -> viewmodel.addDebtor()}"
-                android:text="@string/add_member" />
+                android:text="@string/add_member"
+                android:visibility="@{viewmodel.allGroupMembersAdded ? View.GONE : View.VISIBLE}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -155,8 +128,8 @@
                 android:paddingTop="4dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="4dp"
-                android:visibility="@{viewmodel.isAmountToBalance ? View.VISIBLE : View.GONE}"
-                android:text="@{viewmodel.amountToBalancePretty}" />
+                android:text="@{viewmodel.amountToBalancePretty}"
+                android:visibility="@{viewmodel.isAmountToBalance || viewmodel.isPercentageToBalance ? View.VISIBLE : View.GONE}" />
 
             <org.weilbach.splitbills.util.AdapterLinearLayout
                 android:id="@+id/frag_add_edit_bill_adapter_linear_layout_members"

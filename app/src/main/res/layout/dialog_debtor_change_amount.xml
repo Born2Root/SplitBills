@@ -11,20 +11,42 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <RadioGroup
+            android:id="@+id/dialog_change_amount_radio_group_split_modes"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <RadioButton
+                android:id="@+id/dialog_change_amount_radio_button_absolute"
+                android:text="Absolute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/dialog_change_amount_radio_button_percentual"
+                android:text="Percent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
         <EditText
             android:id="@+id/dialog_change_amount_absolute_edit_text_amount"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_margin="8dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_change_amount_radio_group_split_modes"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dialog_change_amount_absolute_text_view_currency"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:importantForAutofill="no" />
 
         <TextView
             android:id="@+id/dialog_change_amount_absolute_text_view_currency"
             android:textSize="32sp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_change_amount_radio_group_split_modes"
             app:layout_constraintEnd_toStartOf="@+id/dialog_change_amount_absolute_button_fill_up"
             android:layout_width="0dp"
             android:layout_margin="8dp"
@@ -33,7 +55,7 @@
 
         <Button
             android:id="@+id/dialog_change_amount_absolute_button_fill_up"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_change_amount_radio_group_split_modes"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,7 +68,6 @@
         android:id="@+id/dialog_change_amount_absolute_text_view_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_margin="8dp" />
 
 
