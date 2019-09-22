@@ -21,6 +21,8 @@ class BalancesItemViewModel(
         private val appContext: Context
 ) : ViewModel() {
 
+    private val currency = getCurrency(appContext)
+
     private val groupWithMembersAndBillsDebtors = balancesViewModel.groupRepository.getGroupWithMembersAndBillsWithDebtorsByName(group.name)
 
     private val members = balancesViewModel.groupMemberRepository.getGroupMembersMembersByGroupName(group.name)
@@ -31,10 +33,16 @@ class BalancesItemViewModel(
     val memberTotalColor: LiveData<Int>
         get() = _memberTotalColor
 
+    private val _memberSpent = Transformations.map(groupWithMembersAndBillsDebtors) { group ->
+        val spent = memberSpent(member, group.bills)
+        appContext.getString(R.string.member_spent, member.name, prettyPrintNum(spent), currency.symbol)
+    }
+    val memberSpent: LiveData<String>
+        get() = _memberSpent
+
     val memberTotal: LiveData<Spanned> = Transformations.map(groupWithMembersAndBillsDebtors) { group ->
         val totalOwe = memberOwesGroupTotal(member, group)
         val totalGet = memberGetsFromGroupTotal(member, group)
-        val currency = getCurrency(appContext)
 
         val res = totalGet.subtract(totalOwe)
         when (res.compareTo(BigDecimal.ZERO)) {

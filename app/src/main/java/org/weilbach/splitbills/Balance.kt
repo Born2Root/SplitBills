@@ -1,9 +1,6 @@
 package org.weilbach.splitbills
 
-import org.weilbach.splitbills.data.Debtor
-import org.weilbach.splitbills.data.GroupMember
-import org.weilbach.splitbills.data.GroupMembersBillsDebtors
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.*
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
@@ -15,6 +12,21 @@ val MATH_CONTEXT = MathContext(PRECISION, ROUNDING_MODE)
 
 fun prettyPrintNum(num: BigDecimal): String {
     return num.setScale(SCALE, ROUNDING_MODE).toString()
+}
+
+fun memberSpent(member: Member, billsWithDebtors: List<BillDebtors>): BigDecimal {
+    var res = BigDecimal.ZERO
+
+    billsWithDebtors.forEach { billDebtors ->
+        val debtors = billDebtors.debtors
+
+        for (debtor in debtors) {
+            if (debtor.memberEmail == member.email) {
+                res = res.add(debtor.amount)
+            }
+        }
+    }
+    return res
 }
 
 fun memberGetsFromGroup(member: Member, group: GroupMembersBillsDebtors): HashMap<String, BigDecimal> {
