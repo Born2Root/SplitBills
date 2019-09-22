@@ -117,4 +117,6 @@
     <string name="need_to_load_groups">Es müssen erst vorhandene Gruppen geladen werden, bevor diese gespeichert werden kann</string>
     <string name="group_exists_already">Eine Gruppe mit diesem Namen existiert bereits</string>
     <string name="database_error">Konnte Gruppen nicht zusammenführen. Datenbank Version passt nicht. Stelle sicher dass SplitBills aktuell ist.</string>
+    <string name="member_spent">%s hat insgesamt %s %s ausgegeben</string>
+    <string name="group_spent">%s spent a total of %s %s</string>
 </resources>

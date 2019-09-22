@@ -63,7 +63,8 @@ class ViewModelFactory private constructor(
                                 membersRepository,
                                 groupsMembersRepository,
                                 debtorsRepository,
-                                groupsRepository)
+                                groupsRepository,
+                                appContext)
 
                     isAssignableFrom(AddEditBillViewModel::class.java) ->
                         AddEditBillViewModel(
