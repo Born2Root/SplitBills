@@ -13,6 +13,10 @@ class GroupMemberLocalDataSource private constructor(
         val groupMemberDao: GroupMemberDao
 ) : GroupMemberDataSource {
 
+    override fun addMemberToGroup(group: Group, member: Member) {
+        appExecutors.diskIO.execute { groupMemberDao.addMemberToGroup(group, member) }
+    }
+
     override fun saveGroupMemberSync(groupMember: GroupMember) {
         groupMemberDao.insert(groupMember)
     }

@@ -43,4 +43,10 @@ abstract class GroupMemberDao : BaseDao<GroupMember> {
             insert(GroupMember(group.name, member.email))
         }
     }
+
+    fun addMemberToGroup(group: Group, member: Member) {
+        val groupMember = GroupMember(group.name, member.email)
+        insertMember(member)
+        insert(groupMember)
+    }
 }

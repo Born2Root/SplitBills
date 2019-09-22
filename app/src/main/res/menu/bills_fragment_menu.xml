@@ -5,6 +5,11 @@
     <item
         android:id="@+id/menu_frag_bills_share"
         android:title="@string/share_group"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_frag_bills_add_member"
+        android:title="@string/menu_bills_add_member"
+        app:showAsAction="never" />
 
 </menu>

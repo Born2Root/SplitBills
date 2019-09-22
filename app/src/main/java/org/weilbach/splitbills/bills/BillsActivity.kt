@@ -9,6 +9,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
+import org.weilbach.splitbills.addmember.AddMemberActivity
 import org.weilbach.splitbills.balances.BalancesActivity
 import org.weilbach.splitbills.billdetail.BillDetailActivity
 import org.weilbach.splitbills.util.*
@@ -74,6 +75,12 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
                             it.emails)
                 }
             })
+
+            addMemberEvent.observe(this@BillsActivity, Observer { event ->
+                event.getContentIfNotHandled()?.let {
+                    openAddMemberActivity()
+                }
+            })
         }
     }
 
@@ -112,7 +119,7 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        viewModel.handleActivityResult(requestCode, resultCode)
+        viewModel.handleActivityResult(requestCode, resultCode, data)
     }
 
     override fun openBillDetails(billId: String) {
@@ -129,6 +136,11 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
         startActivity(intent)
     }
 
+    private fun openAddMemberActivity() {
+        val intent = Intent(this, AddMemberActivity::class.java)
+        startActivityForResult(intent, AddMemberActivity.REQUEST_CODE)
+    }
+
     override fun addNewBill() {
         val intent = Intent(this, AddEditBillActivity::class.java)
         startActivityForResult(intent, AddEditBillActivity.REQUEST_CODE)
@@ -137,6 +149,7 @@ class BillsActivity : AppCompatActivity(), BillItemNavigator, BillNavigator {
     fun obtainViewModel(): BillsViewModel = obtainViewModel(BillsViewModel::class.java)
 
     companion object {
+        const val REQUEST_CODE = 1
         const val EXTRA_GROUP_NAME = "EXTRA_GROUP_NAME"
     }
 }

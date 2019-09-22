@@ -82,6 +82,7 @@ class AddEditGroupViewModel(
     }
 
     fun handleActivityOnResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // FIXME: Request code correct ?
         if (requestCode == AddEditGroupActivity.REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {

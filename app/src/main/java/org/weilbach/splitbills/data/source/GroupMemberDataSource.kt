@@ -18,4 +18,6 @@ interface GroupMemberDataSource : BaseDataSource<GroupMember> {
     fun createNewGroup(group: Group, members: List<Member>)
 
     fun saveGroupMemberSync(groupMember: GroupMember)
+
+    fun addMemberToGroup(group: Group, member: Member)
 }

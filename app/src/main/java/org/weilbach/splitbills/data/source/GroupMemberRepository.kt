@@ -9,6 +9,10 @@ class GroupMemberRepository private constructor(
         private val groupMemberLocalDataSource: GroupMemberDataSource
 ) : GroupMemberDataSource {
 
+    override fun addMemberToGroup(group: Group, member: Member) {
+        groupMemberLocalDataSource.addMemberToGroup(group, member)
+    }
+
     override fun saveGroupMemberSync(groupMember: GroupMember) {
         groupMemberLocalDataSource.saveGroupMemberSync(groupMember)
     }

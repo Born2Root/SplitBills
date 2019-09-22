@@ -119,4 +119,9 @@
     <string name="database_error">Konnte Gruppen nicht zusammenführen. Datenbank Version passt nicht. Stelle sicher dass SplitBills aktuell ist.</string>
     <string name="member_spent">%s hat insgesamt %s %s ausgegeben</string>
     <string name="group_spent">%s spent a total of %s %s</string>
+    <string name="amount_to_balance"><![CDATA[Es müssen noch <b>%s %s</b> über alle Schuldner aufgeteilt werden]]></string>
+    <string name="amount_to_balance_with_percentage_to_balance"><![CDATA[Es müssen noch <b>%s %s</b> oder <b>%s %%</b> über alle Schuldner aufgeteilt werden]]></string>
+    <string name="menu_bills_add_member">Mitglied hinzufügen</string>
+    <string name="nothing_to_balance"><![CDATA[Es muss nichts mehr aufgeteilt werden]]></string>
+    <string name="percentage_to_balance"><![CDATA[Es muss noch <b>%s %%</b> über alle Schuldner aufgeteilt werden]]></string>
 </resources>

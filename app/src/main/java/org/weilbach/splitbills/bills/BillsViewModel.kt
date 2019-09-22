@@ -1,6 +1,8 @@
 package org.weilbach.splitbills.bills
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.AsyncTask
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
@@ -10,8 +12,11 @@ import androidx.lifecycle.ViewModel
 import org.weilbach.splitbills.ExportGroupTask
 import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
+import org.weilbach.splitbills.addmember.AddMemberActivity
 import org.weilbach.splitbills.data.Bill
 import org.weilbach.splitbills.data.Group
+import org.weilbach.splitbills.data.GroupMember
+import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.util.getUser
 import org.weilbach.splitbills.writeGroupToXml
@@ -30,6 +35,10 @@ class BillsViewModel(
     }
     val exportingGroup: LiveData<Boolean>
         get() = _exportingGroup
+
+    private val _addMemberEvent = MutableLiveData<Event<Group>>()
+    val addMemberEvent: LiveData<Event<Group>>
+        get() = _addMemberEvent
 
     private val group = MutableLiveData<Group>()
 
@@ -75,7 +84,19 @@ class BillsViewModel(
         _dataLoading.value = false
     }
 
-    fun handleActivityResult(requestCode: Int, resultCode: Int) {}
+    fun handleActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // FIXME: Request code correct ?
+        if (requestCode == BillsActivity.REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    val name = data?.getStringExtra(AddMemberActivity.RESULT_MEMBER_NAME) ?: return
+                    val email = data.getStringExtra(AddMemberActivity.RESULT_MEMBER_EMAIL) ?: return
+                    val group = group.value ?: return
+                    addMember(group, name, email)
+                }
+            }
+        }
+    }
 
     fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -124,8 +145,23 @@ class BillsViewModel(
                 shareGroupViaMail()
                 return true
             }
+
+            R.id.menu_frag_bills_add_member -> {
+                addMemberToGroup()
+                return true
+            }
         }
         return false
+    }
+
+    private fun addMemberToGroup() {
+        val currentGroup = group.value ?: return
+        _addMemberEvent.value = Event(currentGroup)
+    }
+
+    fun addMember(group: Group, name: String, email: String) {
+        val newMember = Member(name, email)
+        groupsMembersRepository.addMemberToGroup(group, newMember)
     }
 
     internal fun openBill(billId: String) {
