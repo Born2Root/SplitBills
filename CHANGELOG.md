@@ -1,5 +1,9 @@
 # Changelog
 
+### [0.3.2] - 2019-09-24
+### Changed
+- Fixed help text that shows amount to balance and percentage to balance
+
 ## [0.3.1] - 2019-09-23
 ### Changed
 - Do not count bills that are removed in balances screen total spent.
