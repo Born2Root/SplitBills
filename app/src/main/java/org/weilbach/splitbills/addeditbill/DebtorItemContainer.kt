@@ -218,6 +218,7 @@ class DebtorItemContainer(
         percentageToBalance = percentageToBalance()
 
         listener.onAmountToBalanceChanged(amountToBalance)
+        listener.onPercentageToBalanceChanged(percentageToBalance)
         listener.onDebtorItemsChanged(debtorItems)
     }
 
