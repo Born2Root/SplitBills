@@ -45,12 +45,12 @@ class BalancesViewModel(
     fun start(groupName: String) {
         group.value = Group(groupName)
 
-        // Must not be ordered
+        // FIXME: Must not be ordered
         val bills = billRepository.getBillsByGroupNameOrdered(groupName)
 
         bills.observeForever { bills ->
             var res = BigDecimal.ZERO
-            bills.forEach { bill ->
+            bills.filter { bill -> bill.valid }.forEach { bill ->
                 res = res.add(bill.amount)
             }
 

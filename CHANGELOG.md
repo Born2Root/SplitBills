@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.1] - 2019-09-23
+### Changed
+- Do not count bills that are removed in balances screen total spent.
+
 ## [0.3.0] - 2019-09-22
 ### Added
 - Show what group and each member total spent in balances screen.

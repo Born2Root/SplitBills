@@ -17,7 +17,7 @@ fun prettyPrintNum(num: BigDecimal): String {
 fun memberSpent(member: Member, billsWithDebtors: List<BillDebtors>): BigDecimal {
     var res = BigDecimal.ZERO
 
-    billsWithDebtors.forEach { billDebtors ->
+    billsWithDebtors.filter { billDebtors -> billDebtors.bill.valid }.forEach { billDebtors ->
         val debtors = billDebtors.debtors
 
         for (debtor in debtors) {
