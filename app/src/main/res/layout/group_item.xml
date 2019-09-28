@@ -14,7 +14,8 @@
   ~ limitations under the License.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -33,7 +34,7 @@
             type="org.weilbach.splitbills.group.GroupItemUserActionsListener" />
     </data>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/touch_feedback"
@@ -50,13 +51,49 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            app:text="@{viewmodel.groupName}" />
+            app:text="@{viewmodel.groupName}"
+            tools:text="Group name" />
 
         <TextView
             android:id="@+id/item_group_owe_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@{ContextCompat.getColor(context, viewmodel.userOwesOrGetsTotalColor)}"
-            app:text="@{viewmodel.userOwesOrGetsTotal}" />
-    </LinearLayout>
+            app:text="@{viewmodel.userOwesOrGetsTotal}"
+            tools:text="User gets 99 $" />
+    </LinearLayout>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/touch_feedback"
+        android:onClick="@{() -> listener.onGroupClicked(viewmodel)}"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/list_item_padding"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/list_item_padding">
+
+        <TextView
+            android:id="@+id/group_item_text_view_group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:text="@{viewmodel.groupName}"
+            tools:text="Group name" />
+
+        <TextView
+            android:id="@+id/group_item_text_view_user_owes_or_gets_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@{ContextCompat.getColor(context, viewmodel.userOwesOrGetsTotalColor)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_item_text_view_group_name"
+            app:text="@{viewmodel.userOwesOrGetsTotal}"
+            tools:text="User gets 99 $" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
