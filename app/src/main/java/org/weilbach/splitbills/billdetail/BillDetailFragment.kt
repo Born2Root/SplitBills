@@ -1,10 +1,11 @@
 package org.weilbach.splitbills.billdetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import org.weilbach.splitbills.R
 import org.weilbach.splitbills.databinding.FragmentBilldetailBinding
 
 
@@ -22,6 +23,29 @@ class BillDetailFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return viewDataBinding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_bill_detail_activity, menu)
+        viewDataBinding.viewmodel?.bill?.observe(this, Observer { billDebtors ->
+            /*val item = menu.findItem(R.id.menu_bill_detail_activity_remove)
+            item?.isEnabled = billDebtors.bill.valid
+            if (billDebtors.bill.valid) {
+                item?.icon?.alpha = 255
+            } else {
+                item?.icon?.alpha = 133
+            }*/
+            activity?.invalidateOptionsMenu()
+
+        })
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+
+        val valid = viewDataBinding.viewmodel?.bill?.value?.bill?.valid ?: return
+        val item = menu.findItem(R.id.menu_bill_detail_activity_remove)
+        item?.isEnabled = valid
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

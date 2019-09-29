@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.Spanned
 import androidx.lifecycle.*
 import org.weilbach.splitbills.R
+import org.weilbach.splitbills.data.Bill
 import org.weilbach.splitbills.data.BillDebtors
 import org.weilbach.splitbills.data.Debtor
 import org.weilbach.splitbills.data.Member
@@ -146,5 +147,20 @@ class BillDetailViewModel(
 
     fun start(billId: String) {
         _billId.value = billId
+    }
+
+    fun removeBill() {
+        bill.value?.let { billDebtors ->
+            with(billDebtors) {
+                billRepository.updateBill(Bill(
+                        bill.dateTime,
+                        bill.description,
+                        bill.amount,
+                        bill.currency,
+                        bill.creditorEmail,
+                        bill.groupName,
+                        false))
+            }
+        }
     }
 }

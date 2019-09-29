@@ -1,6 +1,10 @@
 package org.weilbach.splitbills.billdetail
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_billdetail.*
@@ -58,6 +62,27 @@ class BillDetailActivity : AppCompatActivity() {
             })
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+            when (item.itemId) {
+                R.id.menu_bill_detail_activity_remove -> {
+                    val alert = AlertDialog.Builder(this)
+                            .setMessage(R.string.really_remove_bill)
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.yes) { _, _ ->
+                                viewModel.removeBill()
+                            }
+                            .setNegativeButton(R.string.no) { dialog, _ ->
+                                dialog.cancel()
+                            }
+                            .create()
+
+                    alert.setTitle(R.string.remove_bill)
+                    alert.show()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
 
     override fun onResume() {
         super.onResume()
