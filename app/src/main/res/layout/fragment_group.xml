@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,108 +15,103 @@
 
     </data>
 
-    <org.weilbach.splitbills.util.ScrollChildSwipeRefreshLayout
-        android:id="@+id/frag_group_refresh_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frag_group_group_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onRefresh="@{viewmodel}"
-        app:refreshing="@{viewmodel.dataLoading}">
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/frag_group_group_container"
+        <ProgressBar
+            android:id="@+id/fragment_group_progress_bar_merging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{viewmodel.groupMerging ? View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:id="@+id/fragment_group_text_view_merging"
+            app:layout_constraintTop_toTopOf="@id/fragment_group_progress_bar_merging"
+            app:layout_constraintStart_toEndOf="@id/fragment_group_progress_bar_merging"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_group_progress_bar_merging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/merging_group"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:visibility="@{viewmodel.groupMerging ? View.VISIBLE : View.GONE}" />
+
+        <ProgressBar
+            android:id="@+id/fragment_group_progress_bar_exporting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_group_progress_bar_merging"
+            android:visibility="@{viewmodel.isGroupExporting ? View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:id="@+id/fragment_group_text_view_exporting"
+            app:layout_constraintTop_toTopOf="@id/fragment_group_progress_bar_exporting"
+            app:layout_constraintStart_toEndOf="@id/fragment_group_progress_bar_exporting"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_group_progress_bar_exporting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exporting_group"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:visibility="@{viewmodel.isGroupExporting ? View.VISIBLE : View.GONE}" />
+        <!--</LinearLayout>-->
+
+        <TextView
+            android:id="@+id/fragment_group_text_view_total_balance"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/fragment_group_text_view_exporting"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:text="@string/total_balance"
+            android:textAllCaps="true" />
 
-            <LinearLayout
-                android:id="@+id/frag_group_groups_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/frag_group_text_view_total_balance_amount"
+            app:layout_constraintTop_toBottomOf="@id/fragment_group_text_view_total_balance"
+            app:layout_constraintStart_toStartOf="@id/fragment_group_text_view_total_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@{viewmodel.oweGetTotal}"
+            tools:text="You get 99 $"
+            android:textColor="@{ContextCompat.getColor(context, viewmodel.totalBalanceColor)}" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:orientation="horizontal"
-                    android:visibility="@{viewmodel.groupMerging ? View.VISIBLE : View.GONE}">
+        <Button
+            android:id="@+id/fragment_group_button_add_group"
+            app:layout_constraintTop_toBottomOf="@id/frag_group_text_view_total_balance_amount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{() -> viewmodel.addNewGroup()}"
+            android:text="@string/add_group" />
 
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_gravity="center" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_group_recyclerview_groups"
+            app:layout_constraintTop_toBottomOf="@id/fragment_group_button_add_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/group_item"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:items="@{viewmodel.groupItemViewModels}" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/merging_group"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:orientation="horizontal"
-                    android:visibility="@{viewmodel.isGroupExporting ? View.VISIBLE : View.GONE}">
-
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/exporting_group"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:text="@string/total_balance"
-                    android:textAllCaps="true" />
-
-                <TextView
-                    android:id="@+id/frag_group_text_view_total_balance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:text="@{viewmodel.oweGetTotal}"
-                    android:textColor="@{ContextCompat.getColor(context, viewmodel.totalBalanceColor)}" />
-
-                <Button
-                    android:id="@+id/act_group_button_add_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginBottom="8dp"
-                    android:onClick="@{() -> viewmodel.addNewGroup()}"
-                    android:text="@string/add_group" />
-
-                <ListView
-                    android:id="@+id/frag_group_groups_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:items="@{viewmodel.items}" />
-            </LinearLayout>
-        </RelativeLayout>
-    </org.weilbach.splitbills.util.ScrollChildSwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

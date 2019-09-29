@@ -18,9 +18,7 @@ class BillItemViewModel(
         val bill: Bill,
         val group: Group,
         private val billsViewModel: BillsViewModel,
-        private val appContext: Context,
-        private val appExecutors: AppExecutors,
-        private val lifecycleOwner: LifecycleOwner
+        private val appContext: Context
 ) : ViewModel() {
 
     private val membersRepository = billsViewModel.membersRepository

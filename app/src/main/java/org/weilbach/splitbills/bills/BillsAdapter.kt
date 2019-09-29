@@ -31,6 +31,11 @@ class BillsAdapter(
         }
     }
 
+    fun replaceData(billItemViewModels: List<BillItemViewModel>) {
+        submitList(null)
+        submitList(billItemViewModels)
+    }
+
     class ViewHolder(
             private val binding: BillItemBinding,
             private val parent: Fragment

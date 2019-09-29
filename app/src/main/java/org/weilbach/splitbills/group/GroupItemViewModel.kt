@@ -18,8 +18,6 @@ import java.util.*
 class GroupItemViewModel(
         val group: Group,
         private val groupViewModel: GroupViewModel,
-        private val appExecutors: AppExecutors,
-        private val lifecycleOwner: LifecycleOwner,
         private val appContext: Context
 
 ) : ViewModel() {

@@ -14,13 +14,6 @@
 
     </data>
 
-    <org.weilbach.splitbills.util.ScrollChildSwipeRefreshLayout
-        android:id="@+id/frag_bills_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onRefresh="@{viewmodel}"
-        app:refreshing="@{viewmodel.dataLoading}">
-
         <RelativeLayout
             android:id="@+id/frag_bill_bill_container"
             android:layout_width="match_parent"
@@ -71,8 +64,8 @@
                     android:id="@+id/frag_bill_bills_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:items="@{viewmodel.billItemViewModels}"/>
             </LinearLayout>
         </RelativeLayout>
-    </org.weilbach.splitbills.util.ScrollChildSwipeRefreshLayout>
 </layout>

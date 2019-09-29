@@ -11,10 +11,7 @@ import org.weilbach.splitbills.*
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
 import org.weilbach.splitbills.bills.GroupShare
-import org.weilbach.splitbills.data.Bill
-import org.weilbach.splitbills.data.GroupMember
-import org.weilbach.splitbills.data.GroupMembersBillsDebtors
-import org.weilbach.splitbills.data.Member
+import org.weilbach.splitbills.data.*
 import org.weilbach.splitbills.data.source.*
 import org.weilbach.splitbills.util.*
 import org.xmlpull.v1.XmlPullParserException
@@ -40,7 +37,13 @@ class GroupViewModel(val groupRepository: GroupRepository,
     private val user = getUserLive(appContext)
     private val currency = getCurrencyLive(appContext)
 
-    val items = groupRepository.getAll()
+    private val items = groupRepository.getAll()
+
+    val groupItemViewModels = Transformations.map(items) { groups ->
+        groups?.map { group ->
+            GroupItemViewModel(Group(group.name), this, appContext)
+        }
+    }
 
     private val _openGroupEvent = MutableLiveData<Event<String>>()
     val openGroupEvent: LiveData<Event<String>>
@@ -342,6 +345,7 @@ class GroupViewModel(val groupRepository: GroupRepository,
                 }
             }
         }
+
         companion object {
             private const val NO_VALID_XML_FILE = 1
             private const val IO_ERROR = 2

@@ -1,15 +1,14 @@
 package org.weilbach.splitbills.group
 
-import android.widget.ListView
 import androidx.databinding.BindingAdapter
-import org.weilbach.splitbills.data.Group
+import androidx.recyclerview.widget.RecyclerView
 
-object GroupListBindings {
+object GroupRecyclerViewBindings {
 
     @BindingAdapter("app:items")
     @JvmStatic
-    fun setItems(listView: ListView, items: List<Group>?) {
-        with(listView.adapter as GroupAdapter) {
+    fun setItems(recyclerView: RecyclerView, items: List<GroupItemViewModel>?) {
+        with(recyclerView.adapter as GroupAdapter) {
             items?.let {
                 replaceData(it)
             }

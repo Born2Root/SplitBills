@@ -3,23 +3,19 @@ package org.weilbach.splitbills.bills
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.AsyncTask
 import android.view.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import org.weilbach.splitbills.ExportGroupTask
-import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addmember.AddMemberActivity
 import org.weilbach.splitbills.data.Bill
 import org.weilbach.splitbills.data.Group
-import org.weilbach.splitbills.data.GroupMember
 import org.weilbach.splitbills.data.Member
 import org.weilbach.splitbills.data.source.*
-import org.weilbach.splitbills.util.getUser
-import org.weilbach.splitbills.writeGroupToXml
+import org.weilbach.splitbills.util.Event
 
 class BillsViewModel(
         val billsRepository: BillRepository,
@@ -42,8 +38,16 @@ class BillsViewModel(
 
     private val group = MutableLiveData<Group>()
 
-    val items: LiveData<List<Bill>> = Transformations.switchMap(group) {
+    private val items: LiveData<List<Bill>> = Transformations.switchMap(group) {
         billsRepository.getBillsByGroupNameOrdered(it.name)
+    }
+
+    val billItemViewModels = Transformations.map(items) { bills ->
+        bills?.map { bill ->
+            group.value?.let {
+                BillItemViewModel(bill, it, this, appContext)
+            }
+        }
     }
 
     private val _dataLoading = MutableLiveData<Boolean>().apply {

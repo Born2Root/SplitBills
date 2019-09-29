@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.google.android.material.snackbar.Snackbar
 import org.weilbach.splitbills.R
-import org.weilbach.splitbills.data.Bill
-import org.weilbach.splitbills.data.Group
 import org.weilbach.splitbills.databinding.FragmentBillsBinding
-import org.weilbach.splitbills.util.*
+import org.weilbach.splitbills.util.ToolbarActionItemTarget
+import org.weilbach.splitbills.util.getShowShareGroupHint
+import org.weilbach.splitbills.util.setShowShareGroupHint
+import org.weilbach.splitbills.util.setupSnackbar
 import android.view.LayoutInflater as LayoutInflater1
 
 class BillsFragment : Fragment() {
@@ -25,9 +24,9 @@ class BillsFragment : Fragment() {
     private var groupName = ""
 
     override fun onCreateView(
-        inflater: LayoutInflater1,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater1,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         viewDataBinding =
                 FragmentBillsBinding.inflate(inflater, container, false).apply {
@@ -81,8 +80,8 @@ class BillsFragment : Fragment() {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+
         setupListAdapter()
-        setupRefreshLayout()
     }
 
     private fun setupListAdapter() {
@@ -98,36 +97,8 @@ class BillsFragment : Fragment() {
                 adapter = listAdapter
                 addItemDecoration(decoration)
             }
-
-            viewModel.items.observe(this, Observer<List<Bill>> { items ->
-                activity?.applicationContext?.let { context ->
-                    val list = items.map { item ->
-                        BillItemViewModel(
-                                item,
-                                Group(groupName),
-                                viewModel,
-                                context,
-                                AppExecutors(),
-                                viewLifecycleOwner)
-                    }
-                    listAdapter.submitList(null)
-                    listAdapter.submitList(list)
-                }
-            })
-
         } else {
             Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
-        }
-    }
-
-    private fun setupRefreshLayout() {
-        viewDataBinding.fragBillsRefreshLayout.run {
-            setColorSchemeColors(
-                    ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
-                    ContextCompat.getColor(requireActivity(), R.color.colorAccent),
-                    ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
-            )
-            scrollUpChild = viewDataBinding.fragBillBillsList
         }
     }
 

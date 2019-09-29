@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.amlcurran.showcaseview.ShowcaseView
 import com.google.android.material.snackbar.Snackbar
-import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.databinding.FragmentGroupBinding
 import org.weilbach.splitbills.util.*
@@ -80,32 +80,25 @@ class GroupFragment : Fragment() {
             view?.setupSnackbar(this, it.snackbarMessage, Snackbar.LENGTH_LONG)
         }
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+
         setupListAdapter()
-        setupRefreshLayout()
     }
 
     private fun setupListAdapter() {
         val viewModel = viewDataBinding.viewmodel
         if (viewModel != null) {
+            listAdapter = GroupAdapter(viewModel, this)
 
-            val user = getUser(context)
-            Log.d(TAG, "user: $user")
+            with(viewDataBinding.fragmentGroupRecyclerviewGroups) {
+                val decoration = DividerItemDecoration(
+                        context,
+                        (layoutManager as LinearLayoutManager).orientation)
 
-            listAdapter = GroupAdapter(ArrayList(0), viewModel, this)
-            viewDataBinding.fragGroupGroupsList.adapter = listAdapter
+                adapter = listAdapter
+                addItemDecoration(decoration)
+            }
         } else {
             Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
-        }
-    }
-
-    private fun setupRefreshLayout() {
-        viewDataBinding.fragGroupRefreshLayout.run {
-            setColorSchemeColors(
-                    ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
-                    ContextCompat.getColor(requireActivity(), R.color.colorAccent),
-                    ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
-            )
-            scrollUpChild = viewDataBinding.fragGroupGroupsList
         }
     }
 
