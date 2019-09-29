@@ -10,8 +10,8 @@ android {
         applicationId "org.weilbach.splitbills"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 14
-        versionName "0.3.2"
+        versionCode 15
+        versionName "0.3.3"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

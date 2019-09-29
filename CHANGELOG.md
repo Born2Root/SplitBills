@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.3.3] - 2019-09-29
+### Added
+- Flag to disable share group dialog
+- Menu in BillDetailActivity to remove bill
+
+### Changed
+- Improved Layout
+
 ### [0.3.2] - 2019-09-24
 ### Changed
 - Fixed help text that shows amount to balance and percentage to balance

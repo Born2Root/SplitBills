@@ -28,15 +28,7 @@ class BillDetailFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_bill_detail_activity, menu)
         viewDataBinding.viewmodel?.bill?.observe(this, Observer { billDebtors ->
-            /*val item = menu.findItem(R.id.menu_bill_detail_activity_remove)
-            item?.isEnabled = billDebtors.bill.valid
-            if (billDebtors.bill.valid) {
-                item?.icon?.alpha = 255
-            } else {
-                item?.icon?.alpha = 133
-            }*/
             activity?.invalidateOptionsMenu()
-
         })
     }
 
