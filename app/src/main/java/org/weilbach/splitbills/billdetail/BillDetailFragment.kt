@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import org.weilbach.splitbills.R
 import org.weilbach.splitbills.databinding.FragmentBilldetailBinding
-import org.weilbach.splitbills.util.setupActionBar
 
 
 class BillDetailFragment : Fragment() {
@@ -23,12 +20,6 @@ class BillDetailFragment : Fragment() {
                     viewmodel = (activity as BillDetailActivity).obtainViewModel()
                 }
         setHasOptionsMenu(true)
-
-
-        (activity as AppCompatActivity).setupActionBar(R.id.frag_bill_detail_toolbar) {
-            setDisplayShowHomeEnabled(true)
-            setDisplayHomeAsUpEnabled(true)
-        }
 
         return viewDataBinding.root
     }
