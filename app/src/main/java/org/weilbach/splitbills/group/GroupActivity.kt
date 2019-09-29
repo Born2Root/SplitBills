@@ -9,6 +9,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_group.*
+import kotlinx.android.synthetic.main.dialog_share_group.view.*
 import org.weilbach.splitbills.util.Event
 import org.weilbach.splitbills.R
 import org.weilbach.splitbills.addeditbill.AddEditBillActivity
@@ -160,14 +161,23 @@ class GroupActivity : AppCompatActivity(), GroupItemNavigator, GroupNavigator {
     }
 
     private fun showShareGroupDialog(groupName: String) {
+        if (!getShowShareGroupDialog(applicationContext)) {
+            return
+        }
+
         val alertLayout = layoutInflater.inflate(R.layout.dialog_share_group, null)
         val alert = AlertDialog.Builder(this)
         alert.setTitle(R.string.share_group)
         alert.setView(alertLayout)
         alert.setPositiveButton(R.string.yes) { _, _ ->
+            setShowShareGroupDialog(applicationContext,
+                    !alertLayout.dialog_share_group_check_box_show_again.isChecked)
             viewModel.shareGroup(groupName)
         }
-        alert.setNegativeButton(R.string.no) { _, _ -> }
+        alert.setNegativeButton(R.string.no) { _, _ ->
+            setShowShareGroupDialog(applicationContext,
+                    !alertLayout.dialog_share_group_check_box_show_again.isChecked)
+        }
         alert.create().show()
     }
 

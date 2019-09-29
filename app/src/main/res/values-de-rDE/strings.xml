@@ -124,4 +124,7 @@
     <string name="menu_bills_add_member">Mitglied hinzufügen</string>
     <string name="nothing_to_balance"><![CDATA[Es muss nichts mehr aufgeteilt werden]]></string>
     <string name="percentage_to_balance"><![CDATA[Es muss noch <b>%s %%</b> über alle Schuldner aufgeteilt werden]]></string>
+    <string name="show_share_group_dialog_summary">Falls aktiviert, wird nachdem du eine Ausgabe hinzugefügt hast ein Dialog angezeigt wo du entscheiden kannst ob du die Gruppe teilen möchtest</string>
+    <string name="show_share_group_dialog_title">Zeige Teile Gruppe Dialog</string>
+    <string name="do_not_ask_again">Nicht nochmal fragen</string>
 </resources>

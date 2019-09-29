@@ -130,4 +130,7 @@
     <string name="member_spent">%s spent a total of %s %s</string>
     <string name="group_spent">%s spent a total of %s %s</string>
     <string name="menu_bills_add_member">Add member</string>
+    <string name="show_share_group_dialog_summary">If enabled, shows a dialog after adding a bill where you are asked if you want to share the group</string>
+    <string name="show_share_group_dialog_title">Show share group dialog</string>
+    <string name="do_not_ask_again">Do not ask again</string>
 </resources>

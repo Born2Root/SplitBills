@@ -13,4 +13,14 @@
         android:layout_marginEnd="24dp"
         android:text="@string/you_added_new_bill" />
 
+    <CheckBox
+        android:id="@+id/dialog_share_group_check_box_show_again"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/do_not_ask_again"
+        android:checked="false"/>
+
 </LinearLayout>

@@ -15,16 +15,27 @@ private const val KEY_USER_NAME = "user_name"
 private const val KEY_USER_EMAIL = "user_email"
 private const val KEY_CURRENCY = "currency_code"
 private const val KEY_THEME = "theme"
+private const val KEY_SHOW_SHARE_GROUP_DIALOG = "show_share_group_dialog"
 
 private const val DEFAULT_USER_NAME = "no name set"
 private const val DEFAULT_USER_EMAIL = "no email set"
 private const val DEFAULT_CURRENCY = "EUR"
 private const val DEFAULT_THEME = "day_night"
+private const val DEFAULT_SHOW_SHARE_GROUP_DIALOG = true
+
+fun getShowShareGroupDialog(context: Context?): Boolean {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    return prefs.getBoolean(KEY_SHOW_SHARE_GROUP_DIALOG, DEFAULT_SHOW_SHARE_GROUP_DIALOG)
+}
+
+fun setShowShareGroupDialog(context: Context?, value: Boolean) {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    prefs.edit()
+            .putBoolean(KEY_SHOW_SHARE_GROUP_DIALOG, value)
+            .apply()
+}
 
 fun getUser(context: Context?): Member {
-    if (context == null) {
-        Log.d(TAG, "context is null")
-    }
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     val name = prefs.getString("user_name", "no name set")
     val email = prefs.getString("user_email", "no email set")
