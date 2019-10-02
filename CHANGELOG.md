@@ -1,4 +1,7 @@
 # Changelog
+## [0.3.6] - 2019-10-02
+### Changed
+- Removed bug on AddEditBill screen that pervent amount to balance from updating.
 
 ## [0.3.5] - 2019-10-02
 ### Changed
