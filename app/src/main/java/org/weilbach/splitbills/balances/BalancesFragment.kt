@@ -53,7 +53,6 @@ class BalancesFragment : Fragment() {
         }
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
         setupListAdapter()
-        setupRefreshLayout()
     }
 
     private fun setupListAdapter() {
@@ -73,18 +72,6 @@ class BalancesFragment : Fragment() {
             return
         }
         Log.w(TAG, "Could not setup list adapter, no group name given.")
-    }
-
-    private fun setupRefreshLayout() {
-        viewDataBinding.fragBalancesRefreshLayout.run {
-            setColorSchemeColors(
-                    ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
-                    ContextCompat.getColor(requireActivity(), R.color.colorAccent),
-                    ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
-            )
-            // Set the scrolling view in the custom SwipeRefreshLayout.
-            scrollUpChild = viewDataBinding.fragBalancesBalancesList
-        }
     }
 
     companion object {
