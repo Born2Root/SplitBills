@@ -51,6 +51,8 @@ fun oweGetMapMerge(oweMap: HashMap<String, BigDecimal>, getMap: HashMap<String, 
         : Pair<HashMap<String, BigDecimal>, HashMap<String, BigDecimal>> {
     val newOweMap = HashMap<String, BigDecimal>()
     val newGetMap = HashMap<String, BigDecimal>()
+    // FIXME:
+    val zeroMap = HashMap<String, BigDecimal>()
 
     oweMap.forEach { entry ->
         if (getMap.containsKey(entry.key)) {
@@ -61,12 +63,15 @@ fun oweGetMapMerge(oweMap: HashMap<String, BigDecimal>, getMap: HashMap<String, 
             } else if (res < BigDecimal.ZERO) {
                 newGetMap[entry.key] = res.abs()
             }
+            else {
+                zeroMap[entry.key] = BigDecimal.ZERO
+            }
         } else {
             newOweMap[entry.key] = entry.value
         }
     }
     getMap.forEach { entry ->
-        if (!newGetMap.containsKey(entry.key) && !newOweMap.containsKey(entry.key)) {
+        if (!newGetMap.containsKey(entry.key) && !newOweMap.containsKey(entry.key) && !zeroMap.containsKey(entry.key)) {
             newGetMap[entry.key] = entry.value
         }
     }

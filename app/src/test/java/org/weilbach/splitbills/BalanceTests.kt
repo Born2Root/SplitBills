@@ -155,6 +155,57 @@ class BalanceTests {
                 res.first[MEMBER2.email]?.setScale(2, RoundingMode.UP))
     }
 
+    @Test
+    fun testOweGetMapMerge_MembersOweGetSame() {
+        val mem1 = Member("mem1", "mail1")
+        val mem2 = Member("mem2", "mail2")
+
+        val grpMem1 = GroupMember("group", "mail1")
+        val grpMem2 = GroupMember("group", "mail2")
+
+        val bill1 = Bill(Date(), "bill1", BigDecimal(12), "EUR", "mail1", "group", true)
+        val bill1Debtor1 = Debtor(bill1.id, "mail1", BigDecimal(6))
+        val bill1Debtor2 = Debtor(bill1.id, "mail2", BigDecimal(6))
+
+        val bill2 = Bill(Date(), "bill2", BigDecimal(12), "EUR", "mail2", "group", true)
+        val bill2Debtor1 = Debtor(bill2.id, "mail1", BigDecimal(6))
+        val bill2Debtor2 = Debtor(bill2.id, "mail2", BigDecimal(6))
+
+        val bill1Debtors =  BillDebtors()
+        bill1Debtors.bill = bill1
+        bill1Debtors.debtors = listOf(bill1Debtor1, bill1Debtor2)
+
+        val bill2Debtors =  BillDebtors()
+        bill2Debtors.bill = bill2
+        bill2Debtors.debtors = listOf(bill2Debtor1, bill2Debtor2)
+
+        val groupMembersBillsDebtors = GroupMembersBillsDebtors()
+        groupMembersBillsDebtors.group = Group("group")
+        groupMembersBillsDebtors.bills = listOf(bill1Debtors, bill2Debtors)
+        groupMembersBillsDebtors.members = listOf(grpMem1, grpMem2)
+
+
+        val get1 = memberGetsFromGroup(mem1, groupMembersBillsDebtors)
+        val owe1 = memberOwesGroup(mem1, groupMembersBillsDebtors)
+        val res1 =  oweGetMapMerge(owe1, get1)
+
+        val get2 = memberGetsFromGroup(mem2, groupMembersBillsDebtors)
+        val owe2 = memberOwesGroup(mem2, groupMembersBillsDebtors)
+        val res2 =  oweGetMapMerge(owe2, get2)
+
+        Assert.assertEquals(BigDecimal(6), get1["mail2"])
+        Assert.assertEquals(BigDecimal(6), owe1["mail2"])
+
+        Assert.assertEquals(BigDecimal(6), get2["mail1"])
+        Assert.assertEquals(BigDecimal(6), owe2["mail1"])
+
+        Assert.assertEquals(0, res1.second.size)
+        Assert.assertEquals(0, res1.first.size)
+
+        Assert.assertEquals(0, res2.second.size)
+        Assert.assertEquals(0, res2.first.size)
+    }
+
     companion object {
         private const val CURRENCY = "EUR"
         private const val GROUP_NAME = "GROUP_MEMBERS_BILLS_DEBTORS"
