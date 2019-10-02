@@ -1,14 +1,18 @@
 # Changelog
 
-## [0.3.4] - 2019-09-29
+## [0.3.5] - 2019-10-02
 ### Changed
-- Removed unnecessary strings in german translation
-- Improved layouts
+- Removed bug on balance screen that showed up when all bills were settled up.
+
+## [0.3.4] - 2019-10-02
+### Changed
+- Removed unnecessary strings in german translation.
+- Improved layouts.
 
 ## [0.3.3] - 2019-09-29
 ### Added
-- Flag to disable share group dialog
-- Menu in BillDetailActivity to remove bill
+- Flag to disable share group dialog.
+- Menu in BillDetailActivity to remove bill.
 
 ### Changed
 - Improved Layout
