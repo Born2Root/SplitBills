@@ -73,6 +73,8 @@ class DebtorItemContainer(
         val debtorItemsNotChanged = debtorItems.filter { debtorItem -> !debtorItem.changedByUser }
 
         if (debtorItemsNotChanged.isEmpty()) {
+            listener.onAmountToBalanceChanged(amountToBalance)
+            listener.onPercentageToBalanceChanged(percentageToBalance)
             return
         }
 
